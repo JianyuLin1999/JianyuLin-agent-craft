@@ -38,6 +38,7 @@
 |---|---|
 | [`review-rigor.md`](knowledge-assets/review-rigor.md) | 审查严苛度双层架构:Layer A(对代码挑剔不封顶)+ Layer B(对作者温和说话)物理分离 |
 | [`comment-voice.md`](knowledge-assets/comment-voice.md) | 写 PR / issue 评论的措辞纪律:三条核心原则 + 两个对立失败模式 + 8 条 deterministic 自检 |
+| [`caveman-cn-design.md`](knowledge-assets/caveman-cn-design.md) | `caveman-cn` 的中文语境设计理念:保留高信号压缩哲学,不把文化适配解释放进 skill 本体 |
 
 ## 使用方式
 
