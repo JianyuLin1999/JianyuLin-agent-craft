@@ -1,28 +1,34 @@
 ---
-name: chinese-concise-clarity
-description: 中文极简清晰输出模式。压缩客套、铺垫和重复表达，但保留技术准确性、必要主语、条件、风险、置信度和下一步动作。Use when user says "原始人模式", "中文 caveman", "极简模式", "少废话", "短一点", "压缩回答", or invokes /caveman-cn.
-version: 0.1.0
+name: caveman-cn
+description: 中文版 caveman 极简清晰输出模式。压缩客套、铺垫和重复表达，但保留技术准确性、必要主语、条件、风险、置信度和下一步动作。Use when user says "caveman", "caveman-cn", "极简模式", "少废话", "短一点", "压缩回答", or invokes /caveman-cn.
+version: 0.2.0
 target: agent
 status: active
 created: 2026-05-25
 ---
 
-# Chinese Concise Clarity
+# Caveman CN
 
 ## Purpose
 
-这是对 `caveman` 思路的中文语境改造：保留“极度压缩废话”的价值，但不模仿原始人说话。
+这是 `caveman` 的中文语境版本。它继承的是高信号、低废话、低摩擦的输出哲学，而不是任何具体人设。
 
-中文里的目标不是“碎片化、粗鲁、少字”，而是：
+核心哲学：
 
-> 短、准、清楚、可行动。
+- 语言是成本。少写不必要的话，让重点更快出现。
+- 压缩表达，不压缩判断。短回答仍然要保留结论、条件、风险和下一步。
+- 中文压缩要保护语义骨架。不能为了少字牺牲“谁做什么、什么条件下成立、哪里有风险”。
+
+目标：
+
+> 最少文字，最高信号，可直接行动。
 
 ## Activation
 
 当用户明确说以下表达时启用：
 
-- “原始人模式”
-- “中文 caveman”
+- “caveman”
+- “caveman-cn”
 - “极简模式”
 - “少废话”
 - “短一点”
@@ -31,11 +37,11 @@ created: 2026-05-25
 
 如果用户只是临时说“简短回答”，只对当前回答生效。
 
-如果用户说“开启极简模式”“进入原始人模式”，则持续生效，直到用户说：
+如果用户说“开启极简模式”“进入 caveman-cn”，则持续生效，直到用户说：
 
 - “停止极简模式”
 - “恢复正常”
-- “退出原始人模式”
+- “退出 caveman-cn”
 
 ## Core Rule
 
@@ -62,9 +68,9 @@ created: 2026-05-25
 
 ## Chinese Adaptation
 
-不要照搬英文压缩规则。
+不要照搬英文压缩规则。英文省略冠词、连词和主语的做法，不能直接映射到中文。
 
-英文里的 `a/an/the`、碎片句、省略连词，在中文里没有对应价值。中文本来就能省略很多成分，继续硬删会导致歧义。
+中文本来就能省略很多成分。继续硬删，会让信息变短，但也更容易变模糊。
 
 中文压缩时必须保留：
 
@@ -74,17 +80,9 @@ created: 2026-05-25
 - 风险词：例如“会删除”“不可恢复”“会覆盖”
 - 置信度：例如“确定”“大概率”“资料不足”
 
-不要使用：
-
-- “俺”
-- “干这个”
-- “笨笨原始人”
-- 故意破碎的中文
-- 粗鲁命令腔
-
 ## Output Pattern
 
-优先使用短标签，而不是长段落。
+优先使用短标签和短段落。
 
 常用结构：
 
@@ -160,13 +158,3 @@ created: 2026-05-25
 - 用户重复追问或明确说“没看懂”
 
 解释清楚后，如果之前是持续模式，再恢复极简。
-
-## Source Context
-
-Inspired by Matt Pocock's `caveman` skill:
-
-https://github.com/mattpocock/skills/blob/main/skills/productivity/caveman/SKILL.md
-
-Original project license: MIT. See [`docs/third-party-notices.md`](../../docs/third-party-notices.md).
-
-This version is a Chinese-context redesign, not a literal translation.

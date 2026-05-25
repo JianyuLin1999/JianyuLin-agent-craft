@@ -2,7 +2,7 @@
 
 ## Matt Pocock `caveman` Skill
 
-`skills/chinese-concise-clarity/SKILL.md` is a Chinese-context redesign inspired by Matt Pocock's `caveman` skill:
+`skills/caveman-cn/SKILL.md` is a Chinese-context redesign inspired by Matt Pocock's `caveman` skill:
 
 https://github.com/mattpocock/skills/blob/main/skills/productivity/caveman/SKILL.md
 
@@ -31,4 +31,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
