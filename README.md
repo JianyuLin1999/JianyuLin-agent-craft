@@ -30,6 +30,7 @@
 | [`pr-review`](skills/pr-review/SKILL.md) | 深度审 GitHub PR + 产 3 类 draft(评论 / issue / 文档 patch)一键发布。DNA / 涟漪 / 工程债 + 7 维盲点扫描 + 严重度三级 + 双层审查纪律 |
 | [`issue-review`](skills/issue-review/SKILL.md) | 深度评 GitHub issue 的 5 维度 + 7 维盲点扫描,产建议动作 + 致谢评论 draft |
 | [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 NotebookLM 输出"简单易懂但不失深度"的通俗报告体讲解 |
+| [`chinese-concise-clarity`](skills/chinese-concise-clarity/SKILL.md) | 中文极简清晰模式:压缩废话,但保留技术准确性、必要语境和行动判断 |
 
 ### Knowledge Assets(跨 skill 共享的抽象原则)
 
@@ -43,4 +44,3 @@
 新增条目时,优先使用 `templates/` 下的模板,并参考 [`docs/conventions.md`](docs/conventions.md) 中的命名和版本规则。
 
 skill 的演化历史在 [`docs/changelog/`](docs/changelog/) 下,按 `YYYY-MM-DD-主题.md` 格式存放。
-
