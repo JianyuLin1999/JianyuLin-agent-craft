@@ -31,6 +31,7 @@
 | [`issue-review`](skills/issue-review/SKILL.md) | 深度评 GitHub issue 的 5 维度 + 7 维盲点扫描,产建议动作 + 致谢评论 draft |
 | [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 NotebookLM 输出"简单易懂但不失深度"的通俗报告体讲解 |
 | [`caveman-cn`](skills/caveman-cn/SKILL.md) | 中文版 caveman 极简清晰模式:压缩废话,但保留技术准确性、必要语境和行动判断 |
+| [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | Matt Pocock 的文档感知 grilling skill:用领域词汇表和 ADR 约束方案讨论 |
 
 ### Knowledge Assets(跨 skill 共享的抽象原则)
 

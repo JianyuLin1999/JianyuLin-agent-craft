@@ -6,6 +6,20 @@
 
 https://github.com/mattpocock/skills/blob/main/skills/productivity/caveman/SKILL.md
 
+## Matt Pocock `grill-with-docs` Skill
+
+`skills/grill-with-docs/` and the local Claude install at `~/.claude/skills/grill-with-docs/` include Matt Pocock's `grill-with-docs` skill files:
+
+https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs
+
+Included files:
+
+- `SKILL.md`
+- `CONTEXT-FORMAT.md`
+- `ADR-FORMAT.md`
+
+## License
+
 Original project license: MIT.
 
 Copyright (c) 2026 Matt Pocock
