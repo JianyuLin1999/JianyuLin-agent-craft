@@ -1,12 +1,12 @@
-# issue-review EXAMPLES
+# issue-review 真实场景的完整范例
 
-应用到真实场景的完整 sample。让你回看 skill 时能"看见" draft 长什么样。
+把规则应用到真实 issue 上,你回看 skill 的时候能直接"看见"草稿长什么样。3 个场景覆盖最常见的 3 种结局:approve、要求升级、建议关闭。
 
 ---
 
-## 场景 1:Review 一个 Approve 类的 issue(高质量)
+## 场景 1:Review 一个高质量的 issue,你打算 Approve
 
-假设有 #220 PRD issue,经过完整 grill 后内容详尽,5 维度全过。
+假设有一条 #220 PRD issue,作者经过完整 grill 之后内容已经很详尽,5 个角度全过。
 
 ### 终端流程
 
@@ -14,8 +14,8 @@
 你: /issue-review #220
 
 skill:
-[跑 fetch-issue-review-context.sh 220]
-[LLM 跑 5 维度评估]
+[跑 fetch-issue-review-context.sh 220 拉背景资料]
+[从 5 个角度评估]
 
 ═══ Issue Review Report ═══
 
@@ -42,8 +42,8 @@ skill:
    完整 draft:cat ~/.issue-review-drafts/issue-review-220-comment.md
    一键发布:bash scripts/publish-issue-review.sh 220
 
-📊 5 维度评估
-   A. clarity:✅ 标题白话 + body 有具体场景描述
+📊 5 个角度的评估
+   A. clarity:✅ 标题白话 + 正文有具体场景描述
    B. 完整度:✅ 7/7 字段全填 + grill 存档完整
    C. 唯一性:✅ 跟 #155 是子集关系,不是重复
    D. 可执行性:✅ 4 条验收标准都可检
@@ -107,9 +107,9 @@ generated_at: 2026-05-24T20:45:00Z
 
 ---
 
-## 场景 2:Review 一个 placeholder issue(应该升级)
+## 场景 2:Review 一个 placeholder issue,你建议升级
 
-假设 #220 是 1 周前 `/issue-capture` 出的 placeholder,5/7 字段 🚧。
+假设 #220 是 1 周前 `/issue-capture` 出来的 placeholder,7 个字段里有 5 个还是 🚧。
 
 ### 终端报告
 
@@ -123,7 +123,7 @@ generated_at: 2026-05-24T20:45:00Z
    占位 issue 方向清晰但 5/7 字段 🚧,该走升级流程而不是直接 approve。
 
 🎯 建议你做的事:🔧 建议升级(跑 /issue-create #220)
-   理由:placeholder + 字段缺 / 5 维度只有 A clarity 过 / B 完整度严重缺
+   理由:placeholder + 字段缺 / 5 个角度只有 A clarity 过 / B 完整度严重缺
    labels_to_add:[]
    labels_to_remove:[]
    close:false
@@ -138,7 +138,7 @@ generated_at: 2026-05-24T20:45:00Z
    完整 draft:cat ~/.issue-review-drafts/issue-review-220-comment.md
    一键发布:bash scripts/publish-issue-review.sh 220
 
-📊 5 维度评估
+📊 5 个角度的评估
    A. clarity:✅ 一句话方向描述清楚
    B. 完整度:🟡 5/7 字段 🚧(prd 模板)
    C. 唯一性:✅ 不跟现有 issue 重复
@@ -192,9 +192,9 @@ generated_at: 2026-05-24T20:45:00Z
 
 ---
 
-## 场景 3:Review 一个建议关闭的 issue(重复)
+## 场景 3:Review 一个跟现有 issue 重复的 issue,你建议关闭
 
-假设 #221 跟 #208 主题完全一样(都是 docx 渲染相关 bug),应该 close。
+假设 #221 跟 #208 主题完全一样(都在说同一个 docx 渲染相关的 bug),应该关掉 #221 把讨论统一到 #208。
 
 ### 终端报告
 
@@ -221,7 +221,7 @@ generated_at: 2026-05-24T20:45:00Z
    完整 draft:cat ~/.issue-review-drafts/issue-review-221-comment.md
    一键发布:bash scripts/publish-issue-review.sh 221
 
-📊 5 维度评估
+📊 5 个角度的评估
    A. clarity:✅ bug 描述清楚
    B. 完整度:🟡 缺 bundle
    C. 唯一性:🔴 跟 #208 完全重复
@@ -271,18 +271,18 @@ generated_at: 2026-05-24T20:45:00Z
 
 ---
 
-## 终端工作流耗时估算
+## 走完整个流程大概花多久
 
-对 #220 跑完整 review 流程大概:
+对 #220 跑完整 review 大致是这样的节奏:
 
 ```
 $ /issue-review #220
-[skill 拉 context + 5 维度评估 ~30 秒]
+[skill 拉背景资料 + 5 个角度评估 ~30 秒]
 
-[user 看 4 component 终端报告 ~30 秒]
+[建宇看终端那 4 块报告 ~30 秒]
 
 $ cat ~/.issue-review-drafts/issue-review-220-comment.md
-[user 审 draft ~1 分钟]
+[建宇审一遍草稿 ~1 分钟]
 
 $ bash scripts/publish-issue-review.sh 220
 [评论 + close + label 一键完成 ~5 秒]
@@ -290,17 +290,17 @@ $ bash scripts/publish-issue-review.sh 220
 总耗时:~2-3 分钟
 ```
 
-对比"user 自己人工 review 同样质量"的时间:**15-25 分钟**(读完 issue + 看 PRD / plan 验证方向 + 写致谢 + 想下一步)。
+对比一下"建宇自己人工 review,要做到同样质量"大概要多久:**15-25 分钟**(读完 issue + 翻 PRD / plan 验证方向是否对齐 + 想致谢怎么写 + 想下一步建议)。
 
-**5-8 倍效率提升**,而且不漏 surface(因为 5 维度全过 + audit 尾巴留痕)。
+**5-8 倍的效率提升**,而且不会漏发现 — 因为 5 个角度强制全跑 + 评论结尾的备忘留痕,日后回看都能追溯。
 
 ---
 
-## 学到什么(回看时记得)
+## 回看的时候,你要记住这几件事
 
-1. **5 维度评估默认严苛** —— 大多数 issue 至少有一两个 🟡,不要为了让 issue 通过而把 🟡 降成 ✅
-2. **致谢必须 3 要素结构**(抓到了什么 / 为什么不容易 / 连锁好处),不写空话
-3. **placeholder issue 该升级而不是 approve** —— 走 🔧 动作,指向 `/issue-create #N`
-4. **重复 issue 该关闭并指向原 issue** —— 走 ❌ 动作 + duplicate label + close
-5. **audit 尾巴的 `dim=` 字段** —— 不用 A/B/C/D/E 编号,用语义化关键词(insight / completeness / uniqueness / clarity 等)
-6. **E 维度(项目方向一致)是 Sedna 价值最高的检查** —— 一个跟方向冲突的 issue approve 进来,修复成本远大于 review 时多读 PRD / plan
+1. **5 个角度的评估默认挑剔** —— 大多数 issue 至少有一两个 🟡,不要为了让 issue 顺利通过就偷偷把 🟡 降成 ✅。守门员的价值就在这
+2. **致谢必须有 3 要素**(抓到了什么 / 为什么不容易 / 连锁好处),不写空话
+3. **placeholder issue 该走升级,不该直接 approve** —— 选 🔧 动作,指向 `/issue-create #N`
+4. **重复 issue 该关闭并指向原 issue** —— 选 ❌ 动作 + 加 duplicate label + close
+5. **评论结尾备忘里的 `dim=` 字段** —— 不要用 A/B/C/D/E 编号,用语义化关键词(insight / completeness / uniqueness / clarity 等),日后 grep 才好用
+6. **E 角度(跟项目方向一致)是 Sedna 最值钱的一个检查** —— 一个跟方向冲突的 issue 被你 approve 进来,日后修复的代价远远大于 review 时多花时间读 PRD / plan 的代价。这笔账要算清
