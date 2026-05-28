@@ -45,6 +45,8 @@ description: 替 user 把"脑暴一句话"变成完整 GitHub Issue — 3 件事
 
 **每个问题尽量带 codebase 证据** — "我看到 `notebook-renderer.tsx` L142 已经在做 X,你说的 Y 是想在这一层做吗?"  比"Y 是怎么实现的?"答得快、答得对。
 
+**也要往"上一层"问** — 这是真痛点还是 user 一时兴起?有没有更根本的解法?跟现有 N 条 open / placeholder 合并不行吗?grill 不止填字段,也是替 user 校准想法的层级 — 想法不该立的早提早撤,比建出来再发现更省事。
+
 ## 3. 填模板 + 发布
 
 整理 grill 答案 + 原始输入 + codebase 调研事实(填进 Background 字段)。grill 问答全文存"grill-me 存档"字段(装作 user 自己跑 `/grill-me` 的存档,用 user 口吻)。
