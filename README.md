@@ -1,6 +1,6 @@
 # agent-craft
 
-这个仓库用于集中管理个人的 skill、提示词、工作流和知识资产 —— 跟 AI agent(Claude / Codex 等)协作时沉淀的可复用资产。
+这里存的是我**调教 AI 助手**(Claude 这类)做事的"工作说明书"。每份说明书让 AI 在某类活上(比如审代码改动、建待办事项、把术语翻译成人话)按固定标准产出。沉淀好之后,以后任何项目直接拿来用。
 
 核心原则:
 
@@ -25,32 +25,38 @@
 
 ### Skills
 
-#### GitHub 协作家族(共享 SHARED-READABILITY + SHARED-COMMENT-VOICE)
+**Skill 是什么** — 给 AI 助手(像 Claude)装的一份"工作说明书"。你喊一声某个名字(比如 `/pr-review`),她就按那份说明书干活,产出固定风格的结果。下面每条说明书都是干一类具体的活。
 
-| 名称 | 说明 |
+#### GitHub 协作家族 — 帮你审 / 建 / 记 GitHub 上的代码改动和待办
+
+GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 + 文件柜"一样。下面 4 个 skill 都跟在这个工作板上做事有关 — 审别人的修改、审待办、新建待办、快速记一笔。
+
+| 名称 | 它替你干啥 |
 |---|---|
-| [`pr-review`](skills/pr-review/SKILL.md) | 替 user 审 GitHub PR — 3 件事(理解 / 评估 / 反馈),全部 inline 在终端,user 说"发"用 gh tool 直接发到 GitHub |
-| [`issue-review`](skills/issue-review/SKILL.md) | 替 user 审 GitHub Issue — 3 件事(理解 / 评估 / 反馈)+ 5 维度 + 7 盲区扫描 + 5 种建议动作 |
-| [`issue-create`](skills/issue-create/SKILL.md) | 替 user 把"脑暴一句话"变成完整 issue — 主动调研 codebase 拿事实证据 + grill 带证据问 + 填模板。也支持 `/issue-create #N` 升级占位 |
-| [`issue-capture`](skills/issue-capture/SKILL.md) | 地铁手机场景极低摩擦记录脑暴占位 issue,跳 grill,等后续 `/issue-create #N` 升级填完 |
+| [`pr-review`](skills/pr-review/SKILL.md) | 有人给你的代码项目提交了一份**修改建议**(GitHub 上叫 PR),你想知道这个修改靠不靠谱、要不要接受。你喊她,她替你看完一遍,告诉你:这修改在做什么、有没有问题、要不要采纳。你点头她就直接帮你回复作者或合并。**好处**:你不用自己钻代码。 |
+| [`issue-review`](skills/issue-review/SKILL.md) | GitHub 上一条"待办想法"(叫 issue,就是别人提的"这个该改一下"的小卡片),你想知道它讲清楚没、能不能开干、要不要让作者再想想。她替你过一遍,写好回复草稿,你点头就发出去 — 关掉 / 加标签这些状态变更也一并做了。 |
+| [`issue-create`](skills/issue-create/SKILL.md) | 你脑子里冒出一个想法(比如"那个搜论文的功能应该改一下"),想正经把它记成一条**完整的待办事项**让团队后续来做。她先去翻一遍代码看你这想法跟现有的东西什么关系,再追问你几个关键问题把细节问清楚,最后帮你写好一份规范的待办。 |
+| [`issue-capture`](skills/issue-capture/SKILL.md) | 你在**地铁上**(或任何匆忙场景)突然想到"哦这个我之前想改",只有 30 秒,没时间细想。喊她,扔给她一句话,她飞快帮你记成一条**占位草稿**丢到工作板上,贴个"还没想清楚"的标签提醒大家。等你之后有空,跑 `/issue-create #N` 把它填完整。 |
 
-#### 语言风格 / 通用工具
+#### 写作 / 通用工具
 
-| 名称 | 说明 |
+| 名称 | 它替你干啥 |
 |---|---|
-| [`talk-clear`](skills/talk-clear/SKILL.md) | 把任何面向人类阅读的输出写成"完全不懂代码的人也能读懂" — 教授口吻 + 比喻贯穿全文 + 落具体场景。默认全局启用,也支持显式调用 |
-| [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 NotebookLM 输出"简单易懂但不失深度"的通俗报告体讲解 |
-| [`caveman-cn`](skills/caveman-cn/SKILL.md) | 中文版 caveman 极简清晰模式:压缩废话,但保留技术准确性、必要语境和行动判断 |
-| [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | Matt Pocock 的文档感知 grilling skill:用领域词汇表和 ADR 约束方案讨论 |
+| [`talk-clear`](skills/talk-clear/SKILL.md) | 让 AI **任何写给人看的东西**都按"老奶奶能听懂"的标准写 — 举例子、打比方、落到具体场景,不堆术语。默认所有面向人类的输出都自动遵守,不需要你每次喊。例外:跟程序员讨论代码 debug 这种"自己人内部对话"不强制(他们就要术语)。 |
+| [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 **NotebookLM**(Google 出的研究笔记 AI 工具)输出的讲解更通俗易懂,但深度不丢 — 像一个会讲课的教授,而不是干瘪的学术摘要。 |
+| [`caveman-cn`](skills/caveman-cn/SKILL.md) | 你跟 AI 聊天觉得她**废话太多**,喊一句"少废话",她立刻切到极简模式 — 只留结论、原因、风险、下一步,不绕弯。 |
+| [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | 跟 AI 讨论一个方案的时候,**强制她先翻你项目的术语表和决策档案**,用你项目的语言跟你讨论,不会自己发明词。像新来的咨询师必须先把"内部黑话本子"翻熟了再开会。 |
 
-### Knowledge Assets(跨 skill 共享的抽象原则)
+### Knowledge Assets — 几个 skill 共用的"规则手册"
 
-| 名称 | 说明 |
+这些不是 skill 本身,而是 skill 引用的**共享规则手册**。把它们单独抽出来,是为了"改一处,所有用到的 skill 同时刷新" — 像剧团的演员手册,不管哪个演员演,都按这份手册说台词。
+
+| 名称 | 它是啥 |
 |---|---|
-| [`readability.md`](knowledge-assets/readability.md) | 输出语言风格的唯一真相源 — 教授口吻 / 比喻建立世界并贯穿全文 / 落具体场景 / 警惕行政性段落自动豁免。**`talk-clear` 和 GitHub 协作 4 skill 都 inline 引用这一份**(改一处,5 处同步) |
-| [`comment-voice.md`](knowledge-assets/comment-voice.md) | 写 PR / issue 评论的措辞纪律:三条核心原则 + 两个对立失败模式 + 8 条 deterministic 自检 |
-| [`review-rigor.md`](knowledge-assets/review-rigor.md) | 审查严苛度双层架构:Layer A(对代码挑剔不封顶)+ Layer B(对作者温和说话)物理分离 |
-| [`caveman-cn-design.md`](knowledge-assets/caveman-cn-design.md) | `caveman-cn` 的中文语境设计理念:保留高信号压缩哲学,不把文化适配解释放进 skill 本体 |
+| [`readability.md`](knowledge-assets/readability.md) | **"AI 怎么说人话"的规则手册** — 教授口吻、举例子、打比方、落到 reader 工作的具体场景。`talk-clear` 和上面 4 个 GitHub 协作 skill 都共用这一份(改一处,5 个 skill 同时刷新)。 |
+| [`comment-voice.md`](knowledge-assets/comment-voice.md) | **写 GitHub 评论怎么说话不冒犯作者的规则手册** — 心里挑剔无上限,嘴上对人温和(说事实 / 带"我" / 给作者两条路选,不下指令)。 |
+| [`review-rigor.md`](knowledge-assets/review-rigor.md) | **审别人工作时的双层纪律** — 心里挑剔得严苛,嘴上温和不指控。讲这两件事为什么能同时存在(物理分离)。 |
+| [`caveman-cn-design.md`](knowledge-assets/caveman-cn-design.md) | `caveman-cn` 极简模式的设计理念 — 为什么这样设计、怎么平衡"短"和"不失准"。 |
 
 ## 使用方式
 
