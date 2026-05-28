@@ -1,11 +1,69 @@
 ---
 name: issue-create
-description: 创建完整 GitHub Issue。grill 用户之前先主动调研 codebase(grep / Read 现有代码拿事实证据),grill 时带证据问得更精准(按 Sedna 3 个 template 类型分级题数 — bug 2 题 / gap 3 题 / prd 4-5 题),整理填模板时把 codebase 事实填进 Background 字段,user 没说 + 代码里也没的内容标 🚧 待 grill 补完。也支持升级占位 issue(`/issue-create #N` — 拉占位 body 当 grill 起点)。Use when 用户跑 /issue-create 想从无到有建立完整 issue、升级占位为完整、提到"开 issue" / "建 issue" / "issue create" / "升级占位"。本 skill 不做快速占位(那是 /issue-capture 的事)。所有 issue 走 Sedna 3 个 template,借助 codebase 调研补全事实但不脑补,user 口吻。
+description: 替 user 把"脑暴一句话"变成完整 GitHub Issue — 3 件事:主动调研 codebase 拿事实证据 / grill user 带证据问(按 Sedna 3 个 template 类型分级题数 — bug 2 / gap 3 / prd 4-5)/ 填模板 + 发布。也支持 `/issue-create #N` 把占位升级为完整(拉占位 body 当 grill 起点)。产出全部 inline 在终端,**假设所有 reader 不懂代码**(包括 issue 作者);不脑补 user 没说 + codebase 里也没的内容(标 🚧 待 grill 补完);user 说"发"就用 publish 脚本一键到 GitHub。Use when 用户跑 /issue-create 想从无到有建立完整 issue、升级占位为完整、提到"开 issue" / "建 issue" / "issue create" / "升级占位"。本 skill 不做快速占位(那是 /issue-capture 的事)。
 ---
 
 # issue-create
 
-给"产品总设计师 + 质量守门员"用的 issue 创建助手。**核心定位**:把"脑暴一句话 → 完整 Sedna-style issue"的鸿沟,用 codebase 调研 + grill + 不脑补整理填满。
+你是替 user 把"脑暴一句话"变成完整 Sedna-style GitHub Issue — **借助你"看代码又多又准"的优势主动调研 codebase 拿事实证据**,grill 用户带证据问得更精准,整理填模板时把 codebase 事实归到 Background 字段。
+
+**支持升级占位**:`/issue-create #N` 拉 placeholder body 当 grill 起点。
+
+**每次跑独立判断**:不读旧 draft,不脑补 user 没说 + 代码里也没的内容。
+
+---
+
+# 3 件事(都按下面"产出文字的标准"写)
+
+## 产出文字的标准
+
+**假设所有 reader 不懂代码**(包括 issue 作者)。三件武器:
+
+(1) **每个技术概念第一次出现,用日常经验打比方铺垫** — 变量名 / 函数名 / 文件路径不能直接砸。
+(2) **每个判断落到 reader 工作的具体瞬间**。
+(3) **不堆砌路径 / 命令 / 缩写**。
+
+**检查标准**:同一件事讲完,reader 不需要回头查任何一个词。
+
+**身份纪律**:issue body 用 user **第一人称**(发出后协作者认为是 user 在写);**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容,不是 user 自己说的)。详 [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md)。
+
+---
+
+## 1. 主动调研 codebase(grep + Read 拿事实证据)
+
+基于 user 脑暴关键词,**grep + Read** 一遍找相关文件 / 函数 / 现有模式 / 潜在交互点。即使脑暴看起来很简单,**也要调研一遍确认 codebase 现状** — 不靠灵感,一律调研。
+
+产出 **Background 字段**(放进 issue body,跟 user 第一人称字段视觉分开):文件路径 / 行号 / 类型定义 / 现有处理逻辑 — 客观事实,不脑补。
+
+**合法补全 vs 脑补**:user 在 grill 里说过的话 + 原始脑暴输入 + 占位 body + **你从 codebase 读出来的客观事实** → 都是合法。user 没说 + 代码里也没相关事实 → **`🚧 待 grill 补完`**。详 [REFERENCE.md](REFERENCE.md)。
+
+## 2. Grill user(按 template 分级题数,带 codebase 证据问)
+
+先做 **template 路由**(bug / gap / prd)+ **多想法识别**(脑暴有几个独立 issue,软询问拆 / 合 / 跳)+ **重复检测**(匹配 open + placeholder + 90 天 closed,软提醒不阻塞)。详 [REFERENCE.md](REFERENCE.md)。
+
+然后按 grill-me 精神 grill(每个想法独立 grill):**bug 2 题 / gap 3 题 / prd 4-5 题**。
+
+**每个问题尽量带 codebase 证据** — "我看到 `notebook-renderer.tsx` L142 已经在做 X,你说的 Y 是想在这一层做吗?"  比"Y 是怎么实现的?"答得快、答得对。
+
+## 3. 填模板 + 发布
+
+整理 grill 答案 + 原始输入 + codebase 调研事实(填进 Background 字段)。grill 问答全文存"grill-me 存档"字段(装作 user 自己跑 `/grill-me` 的存档,用 user 口吻)。
+
+写 draft 到 `~/.issue-drafts/issue-{slug}.md`(YAML frontmatter + body,详 [REFERENCE.md](REFERENCE.md))。终端报告**一段话连着写**:标题 / 模板 / 字段完成度 / draft 路径 / publish 命令。
+
+**user 说"发"→ 直接调**:`bash scripts/publish-issue.sh <slug>` 或 `--all` 批量(≥2 份会确认)。
+
+---
+
+**产出前最后一步 — 逐句扫**:每个变量名 / 函数名 / 文件路径 / 缩写 / 英文术语,有没有配解释 / 类比 / 铺垫?有未铺垫的补上。机械可查的硬要求。
+
+---
+
+入口:`/issue-create "想法"` 从无到有 / `/issue-create #N` 升级占位 / `/issue-create #N "补充信息"` 升级 + 补充。零 flag。
+
+工具:`bash scripts/fetch-issue-context.sh "<input>"` 或 `--upgrade <N>` 拿 context bundle(3 templates / open / placeholder / 90 天 closed)。REFERENCE.md + EXAMPLES.md 当参考。
+
+**相关 skill**:`/issue-capture` 快速占位跳 grill / `/issue-review #N` 审 issue / `/issue-inbox` 横向盘点(待做)。
 
 ---
 
@@ -87,158 +145,3 @@ reader 是个**完全不懂代码的人**(团队里谁都有可能 — 医生 / 
 
 
 <!-- END: SHARED-READABILITY -->
-
-**还需要读**:[SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md) — reader 不被冒犯(说事实 / 带"我" / 给选择)
-
----
-
-## issue-create 几条特有的纪律
-
-### 1. 借助你"看代码又多又准"的优势,但不脑补
-
-issue-create 的核心价值有两条:把 user 一句话脑暴变成完整 issue,同时利用你"看代码又多又准、深入理解"的优势,帮 user 补全她没说但 codebase 里实际有的事实。
-
-**什么算"合法补全"**:
-- user 在 grill 问答中说过的话
-- user 原始脑暴输入
-- (升级模式)#N 占位 issue body 里 user 当初记录的内容
-- **你自己从 codebase 里读出来的客观事实** — grep 找到的文件路径、Read 读到的现有代码、识别出来的 module 结构、找到的现有相关模式、潜在交互点
-
-**什么算"脑补"**(不要做):
-- 凭空编 user 没说的、代码里也没的内容
-- 从 "PRD 模板要求'代价和风险'字段" 倒推编代价
-- 从 "user 提到 X,所以应该也想到 Y" 做没依据的推论
-
-**字段没真实信息**(user 没说 + 代码里也没相关事实)→ **`🚧 待 grill 补完`**。
-
-举个例子 — user 脑暴 "ipynb 渲染时过滤 cell tag":
-
-✅ **合法补全**:你 grep "cell tag" 在 codebase → 找到 `notebook-renderer.tsx` L142 已经读 `cell.tags`,`cell.ts` 定义 `Cell.tags: string[]`,现有的 tag 类型有 hidden / output / metadata → 把这些**事实**写进 issue body 的 "Background — 我调研到的现有代码" 字段。这不是脑补,是从代码里挖出来的真实信息。
-
-❌ **脑补**:你直接编 "过滤 hidden tag / output tag / metadata tag" 当作 user 的要求 — user 没说要过滤哪些,代码里也只能查到 tag 类型,不能查到 user 想要过滤的具体 tag 是哪个。
-
-### 2. issue body 用 user 第一人称
-
-issue 用 user 的 GitHub 账号发出,作者读到时认为是 user 本人在写。
-
-- 用 "我"(= 当前 user)陈述,e.g. "我看到 ipynb 渲染时 cell 平铺..."
-- 禁止 "user 在 grill 中说" / "skill 整理到" / "LLM 判断" 等泄露身份
-- grill 存档字段也用 user 口吻(装作 user 自己跑 `/grill-me` 的存档)
-- **Background 字段例外**:这个字段是你调研产出的,可以用第三人称(e.g. "我在 codebase 里看到 X 文件 L42...") — 协作者一眼看出是 LLM 调研内容,而不是 user 自己说的
-
----
-
-## 怎么干 — 接到 `/issue-create` 时你这样做
-
-1. **解析输入**
-   - `/issue-create "想法"` → 创建模式,user 输入是脑暴
-   - `/issue-create #N` → 升级模式,把 #N 占位升级为完整
-   - `/issue-create #N "补充信息"` → 升级模式 + 补充
-
-2. **拿 context**:`bash scripts/fetch-issue-context.sh "<输入>"` 或 `bash scripts/fetch-issue-context.sh --upgrade <N> ["<补充>"]`
-   - 拿 3 个 template / 全部 open issue / placeholder issue / 90 天 closed / 升级 context(如果 #N 模式)
-
-3. **(关键步骤)主动调研 codebase** — 这是利用你"看代码"优势的核心动作:
-   - 基于 user 脑暴关键词,grep 一遍 codebase 找相关文件
-   - 找到相关 module / 文件,Read 关键文件理解结构 — 不只 grep 字符串,要**深入理解函数调用关系、识别现有模式、发现潜在交互**
-   - 产出 "Background" 草稿:codebase 里实际存在的事实 — 文件路径 / 行号 / 类型定义 / 现有处理逻辑
-   - 不靠灵感,**一律调研** — 即使 user 脑暴看起来很简单,你也要 grep + Read 一遍确认 codebase 现状
-
-4. **内部按顺序处理**(详见 [REFERENCE.md §流程](REFERENCE.md)):
-   - 多想法识别(脑暴里有几个独立 issue)
-   - 重复检测(对每个想法,匹配现有 open + placeholder + 最近 closed)
-   - template 路由(每个想法 → bug / prd / gap)
-
-5. **一次性汇报综合发现**:列出 N 个想法 + 每个的 template + 疑似重复 + **codebase 调研发现 1-2 句 highlight** → user 选 (1) 全继续 (2) 跳某些 (3) 合并 (4) 重输
-
-6. **按 grill-me 精神 grill,带 codebase 证据**(详见 [REFERENCE.md §grill](REFERENCE.md)),每个想法独立 grill:
-   - prd 模板 → grill 4-5 题
-   - gap 模板 → grill 3 题
-   - bug 模板 → grill 2 题
-   - **关键**:每个问题尽量带 codebase 证据 — "我看到 X 文件 L42 已经在做 Y,你说的 Z 是想在这一层做吗?" 比 "Z 是怎么实现的?" 答得快、答得对
-
-7. **整理填模板**:把 grill 答案 + 原始输入 + **codebase 调研事实(填进 Background 字段)** 归位到模板字段,grill 问答全文存入 "grill-me 存档" 字段,user 没说 + 代码里也没的标 🚧
-
-8. **写 draft**:每个想法一份 `~/.issue-drafts/issue-{slug}.md`,YAML frontmatter + body
-
-9. **自检**(详见 [REFERENCE.md §自检](REFERENCE.md)):不脑补 / user 口吻 / Background 字段独立 / 字段完整度 / 文字白话
-
-10. **终端报告**:展示标题 / 模板 / 字段完成度 / draft 路径 / publish 命令
-
-11. **user 跑 `bash scripts/publish-issue.sh <slug>`** 或 `--all` 批量
-
----
-
-## 用户怎么唤起你
-
-```
-/issue-create "想法"                  从无到有 — 调研 codebase + grill 后建立完整 issue
-/issue-create #N                      升级 #N 占位为完整(拉占位 body 当 grill 起点)
-/issue-create #N "补充信息"           升级 #N + 加补充信息
-```
-
-**关键约束**:
-- 零 flag(让 user 不用记参数)
-- 多想法自动识别 + 软询问拆 / 合(不替 user 决策)
-- 重复检测软提醒,不阻塞(详见 [REFERENCE.md §重复检测](REFERENCE.md))
-- grill 必走(这是 `/issue-create` 跟 `/issue-capture` 的核心差异)
-- **codebase 调研必走**(利用你"看代码又多又准"的优势是 issue-create 的核心价值)
-
----
-
-## issue body 必有的字段 — Background
-
-按 template 字段填 + 加一个新字段:
-
-**Background — 我调研到的现有代码**(你写,用第三人称)
-
-放 codebase 调研得到的客观事实:
-- 相关 module / 文件路径 / 行号
-- 现有相关代码的简要描述(你 Read 出来的实际内容,不是猜的)
-- 潜在交互点 / 已有类似模式
-- 协作者读这段就拿到 codebase 上下文,不用再自己 grep 30 分钟
-
-这个字段跟其他 user 第一人称字段视觉分开 — 协作者一眼看到这是你调研内容,不是 user 自己说的。
-
----
-
-## 详细规则去哪查
-
-| 主题 | 在哪 |
-|---|---|
-| Template 路由规则(bug / prd / gap 判别) | [REFERENCE.md §1](REFERENCE.md) |
-| grill 精神 + 题数分级 + 带 codebase 证据问 | [REFERENCE.md §2](REFERENCE.md) |
-| 多想法处理 | [REFERENCE.md §3](REFERENCE.md) |
-| 重复检测 | [REFERENCE.md §4](REFERENCE.md) |
-| 文字 format 规则(白话 / user 口吻 / 🚧 字段 / Background 字段) | [REFERENCE.md §5](REFERENCE.md) |
-| Draft 文件结构 + frontmatter | [REFERENCE.md §6](REFERENCE.md) |
-| 终端报告 format | [REFERENCE.md §7](REFERENCE.md) |
-| Codebase 调研策略(怎么 grep / 怎么 Read / 怎么提炼 Background) | [REFERENCE.md §8](REFERENCE.md) — *新增* |
-| 自检步骤(不脑补 / user 口吻 / 字段完整 / Background 独立) | [REFERENCE.md §自检](REFERENCE.md) |
-| 反模式 | [REFERENCE.md §反模式](REFERENCE.md) |
-| 应用到真实场景的完整 sample | [EXAMPLES.md](EXAMPLES.md) |
-
----
-
-## 你会用到的脚本
-
-| 脚本 | 用途 |
-|---|---|
-| `scripts/fetch-issue-context.sh "<input>"` | 拿 3 templates / open issues / placeholder / closed / 升级 context,一次性 bundle |
-| `scripts/fetch-issue-context.sh --upgrade <N> ["<补充>"]` | 升级模式专用 |
-| `scripts/publish-issue.sh <slug>` | 发单个 draft 到 GitHub |
-| `scripts/publish-issue.sh --all` | 批量发(≥2 份会确认) |
-| `scripts/publish-issue.sh --list` | 列出 pending draft |
-| `scripts/publish-issue.sh --dry-run <slug>` | 预览不真发 |
-
-**脚本只做机械活**(API 调用 / 模板解析 / 批量转发)。所有判断 — template 路由选哪个、codebase 该 grep 什么 / 该 Read 哪些文件 / 怎么提炼 Background、重复检测的语义匹配、字段整理 — **都由你来**,不让脚本固化语境依赖的判断。
-
----
-
-## 相关 skill
-
-- `/issue-capture "想法"` — 快速占位,跳 grill,只做快速 grep 不深入 Read(详见 `~/.claude/skills/issue-capture/SKILL.md`)
-- `/issue-act #N` — 操作单 issue(待做)
-- `/issue-inbox` — 横向盘点(待做)
-
-升级 `/issue-capture` 产出的占位 issue → 跑 `/issue-create #N`(同一个 skill,带 issue 编号参数,这时会做完整深度 codebase 调研)。

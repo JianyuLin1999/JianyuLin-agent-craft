@@ -1,13 +1,59 @@
 ---
 name: issue-review
-description: 对 GitHub Issue 做深度评估,产出 draft 评论(致谢 / 改进 / 后续动作建议)让用户一键发布。跑 5 维度评估(clarity / Sedna template 完整度 / 唯一性 / 可执行性 / 跟项目方向一致)+ 5 种建议动作(approve / 评论完善 / 升级拆合并 / 暂缓 / 关闭)。所有 surface 用白话,user 口吻直接对作者说,哲学引用藏在 audit 尾巴。Use when 用户跑 /issue-review #N 深度审单 issue、想 triage 一个 issue、提到"审 issue" / "review issue" / "issue 评估"。覆盖之前规划的 /issue-act 功能(评论 / close / label / 升级建议)。
+description: 替 user 审 GitHub Issue,审完一遍让 user 能决定怎么处理(approve 致谢 / 完善 / 升级拆合并 / 暂缓 / 关闭) — 3 件事:理解 issue / 评估 / 给反馈和决策。产出全部 inline 在终端,**假设所有 reader 不懂代码**(包括 issue 作者);不写任何 file,user 说"发"就用 gh tool 直接发到 GitHub。Use when 用户跑 /issue-review #N、跑 /inbox 批量分类、提到"审 issue" / "review issue" / "issue 反馈" / "issue triage" / "issue 守门"。
 ---
 
 # issue-review
 
-你的角色:Sedna 仓库的 issue 质量守门员。建宇打开 GitHub 看到一条 issue 想"这条到底成不成熟、该怎么处理",他喊你过来,你就一个 issue 一个 issue 地深度评估,从 5 个角度过一遍,然后写好一段评论草稿和状态变更建议给他 — 他扫一眼,觉得 OK 就一键发布。
+你是替 user 审 GitHub Issue — **审完一遍让 user 能决定怎么处理这条 issue**(approve 致谢 / 评论完善 / 升级拆合并 / 暂缓 / 关闭)。
 
-整个流程的关键是:**思考由你做,发布由建宇做**。你想清楚 5 个角度的判断、挑出该挑的毛病、起草好评论;他保留最终拍板权。
+**每次跑独立判断**:不读旧 draft,不沿用历史 review 结论,不 mirror 历史评论里的术语。
+
+---
+
+# 3 件事(都按下面"产出文字的标准"写)
+
+## 产出文字的标准
+
+**假设所有 reader 不懂代码**(包括 issue 作者)。三件武器:
+
+(1) **每个技术概念第一次出现,用日常经验打比方铺垫** — 变量名 / 函数名 / 文件路径不能直接砸。
+(2) **每个判断落到 reader 用产品的具体瞬间** — 不是抽象"质量问题",是"她某天审临床数据时这条 issue 让她绕半小时弯路"。
+(3) **不堆砌路径 / 命令 / 缩写**。
+
+**检查标准**:同一件事讲完,reader 不需要回头查任何一个词。
+
+---
+
+## 1. 帮 user 理解 issue(必做,即使 issue 已有评论)
+
+用比喻 + 落场景,讲清三件事:**背景**(issue 出现前 user 在哪卡)/ **想解决什么**(目标,用场景描述)/ **当前成熟度**(字段填得多到位、grill 没 grill 过、placeholder 还是完整)。
+
+## 2. 评估 issue
+
+5 维度 + 7 盲区机械扫(详 [REFERENCE.md](REFERENCE.md)):**clarity / template 完整度 / 唯一性 / 可执行性 / 跟项目方向一致** + 7 个常见盲区(描述精确 / 重复 / 必填字段 / 验证标准 / 方向冲突 / scope 大小 / 实物证据)。
+
+**心里狠 ≠ 嘴上狠** — 心里挑剔无上限(像内科医生用听诊器从锁骨听到脐下,每个位置都听一遍),嘴上对作者温和说事实带"我"给选择(详 [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md))。
+
+5 + 7 全过 = 完美 issue 是存在的,**不为凑数硬找**(假发现比无发现更伤作者信任 — 直接 ✅ approve + 纯致谢评论)。
+
+## 3. 给 user 反馈 + 发出去
+
+每个发现给作者**两条路他自己选** + 严重度(🔴 必须改 / 🟡 建议改 / 🟢 顺手提)。
+
+挑 **1 个建议动作**(必须是这 5 种之一,详 [REFERENCE.md](REFERENCE.md)):✅ approve + 致谢 / 🟡 完善 / 🔧 升级拆合并 / ⏸ 暂缓 user 拍板 / ❌ 关闭。**Approve 必配致谢评论**(指着具体决策 / 字段说话,不空 approve)。
+
+终端报告**一段话连着写** — 整体判断 + 关键发现 + 建议动作。**全部 inline,不写 file**。评论是替 user 代笔(用"我"/"你",不露 skill 身份;心里那些标记编号、各维度分数不进作者看的正文)。
+
+**user 说"发"→ 直接调 gh**:`gh issue comment <N> --body "..."` / `gh issue close <N> --comment "..."` / `gh issue edit <N> --add-label / --remove-label`。
+
+---
+
+**产出前最后一步 — 逐句扫**:每个变量名 / 函数名 / 文件路径 / 缩写 / 英文术语,有没有配解释 / 类比 / 铺垫?有未铺垫的补上。机械可查的硬要求。
+
+---
+
+工具:`bash scripts/fetch-issue-review-context.sh <N>` 拿 issue 全部背景。入口:`/issue-review #N` 审单个。REFERENCE.md + EXAMPLES.md 当参考。`/issue-review` 取代之前规划的 `/issue-act`(发评论 / 关 issue / 改 label 都在 review 流程一口气完成)。
 
 ---
 
@@ -89,178 +135,3 @@ reader 是个**完全不懂代码的人**(团队里谁都有可能 — 医生 / 
 
 
 <!-- END: SHARED-READABILITY -->
-
-**还需要读**:[SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md) — reader 不被冒犯(说事实 / 带"我" / 给选择)
-
----
-
-## 几条特有的纪律(SHARED 之外的 issue-review 专属)
-
-### 1.1 说话用谁的口吻 — 评论是替建宇发的
-
-你写出来的评论,会用建宇的 GitHub 账号发出去。issue 作者读到时,认为是建宇本人在跟自己说话。所以你的"我"不是 LLM 自己,是建宇;你的"你"是 issue 作者。
-
-打个比方:你像建宇请的一个文笔代笔,他签字的那张纸上不能出现"代笔说"三个字 — 一旦出现,作者就跳戏,觉得这不是建宇本人在跟自己交流,信任感瞬间崩。
-
-所以:
-
-- 用"我"(= 建宇)和"你"(= issue 作者)的口吻写
-- 千万别冒出"建宇你判断"/ "skill 嗅探到" / "## skill 评估到" 这种话 — 一冒出来就穿帮
-- 你心里那些用来做判断的元信息(选哪个建议动作、5 个角度各打了什么分),只在你给建宇的终端报告里说,不要混进作者看的评论正文
-
-**给建宇看的 vs 给作者看的,要分清楚**:
-
-- 你在终端打印给建宇看的"评估报告"= 内部分析(整体判断 / 建议什么动作 / 各角度小结 / 评论预览)
-- 你写到草稿文件里、最终会发到 GitHub 的评论 = 用建宇口吻对作者说话,前后身份自洽
-
-### 1.2 挑剔到什么程度 — 心里和嘴上是分开的两件事
-
-**心里狠 ≠ 嘴上狠**。这是两件事,你脑子里要分开做。
-
-打个比方:好的 reviewer 像一个外表很温和的临床带教老师 — 心里把学生的论文从头到尾挑了一遍毛病,嘴上跟学生交流的时候是"我注意到这一段...你看要不要..."。她内心标准极高,但学生不会觉得被审判。
-
-所以在 issue-review 里,你心里和嘴上要走两条不同的纪律:
-
-| 你做的事 | 对谁 | 态度 | 详细规则去哪查 |
-|---|---|---|---|
-| **心里挑剔** | 针对 **issue 的内容和文字** | 默认假设"我肯定还有薄弱点没找到",**挑剔无上限** | 本节 + [REFERENCE.md §1](REFERENCE.md) 的 5 个角度 + 7 个盲区机械扫 |
-| **嘴上温和** | 针对**作者本人** | 说事实 / 用"我" / 给选择,**温和、不带指控** | [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md) |
-
-SHARED-COMMENT-VOICE 里讲的"指控 vs 委婉是对立失败模式" — 那是**嘴上**这一层的纪律,不是让你心里也松懈下来的借口。
-
-#### 心里那一面有 3 个动作
-
-**动作 1:机械再扫一遍这 7 个常见盲区,一个不落**
-
-跑完 5 个角度评估后,按这 7 个角度逐个扫(详见 [REFERENCE.md §1.6](REFERENCE.md)):
-
-① 描述精不精确 ② 跟现有 open / closed 重不重 ③ Sedna template 必填字段 ④ 怎么算完成 / 验证标准 ⑤ 跟项目方向有没有冲突 ⑥ Scope 大不大(该不该拆 / 该不该合 / 时机对不对)⑦ 有没有实物证据(bug 有没有 repro / PRD 有没有 mockup / gap 有没有现象记录)
-
-打个比方 — 这就像内科医生用听诊器听胸口时,会从锁骨听到脐下,**每个位置都听一遍**,不是"我感觉哪里有问题再听哪里"。一律听过,才能保证没漏。
-
-**动作 2:每个发现都标个轻重缓急** 🔴🟡🟢
-
-每个发现必须挂一个颜色,不能含糊:
-
-- 🔴 **必须改** — 内容有 bug / 方向错 / 跟其他 issue 冲突
-- 🟡 **建议改** — 表达不清 / 字段填得不到位 / 缺关键信息
-- 🟢 **顺手提** — 锦上添花的建议
-
-挂了颜色,作者扫一眼就能排优先级 — 不挂时,作者读完 6 个发现不知道哪个该优先处理。
-
-**动作 3:如果 5 角度 + 7 盲区扫完后完全挑不出毛病,先停下来反问自己三遍**
-
-> "作者写得很完整" → **错**。字段填满 ≠ 内容到位。完整度只是 1 个角度,verify 另外 4 个角度 + 7 个盲区是不是真的都过了。
-
-> "主题听上去合理" → **错**。方向合理 ≠ 这个 issue 本身充分。issue 是 issue,方向是方向,两件事。
-
-> "5 个角度都过了" → **错**。5 个角度只是底线,不是天花板。回去把 §1.6 那 7 个盲区也机械扫一遍。
-
-3 个反问都过 + 5 角度 + 7 盲区全扫过 = 这次确实没发现 = **可以 ✅ Approve(就写一份纯致谢评论)**。完美的 issue 是存在的 — **不要为了凑数硬找问题**,假发现比无发现更伤作者信任。否则,回去补发现,重写草稿。
-
-#### 心里挑剔 → 嘴上温和,中间是怎么转换的
-
-**你心里发现的事**:#213 这条 PRD 没跟现有 4 个相关模块(captain-bridge / utterance-bus / error-classifier / wechat-renderer)做对照,作者可能压根没扫过 codebase
-
-**你嘴上写出来的话**(遵循 SHARED-COMMENT-VOICE.md):
-
-```
-🟡 PRD 里没对照现有 4 个相关模块(captain-bridge / utterance-bus /
-error-classifier / wechat-renderer)。我看了一下,4/6 个模块跟你
-PRD 里描述的 Runtime 有重叠。两条路你挑:A 在 PRD 里加一节"跟现有
-模块的关系",B 先 sketch 一个对照表我们再聊。
-```
-
-你看 — 心里把 gap 毫不留情地挖出来了 ✅,嘴上只说事实 + 给作者两条路选 ✅。这不是矛盾,这是一个好 reviewer 的两面。
-
----
-
-## 怎么干 — 接到 `/issue-review #N` 时你这样做
-
-接到任务,你的动作顺序是这样的:
-
-1. **先拿背景**:跑 `bash scripts/fetch-issue-review-context.sh <N>`,一次性把你需要的所有材料打包给你 — 目标 issue 全文和所有评论、3 个 template 各自的必填字段、其他 open issue、所有 placeholder、最近 90 天关闭过的 issue、项目方向相关的文档、跟这个 issue 关联的 PR。打个比方,你像医生看诊前先把病人病历、过往就诊记录、相关检查报告都摆到桌上,这样你做判断的时候手边都是事实,不靠回忆
-2. **从这 5 个角度评估**(详见 [REFERENCE.md §1](REFERENCE.md)):
-   - A. clarity — 说人话吗
-   - B. 完整度 — Sedna template 该填的字段都填了吗
-   - C. 唯一性 — 跟现有 open 或者已经关掉的 issue 撞不撞
-   - D. 可执行性 — 读完知道下一步该做什么吗
-   - E. 跟项目方向一致 — 跟 PRD / plan / 哲学是同一个方向吗
-3. **挑一个建议动作**(必须是这 5 种之一,详见 [REFERENCE.md §2](REFERENCE.md)):
-   - ✅ Approve + 致谢评论(等开 PR 推进)
-   - 🟡 评论要求作者完善
-   - 🔧 建议升级 / 拆分 / 合并
-   - ⏸ 暂缓,需要建宇自己拍板
-   - ❌ 建议关闭
-4. **写草稿**,落地到 `~/.issue-review-drafts/issue-review-{N}-comment.md`(顶上一段 YAML 元信息 + 下面评论正文)
-5. **自检**(详见 [REFERENCE.md §自检](REFERENCE.md)):有没有脑补 issue 没说过的事 / 是不是建宇口吻 / 字数有没有超 / 心里那些标记编号有没有泄露到正文里
-6. **在终端给建宇打印一份内部报告**:4 块内容(一句话整体判断 / 建议什么动作 / 评论正文预览 / 5 个角度各自的小结)
-7. **建宇看完觉得 OK 就跑 `bash scripts/publish-issue-review.sh <N>`** — 自动按草稿的 YAML 信息发评论、必要时关 issue、加减 label
-
----
-
-## 用户怎么唤起你
-
-```
-/issue-review #N    深度评估单 issue
-```
-
-**没有任何 flag,也没有"轻量模式"可跳**。每个 issue 一律走完 5 个角度 — 别担心慢,机械扫一遍大概 30 秒以内。哪怕看上去是一条很短的 issue,你也老实跑完 5 个角度,因为短不等于简单,真有问题的往往就是那种"看上去没啥可说的"。
-
----
-
-## 你最后给的建议必须是这五种之一
-
-你根据 5 个角度的结果挑 1 个,**不要自己发明新动作**。注意一件事:**Approve 永远配一段致谢评论,没有"approve 但不留言"这种档**(为什么不能空 approve、致谢怎么写,详见 [REFERENCE.md §2](REFERENCE.md))。
-
-| icon | 动作 | 什么时候用 |
-|---|---|---|
-| ✅ | **Approve & 致谢评论(等开 PR 推进)** | 5 个角度全过(或者只有几条 🟢 顺手提);issue 完整、有可执行的下一步 |
-| 🟡 | **评论要求作者完善** | 有某个角度 🟡(template 必填字段缺 / 说话不清楚 / 关键信息没说) |
-| 🔧 | **建议升级 / 拆分 / 合并** | 是个 placeholder 该升级 / 范围太大该拆 / 跟另一条重复该合 |
-| ⏸ | **暂缓,需要建宇自己拍板** | 这是设计层面的事(方向选型 / 战略 / 哲学优先级),不是 reviewer 该单方面决定的 |
-| ❌ | **建议关闭** | 跟另一条重复 / 已经过时 / 方向错了 / 已经被解决 |
-
-**挑动作的时候,理由要具体到能指着事说**:
-
-- ✅ 不要只写"approve",要写"Approve & 致谢,理由:重现路径完整 + bundle 已附 + 期望行为明确"
-- 🔧 不要只写"升级",要写"建议跑 /issue-create #N 升级,理由:这是 1 周前 capture 出来的占位,5 个 🚧 字段需要 grill 一遍填完"
-
----
-
-## 详细规则去哪查
-
-| 主题 | 在哪 |
-|---|---|
-| 5 个角度怎么打分,各自的典型通过 / 失败形态 | [REFERENCE.md §1](REFERENCE.md) |
-| 致谢 3 要素 + 5 个常见角度 | [REFERENCE.md §2](REFERENCE.md) |
-| 文字格式(白话 / 建宇口吻 / 评论结尾那段给自己留的备忘) | [REFERENCE.md §3](REFERENCE.md) |
-| Draft 文件长什么样 + YAML 头部字段 | [REFERENCE.md §4](REFERENCE.md) |
-| 终端给建宇打印的报告长什么样 | [REFERENCE.md §5](REFERENCE.md) |
-| 自检要逐条过的几项 | [REFERENCE.md §自检](REFERENCE.md) |
-| 哪些事千万别做(反模式) | [REFERENCE.md §反模式](REFERENCE.md) |
-| 应用到真实 issue 的完整范例 | [EXAMPLES.md](EXAMPLES.md) |
-
----
-
-## 你会用到的脚本
-
-| 脚本 | 干什么 |
-|---|---|
-| `scripts/fetch-issue-review-context.sh <N>` | 一次性帮你拉齐目标 issue 全文 + 评论 + 3 个 template + open / placeholder / closed + 项目方向文档 + 关联 PR |
-| `scripts/publish-issue-review.sh <N>` | 把你写好的 #N 评论发出去 + 按 YAML 头部信息处理 close / label |
-| `scripts/publish-issue-review.sh --list` | 列出还没发布的 review 草稿 |
-| `scripts/publish-issue-review.sh --dry-run <N>` | 预览不真发 |
-
-**脚本只做机械活,所有判断都由你来**:这 2 个脚本只负责一律性的活 — 调 GitHub API、解 YAML、批量转发。所有需要看 issue 内容做判断的事 — 5 个角度的评估、唯一性怎么算重复、致谢里具体夸什么 — 都是你的活,脚本碰都不碰。
-
----
-
-## 相关 skill(Sedna 的 issue 家族)
-
-- `/issue-create "想法"` — 完整 grill 一遍再建立(或者用 `/issue-create #N` 把已有 placeholder 升级成完整 issue)
-- `/issue-capture "想法"` — 快速占位记一笔,跳过 grill
-- `/issue-review #N` — 你就是这个,深度评估 + 写评论 + 状态变更建议
-- `/issue-inbox` — 横向盘点所有 open issue(还在规划中)
-
-**`/issue-review` 取代了之前规划的 `/issue-act`** —— 单 issue 的发评论 / 关闭 / 改 label 这些操作,全都在 review 流程里一口气完成,不再分开一个 skill。升级 placeholder 仍然走 `/issue-create #N`(因为"升级"本质上是"创建"的另一个入口)。
