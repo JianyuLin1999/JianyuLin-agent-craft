@@ -47,6 +47,12 @@ GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 +
 | [`caveman-cn`](skills/caveman-cn/SKILL.md) | 你跟 AI 聊天觉得她**废话太多**,喊一句"少废话",她立刻切到极简模式 — 只留结论、原因、风险、下一步,不绕弯。 |
 | [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | 跟 AI 讨论一个方案的时候,**强制她先翻你项目的术语表和决策档案**,用你项目的语言跟你讨论,不会自己发明词。像新来的咨询师必须先把"内部黑话本子"翻熟了再开会。 |
 
+#### Meta — 用来做 skill 的 skill
+
+| 名称 | 它替你干啥 |
+|---|---|
+| [`skill-craft`](skills/skill-craft/SKILL.md) | 你想新建一份"工作说明书"(skill)给 AI 用,或者把现有的 skill 升级到家族同等级。她帮你 grill 清任务边界(真需求吗 / 跟现有 skill 重不重)、设计信息架构(3 件事骨架 + 挑毛病维度 + 例外条款)、写完跑 sync 跟实战 calibration。把上面所有 skill 多轮打磨积累的 60+ 条经验(教授口吻 / 比喻贯穿 / 6 meta 挑毛病视角 / zero file / 心里狠不嘴上狠 / 不为凑数硬找 / 元信息下沉 / 9 条硬禁忌)凝结成一份"做 skill 的 skill"。跟全局 `write-a-skill`(Anthropic 通用版)区分,专门产出 Sedna 家族风格。 |
+
 ### Knowledge Assets — 几个 skill 共用的"规则手册"
 
 这些不是 skill 本身,而是 skill 引用的**共享规则手册**。把它们单独抽出来,是为了"改一处,所有用到的 skill 同时刷新" — 像剧团的演员手册,不管哪个演员演,都按这份手册说台词。
