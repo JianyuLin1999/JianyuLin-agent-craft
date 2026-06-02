@@ -72,7 +72,7 @@ SHARED-READABILITY block (BEGIN/END markers,sync 注入)
 
 **共享 vs 独立**:
 - 跟 SHARED-READABILITY 的关系 — 默认 **inline + sync**(self-contained,改一处 N 处刷)
-- review / comment 类必引用 [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md)
+- review / comment 类必引用 `SHARED-COMMENT-VOICE.md`
 - 相邻 skill 是否共享 REFERENCE.md / scripts(issue-capture 引用 issue-create 的 — 避免重复)
 
 ## 3. 写 + sync + 实战 calibration

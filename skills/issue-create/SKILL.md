@@ -25,7 +25,7 @@ description: 替 user 把"脑暴一句话"变成完整 GitHub Issue — 3 件事
 
 **检查标准**:同一件事讲完,reader 不需要回头查任何一个词。
 
-**身份纪律**:issue body 用 user **第一人称**(发出后协作者认为是 user 在写);**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容,不是 user 自己说的)。详 [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md)。
+**身份纪律**:issue body 用 user **第一人称**(发出后协作者认为是 user 在写);**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容,不是 user 自己说的)。详 `SHARED-COMMENT-VOICE.md`。
 
 ---
 
@@ -35,11 +35,11 @@ description: 替 user 把"脑暴一句话"变成完整 GitHub Issue — 3 件事
 
 产出 **Background 字段**(放进 issue body,跟 user 第一人称字段视觉分开):文件路径 / 行号 / 类型定义 / 现有处理逻辑 — 客观事实,不脑补。
 
-**合法补全 vs 脑补**:user 在 grill 里说过的话 + 原始脑暴输入 + 占位 body + **你从 codebase 读出来的客观事实** → 都是合法。user 没说 + 代码里也没相关事实 → **`🚧 待 grill 补完`**。详 [REFERENCE.md](REFERENCE.md)。
+**合法补全 vs 脑补**:user 在 grill 里说过的话 + 原始脑暴输入 + 占位 body + **你从 codebase 读出来的客观事实** → 都是合法。user 没说 + 代码里也没相关事实 → **`🚧 待 grill 补完`**。详 `REFERENCE.md`。
 
 ## 2. Grill user(按 template 分级题数,带 codebase 证据问)
 
-先做 **template 路由**(bug / gap / prd)+ **多想法识别**(脑暴有几个独立 issue,软询问拆 / 合 / 跳)+ **重复检测**(匹配 open + placeholder + 90 天 closed,软提醒不阻塞)。详 [REFERENCE.md](REFERENCE.md)。
+先做 **template 路由**(bug / gap / prd)+ **多想法识别**(脑暴有几个独立 issue,软询问拆 / 合 / 跳)+ **重复检测**(匹配 open + placeholder + 90 天 closed,软提醒不阻塞)。详 `REFERENCE.md`。
 
 然后按 grill-me 精神 grill(每个想法独立 grill):**bug 2 题 / gap 3 题 / prd 4-5 题**。
 
@@ -51,7 +51,7 @@ description: 替 user 把"脑暴一句话"变成完整 GitHub Issue — 3 件事
 
 整理 grill 答案 + 原始输入 + codebase 调研事实(填进 Background 字段)。grill 问答全文存"grill-me 存档"字段(装作 user 自己跑 `/grill-me` 的存档,用 user 口吻)。
 
-写 draft 到 `~/.issue-drafts/issue-{slug}.md`(YAML frontmatter + body,详 [REFERENCE.md](REFERENCE.md))。终端报告**一段话连着写**:标题 / 模板 / 字段完成度 / draft 路径 / publish 命令。
+写 draft 到 `~/.issue-drafts/issue-{slug}.md`(YAML frontmatter + body,详 `REFERENCE.md`)。终端报告**一段话连着写**:标题 / 模板 / 字段完成度 / draft 路径 / publish 命令。
 
 **user 说"发"→ 直接调**:`bash scripts/publish-issue.sh <slug>` 或 `--all` 批量(≥2 份会确认)。
 

@@ -56,7 +56,7 @@ reader 是同行专家。五条:
 
 先产出**干净的 Markdown**(内容层 —— 噪音已剥、叙事已理、图已嵌、表已格式化),它是三格式的单一源。
 
-然后**排版成 PDF + Word + Markdown**。机器上排版工具链可能是空的,skill 负责装(走 Sedna 项目级环境;工具链选型 + 装法见 [REFERENCE.md](REFERENCE.md))。图按编号嵌入、caption 就位、参考文献格式统一。
+然后**排版成 PDF + Word + Markdown**。机器上排版工具链可能是空的,skill 负责装(走 Sedna 项目级环境;工具链选型 + 装法见 `REFERENCE.md`)。图按编号嵌入、caption 就位、参考文献格式统一。
 
 **provenance** —— 报告末尾记:数据来源、分析步骤范围、图的源(哪个脚本产出)、报告生成日期。让报告可追溯到它汇总的那批结果。
 
@@ -81,7 +81,7 @@ reader 是同行专家。五条:
 
 入口:`/research-report <结果文件夹路径>`(分析跑完,结果已就位)。零 flag。
 
-工具:排版工具链装法 + IMRaD 各节写法 + 图表 / 引用格式 + 噪音剥离清单见 [REFERENCE.md](REFERENCE.md)。
+工具:排版工具链装法 + IMRaD 各节写法 + 图表 / 引用格式 + 噪音剥离清单见 `REFERENCE.md`。
 
 **相关 skill**:`talk-clear`(如果要额外产一份给非专家看的科普版,术语全铺垫)/ 数据分析 / 可视化(图的生成在那边,本 skill 只 embed)。
 

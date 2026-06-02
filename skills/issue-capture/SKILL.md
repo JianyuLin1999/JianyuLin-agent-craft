@@ -27,7 +27,7 @@ description: 替 user 在地铁手机场景**极低摩擦**把一句话丢进 Gi
 
 **检查标准**:同一件事讲完,reader 不需要回头查任何一个词。
 
-**身份纪律**:issue body 用 user **第一人称**;**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容)。详 [SHARED-COMMENT-VOICE.md](../SHARED-COMMENT-VOICE.md)。
+**身份纪律**:issue body 用 user **第一人称**;**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容)。详 `SHARED-COMMENT-VOICE.md`。
 
 ---
 
@@ -45,7 +45,7 @@ template 路由(bug / gap / prd)。然后按字段归类:
 - codebase grep 得到的文件路径 → **Background 字段**(第三人称)
 - 其他没真实信息的字段 → **`🚧 待 grill 补完(跑 /issue-create #N 升级)`**
 
-**多想法自动拆,不问 user**(capture 核心约束 = 输入越快越好,user 决策点 = 摩擦)。**跳重复检测**(占位低质量信号,重复成本低,交给 `/issue-inbox` 周期性 catch)。详 capture 特有行为见 [issue-create/REFERENCE.md](../issue-create/REFERENCE.md)。
+**多想法自动拆,不问 user**(capture 核心约束 = 输入越快越好,user 决策点 = 摩擦)。**跳重复检测**(占位低质量信号,重复成本低,交给 `/issue-inbox` 周期性 catch)。详 capture 特有行为见 `issue-create/REFERENCE.md`。
 
 **反模式提醒**:不要因为"字段空着不好看"就编内容("性能影响 / 兼容性 / 学习曲线" 这种凭空补字段是大坑) — 严格 🚧。
 
@@ -63,7 +63,7 @@ template 路由(bug / gap / prd)。然后按字段归类:
 
 入口:`/issue-capture "想法"` 单形态(不支持 #N 升级,升级走 `/issue-create #N`)。零 flag。
 
-工具:复用 issue-create 的 `fetch-issue-context.sh` + `publish-issue.sh`。详细规则查 [issue-create/REFERENCE.md](../issue-create/REFERENCE.md)。
+工具:复用 issue-create 的 `fetch-issue-context.sh` + `publish-issue.sh`。详细规则查 `issue-create/REFERENCE.md`。
 
 **相关 skill**:`/issue-create "想法"` 完整模式 / `/issue-create #N` 升级占位 / `/issue-review #N` 审 issue / `/issue-inbox` 横向盘点(待做)。
 
