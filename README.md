@@ -59,6 +59,14 @@ GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 +
 |---|---|
 | [`skill-craft`](skills/skill-craft/SKILL.md) | 你想新建一份"工作说明书"(skill)给 AI 用,或者把现有的 skill 升级到家族同等级。她帮你 grill 清任务边界(真需求吗 / 跟现有 skill 重不重)、设计信息架构(3 件事骨架 + 挑毛病维度 + 例外条款)、写完跑 sync 跟实战 calibration。把上面所有 skill 多轮打磨积累的 60+ 条经验(教授口吻 / 比喻贯穿 / 6 meta 挑毛病视角 / zero file / 心里狠不嘴上狠 / 不为凑数硬找 / 元信息下沉 / 9 条硬禁忌)凝结成一份"做 skill 的 skill"。跟全局 `write-a-skill`(Anthropic 通用版)区分,专门产出 Sedna 家族风格。 |
 
+### Workflows — 可以重复执行的环境和操作流程
+
+Workflow 不是给 AI 装的"工作说明书",更像一张可以照着走的流程卡。你换电脑、换项目、重建环境时,不用凭记忆重新摸索,按卡片走一遍就能恢复同一套工作方式。
+
+| 名称 | 它替你干啥 |
+|---|---|
+| [`zellij-claude-code`](workflows/zellij-claude-code/README.md) | 给 Claude Code 准备一张更顺手的终端工作台。默认让 Zellij 保持安静,不抢 Claude Code 的输入;需要切窗格、开新窗格、查看历史输出或管理会话时,再用 `Alt` / `Ctrl` 快捷键操作外层 Zellij。里面包含 `config.kdl` 和一键部署脚本 `setup.sh`。 |
+
 ### Knowledge Assets — 几个 skill 共用的"规则手册"
 
 这些不是 skill 本身,而是 skill 引用的**共享规则手册**。把它们单独抽出来,是为了"改一处,所有用到的 skill 同时刷新" — 像剧团的演员手册,不管哪个演员演,都按这份手册说台词。
