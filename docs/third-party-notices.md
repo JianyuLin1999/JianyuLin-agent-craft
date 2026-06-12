@@ -18,6 +18,12 @@ Included files:
 - `CONTEXT-FORMAT.md`
 - `ADR-FORMAT.md`
 
+## Matt Pocock `grill-me` Skill
+
+`skills/easy-grill/SKILL.md` and `skills/easy-grill-zh/SKILL.md` (and the local Claude installs at `~/.claude/skills/easy-grill*/`) embed the full prompt of Matt Pocock's `grill-me` skill — verbatim in the English twin, faithfully translated in the Chinese twin — and extend it with additional sections (writing standard + probe-question transformation):
+
+https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md
+
 ## License
 
 Original project license: MIT.
