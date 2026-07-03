@@ -93,7 +93,7 @@ python3 templates/verify-format.py <out>.docx <clean.md>
 
 ## §6 图表格式细节
 
-**图**:按正文出现顺序编号(不用文件名顺序);每张配 caption(图号 + 一句话说显示什么);正文引用点明角色;图源进 provenance 不进 caption;缺 / 错 → handoff 不自己画。
+**图**:按正文出现顺序编号(不用文件名顺序);每张配 caption(图号 + 一句话说显示什么);正文引用点明角色;图源进 provenance 不进 caption;图里只保留坐标、图例和必要标签,不放气泡注释或长句解释;缺 / 错 → handoff 不自己画。
 
 **表**:关键数字进正文,完整表进结果节;三线表(制品自动);大而全的调试表(crosstab dump)不进报告或进附录。
 
