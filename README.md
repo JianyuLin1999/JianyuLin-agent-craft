@@ -67,7 +67,7 @@ GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 +
 
 | 名称 | 它是啥 |
 |---|---|
-| [`readability.md`](knowledge-assets/readability.md) | **"AI 怎么说人话"的规则手册** — 教授口吻、举例子、打比方、落到 reader 工作的具体场景。`talk-clear` 和上面 4 个 GitHub 协作 skill 都共用这一份(改一处,5 个 skill 同时刷新)。 |
+| [`readability.md`](knowledge-assets/readability.md) | **"AI 怎么说人话"的规则手册** — 教授口吻、举例子、打比方、落到 reader 工作的具体场景,并在出稿前扫掉自造词、表演腔、翻译腔和内部痕迹。`talk-clear`、`skill-craft` 和上面 4 个 GitHub 协作 skill 都共用这一份(改一处,6 个 skill 同时刷新)。 |
 | [`comment-voice.md`](knowledge-assets/comment-voice.md) | **写 GitHub 评论怎么说话不冒犯作者的规则手册** — 心里挑剔无上限,嘴上对人温和(说事实 / 带"我" / 给作者两条路选,不下指令)。 |
 | [`review-rigor.md`](knowledge-assets/review-rigor.md) | **审别人工作时的双层纪律** — 心里挑剔得严苛,嘴上温和不指控。讲这两件事为什么能同时存在(物理分离)。 |
 | [`caveman-cn-design.md`](knowledge-assets/caveman-cn-design.md) | `caveman-cn` 极简模式的设计理念 — 为什么这样设计、怎么平衡"短"和"不失准"。 |
