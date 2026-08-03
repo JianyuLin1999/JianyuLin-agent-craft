@@ -377,25 +377,10 @@ tbody tr:last-child td { border-bottom: 0; }
   border: 1px solid #bcc8c3;
   background:
     linear-gradient(to right, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px)),
-    linear-gradient(to top, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px));
+    linear-gradient(to top, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px)),
+    #fff;
   overflow: visible;
 }
-.quadrant-zone {
-  position: absolute;
-  z-index: 0;
-  width: 50%;
-  height: 50%;
-  padding: 14px;
-  color: rgba(38, 51, 47, .55);
-  font-size: .71rem;
-  font-weight: 760;
-  letter-spacing: .03em;
-  pointer-events: none;
-}
-.zone-tl { top: 0; left: 0; background: rgba(248, 240, 220, .55); }
-.zone-tr { top: 0; right: 0; background: rgba(231, 241, 237, .72); text-align: right; }
-.zone-bl { bottom: 0; left: 0; background: rgba(233, 241, 246, .65); display: flex; align-items: flex-end; }
-.zone-br { right: 0; bottom: 0; background: rgba(240, 236, 246, .55); display: flex; align-items: flex-end; justify-content: flex-end; text-align: right; }
 .axis-label {
   position: absolute;
   z-index: 3;
@@ -404,11 +389,11 @@ tbody tr:last-child td { border-bottom: 0; }
   font-weight: 740;
   pointer-events: none;
 }
-.axis-y-high { top: -30px; left: -43px; }
-.axis-y-low { bottom: -30px; left: -43px; }
+.axis-y-high { top: 8px; left: 8px; }
+.axis-y-low { bottom: 8px; left: 8px; }
 .axis-x-low { bottom: -35px; left: 0; }
 .axis-x-high { right: 0; bottom: -35px; }
-.axis-y-title { top: 50%; left: -103px; transform: rotate(-90deg) translateY(-50%); transform-origin: center; color: var(--ink); }
+.axis-y-title { top: 50%; left: -136px; transform: rotate(-90deg) translateY(-50%); transform-origin: center; color: var(--ink); }
 .axis-x-title { right: 50%; bottom: -58px; transform: translateX(50%); color: var(--ink); }
 .scene-point {
   --point: var(--green);
@@ -537,10 +522,11 @@ footer a { color: #c0e5da; }
   .quadrant-shell { padding: 10px; }
   .quadrant { min-height: 610px; margin: 35px 18px 56px 45px; }
   .scene-point { min-width: 58px; max-width: 82px; padding: 6px 7px; font-size: .62rem; }
-  .axis-y-title, .axis-x-low, .axis-x-high { display: none; }
+  .axis-y-title { display: none; }
+  .axis-x-low, .axis-x-high { font-size: .65rem; }
   .axis-x-title { bottom: -62px; }
-  .axis-y-high { top: -30px; left: 0; }
-  .axis-y-low { bottom: -30px; left: 0; }
+  .axis-y-high { top: 8px; left: 8px; }
+  .axis-y-low { bottom: 8px; left: 8px; }
   .skill-toolbar { align-items: flex-start; flex-direction: column; }
   .skill-actions { justify-content: flex-start; }
   pre { max-height: 590px; font-size: .73rem; }
@@ -607,6 +593,7 @@ footer a { color: #c0e5da; }
         <section id="atlas">
           <h2>一段文字会怎样让人读不下去</h2>
           <p>有时第一句就出现三个陌生词。有时每句话都认识，连起来却不知道谁做了什么。还有些文章结构整齐、语气肯定，读完仍看不出结论来自哪里。下面从这些可以直接感觉到的困难进入。</p>
+          <p>无论文章正在交代背景、解释过程还是提出建议，读者都需要知道当前内容为什么出现、它帮助回答哪个问题。这个目的消失以后，单个段落可以很流畅，整篇文章仍会显得松散和莫名其妙。</p>
 
           <div class="reading-index" aria-label="按阅读困难查找对应章节">
             <a href="#background">
@@ -649,8 +636,14 @@ footer a { color: #c0e5da; }
             <li><strong>背景漫无边界</strong><span>文章复述作者掌握的全部材料，没有说明哪些内容会影响当前问题。</span></li>
             <li><strong>场景突然切换</strong><span>新例子带来一串对象和细节，前文没有说明为什么要换到这个例子。</span></li>
             <li><strong>深浅不合读者</strong><span>面对熟悉领域的人重复常识，面对新读者又直接使用内部词。</span></li>
-            <li><strong>比方取代对象</strong><span>读者记住了值班室、流水线或交通灯，真实系统的工作方式仍然没有得到解释。</span></li>
+            <li><strong>比方取代对象</strong><span>本体被整套喻体名称遮住。读者记住值班室、班组和钥匙以后，还要猜它们各自对应哪个真实对象。</span></li>
           </ul>
+
+          <h3>喻体不能代替本体</h3>
+          <p>把数据库的写入权比作一把只能由一个人保管的钥匙，可以帮助读者理解“同一时刻只有一个进程能够写入”。这个比方只解释了排他关系。它没有说明哪个进程持有写入权、系统怎样释放写入权、新进程何时可以接手。</p>
+          <p>这里需要理解的数据库、进程和写入权，是比方要解释的对象，也叫本体。“钥匙”是借来帮助理解的对象，也叫喻体。喻体完成局部解释后，正文需要回到本体的真实名称和真实过程。</p>
+          <p>如果后文继续使用值班室、前后两班人、实验台和钥匙交接，每个真实概念都会获得一个代号。读者需要记住两套词，再不断完成“班组对应哪个进程、钥匙对应哪种所有权”的翻译。比方由此变成第二套术语。</p>
+          <p>更稳妥的顺序是：先说出真实对象和当前难点；只为这个难点使用一个短比方；解释完成后，立即用真实名称复述一次。后续因果、判断和结论继续使用本体。</p>
 
           <h3>来龙去脉需要服务当前任务</h3>
           <p>交代背景的目的，是让读者理解眼前的对象、关系和判断。它不要求作者复述完整历史。即使同一个主题，写给初学者、项目同事、论文同行和决策者的起点也会不同。</p>
@@ -715,6 +708,15 @@ footer a { color: #c0e5da; }
             <li><strong>时间：</strong>哪些事情先后发生，哪些事情只是同时出现。</li>
             <li><strong>因果：</strong>什么条件触发变化，中间发生什么，最后产生什么后果。</li>
           </ol>
+
+          <h3>事件说明每次只推进一个状态变化</h3>
+          <p>例如：用户提交文件。系统开始校验。校验程序发现日期列缺失。系统停止导入，并把缺失列显示在页面上。四句话分别写出触发动作、系统工作、异常和结果，读者可以沿时间恢复整个过程。</p>
+          <p>需要强调异常时，先交代正常情况下会发生什么，再写这次从哪一步偏离。这样读者能够看到异常的位置，也能理解后面的原因分析为什么从这里开始。</p>
+
+          <h3>读者需要知道每一段为什么在这里</h3>
+          <p>内容的目的需要贯穿全文。背景解释读者为什么需要知道前情；新概念说明它要解决哪个理解困难；过程解释结果怎样产生；证据说明结论为什么可信；建议说明它怎样回应前面已经写出的原因。</p>
+          <p>正文反复写“第一性原理”不会自动带来这种清晰感。读者需要看到一条可以往回追的关系：当前目标是什么，受到哪些约束，问题为何发生，建议为何能改变结果。</p>
+          <p>例如，文章建议“导入前增加数据校验”，前文应先写清它要阻止哪类错误、错误怎样影响后续分析、现有流程为什么没有拦住。建议由这些原因自然推出，读者无需依靠“最根本的方案”之类的评价词判断它的重要性。</p>
         </section>
 
         <section id="evidence">
@@ -761,12 +763,17 @@ footer a { color: #c0e5da; }
                 <tr><td>“这不是 A，而是 B”</td><td>每段都先制造争论，A 未必是读者真实持有的观点</td><td>直接说明 B 成立的条件，以及 A 缺少什么证据</td></tr>
                 <tr><td>“材料都真实，但读者仍然……”</td><td>没有人质疑材料真假，转折临时制造了一个相反预期</td><td>直接说明行动请求出现太晚，或当前问题需要的信息没有出现</td></tr>
                 <tr><td>“从表象追到本质”</td><td>作者评价自己的分析深度，读者仍不知道具体对象</td><td>标题写明要解释的现象、关系或判断</td></tr>
+                <tr><td>“第一性原理、共同本质、最可泛化的结论”</td><td>作者先宣布内容的深度和普遍性，目的、约束和原因尚未展开</td><td>直接写目标、限制条件、因果关系和适用范围</td></tr>
                 <tr><td>给内容加上“入口、路径、层级、呈现”等辅助标签</td><td>读者要先理解作者设计的分类，才能回到原本的内容</td><td>使用读者可以直接辨认的问题、动作或阅读困难</td></tr>
                 <tr><td>连续三段排比和口号式结尾</td><td>每段都用同一种节奏收紧，条件与限制被挤掉</td><td>让段落长度和结尾跟随信息任务变化</td></tr>
                 <tr><td>长时间维持一个比方</td><td>读者同时维护比方世界和真实对象，两套关系可能分叉</td><td>比方解决局部困难后，立即接回真实名称</td></tr>
               </tbody>
             </table>
           </div>
+
+          <h3>标题告诉读者这一节发生了什么</h3>
+          <p>“第一套后台仍在服务，第二套后台尚未接管”直接说明了本节要解释的状态。“我们将连续回答六个问题”只说明作者准备怎样组织文章。读者从前一句获得事件信息，从后一句只能看到写作方法。</p>
+          <p>调查报告、论文和项目材料都可以让标题承担内容：发生了什么、发现了什么、比较结果怎样、读者需要作出什么决定。写作流程和作者的分析姿态留在幕后。</p>
 
           <h3>词表只能处理表面</h3>
           <p>删除“核心”“闭环”“赋能”等高频词，可以减少显眼的模板痕迹。概念顺序、因果缺口和证据越界不会因此消失。作者如果只替换词语，文章可能变得朴素，却仍然难读。</p>
@@ -789,7 +796,7 @@ footer a { color: #c0e5da; }
             <li><strong>卡片代替段落</strong><span>一条连续解释被切成多个小块，读者需要自行恢复前后关系。</span></li>
             <li><strong>标签叠在标题上</strong><span>“入口、路径、层级”等小标题增加了页面层次，却没有增加读者需要的信息。</span></li>
             <li><strong>颜色代替判断</strong><span>颜色暗示严重、成功或确定，正文却没有定义这些状态。</span></li>
-            <li><strong>图表代替选择</strong><span>所有内容都被可视化，真正需要比较的关系反而没有突出。</span></li>
+            <li><strong>图表代替选择</strong><span>所有内容都被可视化，需要比较的关系没有得到突出。</span></li>
             <li><strong>标题只做装饰</strong><span>“背景、分析、结果、核心洞察”没有告诉读者这一页实际说什么。</span></li>
             <li><strong>首页延迟正文</strong><span>巨大的标题、口号和制作说明占据首屏，读者迟迟看不到内容。</span></li>
           </ul>
@@ -839,11 +846,12 @@ footer a { color: #c0e5da; }
           <ol class="revision-list">
             <li><strong>确定当前读者和任务。</strong>写下谁会读、他已经知道什么、读完后需要理解、判断或完成什么。</li>
             <li><strong>选择必要内容。</strong>保留会影响当前理解和行动的背景；删掉作者知道但读者此刻不需要的材料。</li>
+            <li><strong>说明每段的用途。</strong>确认这段内容正在回答哪个问题，为什么此时需要它，以及它怎样连接后面的判断或行动。</li>
             <li><strong>划定证据边界。</strong>分开观察、规则、实验、推断和未知，确定每项结论可以写到哪里。</li>
             <li><strong>恢复信息关系。</strong>调整前提顺序，点名执行者，展开关键动作，补齐时间和因果中的中间步骤。</li>
             <li><strong>让抽象判断落地。</strong>在原则附近放入原句、具体情形或可观察后果；切换场景以前，先说明新场景用来解释什么。</li>
             <li><strong>清理作者姿态。</strong>标题写内容，删除虚构对立、没有真实预期的转折、无依据的强调和重复总结。</li>
-            <li><strong>处理句子与页面。</strong>调整句长和动词，删除只增加层级的标签，再为比较、时间、层级或分支选择必要的视觉形式。</li>
+            <li><strong>处理比方、句子与页面。</strong>让比方只解释一个局部难点并接回真实名称；调整句长和动词，删除只增加层级的标签，再为明确关系选择视觉形式。</li>
             <li><strong>让目标读者试读。</strong>检查他能否沿原文形成预期理解，并完成原定的判断或行动。</li>
           </ol>
 
@@ -851,7 +859,9 @@ footer a { color: #c0e5da; }
           <div class="checklist">
             <label class="check"><input type="checkbox">开头连接了读者已经知道或正在面对的事情。</label>
             <label class="check"><input type="checkbox">来龙去脉只保留当前理解需要的部分。</label>
+            <label class="check"><input type="checkbox">读者能说出每段内容为什么出现、正在回答什么问题。</label>
             <label class="check"><input type="checkbox">新概念在进入结论前已经得到介绍。</label>
+            <label class="check"><input type="checkbox">比方解释完局部关系后，正文已经回到本体和真实名称。</label>
             <label class="check"><input type="checkbox">关键动作都有明确的执行者和对象。</label>
             <label class="check"><input type="checkbox">事实、实验、推断和未知能够区分。</label>
             <label class="check"><input type="checkbox">标题说明内容，没有评价作者的写法或深度。</label>
@@ -860,6 +870,7 @@ footer a { color: #c0e5da; }
             <label class="check"><input type="checkbox">每个转折词都回应了前文已经形成的真实预期。</label>
             <label class="check"><input type="checkbox">辅助标签确实帮助查找；只增加层级的标签已经删除。</label>
             <label class="check"><input type="checkbox">删除强调词后，事实仍能说明事情的分量。</label>
+            <label class="check"><input type="checkbox">建议可以沿当前目标、限制条件和原因向前追溯。</label>
             <label class="check"><input type="checkbox">每个表格和图都表达了一项明确关系。</label>
           </div>
         </section>
@@ -880,25 +891,21 @@ footer a { color: #c0e5da; }
         <section id="quadrant">
           <p class="section-label">附录二</p>
           <h2>不同写作任务会怎样改变表达</h2>
-          <p class="intro">图中的每个点都代表一项完整任务，包含读者和成品，例如“给初学者解释概念”或“给开发团队写故障调查”。横轴表示双方共享多少背景，纵轴表示成品需要推动行动或决定的程度。位置用于比较常见差别，具体任务会随上下文移动。</p>
+          <p class="intro">图中的每个点代表一种常见写作任务。横轴表示读者对主题的熟悉程度，纵轴表示读者是否需要根据内容采取具体行动。点的位置只用于比较常见差别，具体任务会随上下文移动。</p>
 
           <div class="quadrant-shell">
             <div class="quadrant" role="group" aria-label="写作任务二维示意图">
-              <div class="quadrant-zone zone-tl">共享背景少 · 行动压力高<br>先建立最低必要理解，再给出动作</div>
-              <div class="quadrant-zone zone-tr">共享背景多 · 行动压力高<br>减少共同背景，明确决定、责任和后果</div>
-              <div class="quadrant-zone zone-bl">共享背景少 · 行动压力低<br>帮助读者理解、体验和建立概念</div>
-              <div class="quadrant-zone zone-br">共享背景多 · 行动压力低<br>支持同行理解、核查和评价</div>
-              <span class="axis-label axis-y-high">决定 / 行动</span>
-              <span class="axis-label axis-y-low">理解 / 体验</span>
-              <span class="axis-label axis-x-low">共享背景少</span>
-              <span class="axis-label axis-x-high">共享背景多</span>
-              <span class="axis-label axis-y-title">读后任务</span>
-              <span class="axis-label axis-x-title">读者已有知识</span>
+              <span class="axis-label axis-y-high">需要采取行动</span>
+              <span class="axis-label axis-y-low">无需采取行动</span>
+              <span class="axis-label axis-x-low">不了解主题</span>
+              <span class="axis-label axis-x-high">熟悉主题</span>
+              <span class="axis-label axis-y-title">是否需要采取具体行动</span>
+              <span class="axis-label axis-x-title">读者对主题的熟悉程度</span>
 
-              <button class="scene-point point-understand active" style="--x: 13%; --y: 18%;" data-scene="plain">给初学者解释概念</button>
+              <button class="scene-point point-understand active" style="--x: 17%; --y: 18%;" data-scene="plain">给初学者解释概念</button>
               <button class="scene-point point-understand" style="--x: 24%; --y: 38%;" data-scene="popular">给公众写科普文章</button>
               <button class="scene-point point-understand" style="--x: 38%; --y: 9%;" data-scene="creative">为陌生读者写故事</button>
-              <button class="scene-point point-guide" style="--x: 14%; --y: 77%;" data-scene="instruction">给首次用户写指引</button>
+              <button class="scene-point point-guide" style="--x: 17%; --y: 77%;" data-scene="instruction">给首次用户写指引</button>
               <button class="scene-point point-guide" style="--x: 33%; --y: 63%;" data-scene="patient">给患者解释方案</button>
               <button class="scene-point point-understand" style="--x: 53%; --y: 26%;" data-scene="teachingPpt">给学生做教学演示</button>
               <button class="scene-point point-decide" style="--x: 58%; --y: 82%;" data-scene="email">给同事发协作邮件</button>
@@ -911,7 +918,7 @@ footer a { color: #c0e5da; }
             <div class="scenario-detail" aria-live="polite">
               <div>
                 <h3 id="sceneTitle">给初学者解释概念</h3>
-                <p class="scenario-position" id="scenePosition">共享背景少 · 主要任务是建立理解</p>
+                <p class="scenario-position" id="scenePosition">不了解主题 · 无需采取行动</p>
               </div>
               <div class="scenario-facts">
                 <div><strong>典型读者</strong><span id="sceneReader">第一次接触主题、只见过表面现象的人</span></div>
@@ -919,7 +926,7 @@ footer a { color: #c0e5da; }
                 <div><strong>特定要求</strong><span id="sceneRules">从亲身经历开始；概念先讲作用再给名称；例子用于检验理解；比方及时接回真实对象</span></div>
                 <div><strong>主要风险</strong><span id="sceneRisk">为了浅白删掉条件，或用持续比方替代真实系统</span></div>
                 <div><strong>加载文件</strong><span id="sceneProfile">profiles/explanation.md</span></div>
-                <div><strong>位置说明</strong><span id="sceneWhy">读者共享背景少，当前目标以理解为主，通常没有立即决策压力</span></div>
+                <div><strong>位置说明</strong><span id="sceneWhy">读者不了解主题，内容用于建立基本理解</span></div>
               </div>
             </div>
           </div>
@@ -960,7 +967,7 @@ footer a { color: #c0e5da; }
         <section id="skill">
           <p class="section-label">附录四</p>
           <h2>write-for-reader Skill 文件</h2>
-          <p class="intro">下面保留当前 0.2.0 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
+          <p class="intro">下面保留当前 0.2.1 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
 
           <div class="skill-panel">
             <div class="skill-file-tabs" id="skillFileTabs" role="tablist" aria-label="Skill 文件"></div>
@@ -996,7 +1003,7 @@ description: >
   场景需要的 profile，避免论文、PPT、外行讲解等规则同时进入上下文。user 说“写清楚”
   “用人话讲”“讲透”“重写”“润色”“像 AI”“缺少背景”“做报告”“做 PPT”“写论文”
   “写邮件”时也使用。源代码、配置、机器读数据和要求逐字保留的原文除外。
-version: 0.2.0
+version: 0.2.1
 status: active
 ---
 
@@ -1035,11 +1042,14 @@ status: active
 ## 3. 所有场景共同保留
 
 - 从读者已经知道或亲自经历的事情开始。新概念先交代为何进入当前内容，再按需要解释。
+- 每段内容服务一个可以说清的问题或任务。让读者知道这段为何此时出现，以及它怎样帮助后面的理解、判断或行动。
 - 按信息依赖安排顺序。后文使用的对象、前提和事件先在前文出现。
 - 点名谁做了什么以及影响谁。代词只能指向一个对象；同一对象全篇使用同一个名称。
-- 因果说明包含触发条件、中间变化和后果。区分先后、同时、相关条件和直接原因。
+- 事件叙述一次推进一个主要状态变化。因果说明包含触发条件、中间变化和后果；区分先后、同时、相关条件和直接原因。
 - 让主张与证据强度一致。直接观察、材料记载、合理推断和未知内容能够被读者区分。
+- 建议从当前目标、限制条件和前文已经说明的原因推出。让读者看出它解决什么问题，以及为什么可能改变结果。
 - 使用常见、准确的词和具体动词。标题陈述内容；正文删除作者自我评价、口号、虚构对立和无依据的强调。
+- 切换场景前说明新场景用来解释什么。“但、却、仍然”等转折只修正前文已经形成的真实预期。
 - 保留理解、判断或行动所需的背景、条件、限制和风险。简洁只减少重复、绕行和无关内容。
 - user 已经给出的个人表达偏好持续生效。领域 Skill 可以补充结构、术语和引用规范。
 
@@ -1047,9 +1057,10 @@ status: active
 
 按选定 profile 写作。内部判断、规则名称、加载过程和检查记录不进入正文。
 
-开头可以先给结论，但只能使用读者已经知道或当场解释的概念。比方只解决局部困难；使用后给出真实名称，概念清楚后让比方退出。
+开头可以先给结论，但只能使用读者已经知道或当场解释的概念。使用比方前先点明真实对象；一个比方只解释一个局部关系；解释完成后用真实名称复述，并让喻体退出后续因果、判断和结论。
 
-机器读取的内容保持其语法。逐字引用、转录、正式翻译和强制模板优先保证忠实，解释与原文分开。</script>
+机器读取的内容保持其语法。逐字引用、转录、正式翻译和强制模板优先保证忠实，解释与原文分开。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/AUDIT.md"># 长文与高风险内容检查
 
 只在长文、高风险内容、严格重写或 user 已经指出成品难读时使用。检查过程留在内部。
@@ -1059,12 +1070,14 @@ status: active
 - 开头是否连接读者已经知道或亲自经历的事情。
 - 每个章节依赖的对象、前提和事件是否已经出现。
 - 背景是否只服务于当前任务，内部调查过程是否误入正文。
+- 每段是否回答一个清楚的问题；切换场景前是否说明新场景的用途。
 
 ## 第二轮：对象、动作与指代
 
 - 每个动作是否有明确执行者、对象和影响范围。
 - 代词是否只有一个可能指向，同一对象是否保持同名。
 - 一句话是否承担一个主要动作，一段是否完成一个局部任务。
+- 事件叙述是否一次推进一个主要状态变化，正常状态与异常位置是否可以按时间复述。
 
 ## 第三轮：因果与证据
 
@@ -1072,21 +1085,25 @@ status: active
 - 先后、同时、相关和因果是否分开。
 - 事实、规则、实验、推断和未知是否使用了相符的语气。
 - 证据是否位于被支持的判断附近。
+- 建议是否可以沿当前目标、限制条件和前文原因向前追溯。
 
 ## 第四轮：作者姿态与语言节奏
 
 - 标题是否说明内容，是否仍在描述“我们怎样写、怎样证明”。
-- 删除自我表扬、口号、预告深度、虚构对立和无依据的强调。
+- 删除自我表扬、口号、预告深度，以及用“第一性原理”等词代替目标、限制和因果的自评分级。
 - 检查“不是 A，而是 B”是否纠正了真实存在的误解；没有则直接陈述实际关系。
+- 检查“但、却、仍然”修正的预期是否已经在前文形成；没有则直接陈述实际关系。
 - 默读长短句。改掉翻译腔、排比腔、连续碎句和只在 AI 成品中常见的套话。
-- 比方是否解决了具体困难，并在完成后回到真实对象。
+- 比方是否先点明本体、只解释一个局部关系，并在完成后回到真实名称；后文是否仍要求读者维护整套喻体代号。
 
 ## 第五轮：载体与删减
 
 - 表格、图、卡片和颜色是否明显减少了理解困难。
+- “入口、路径、层级”等辅助标签是否提供读者需要的信息；只增加层级的标签直接删除。
 - 载体是否要求独立阅读，必要上下文是否完整。
 - 删除一段前，读者是否会失去理解、判断或行动所需的信息；不会则删除。
-- 交付正文不附规则复述、内部评分或自我评价。</script>
+- 交付正文不附规则复述、内部评分或自我评价。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/explanation.md"># 面向陌生读者的解释
 
 ## 使用目标
@@ -1099,19 +1116,20 @@ status: active
 - 新概念先说明实际作用和出现原因，再给出真实名称。一次只引入当前推理需要的概念。
 - 将过程拆成读者可以复述的动作与状态变化。保留会影响判断的技术条件、风险和未知。
 - 使用具体例子帮助读者检验理解。例子服务于当前关系，不扩展成另一篇故事。
-- 只有动作说明仍不足时才使用比方。比方来自读者熟悉的经验，随后立即接回真实名称和实际位置。
+- 只有动作说明仍不足时才使用比方。先点明本体和当前难点；让一个喻体只解释一个局部关系；随后立即用真实名称复述。比方不进入后续标题、因果和结论。
 - 回答当前问题后再扩展背景。不要用大段科普推迟用户正在等待的答案。
 
 ## 避免
 
 - 用“简单来说”掩盖被删掉的条件。
 - 把读者暂时不懂术语误判成内容必须变浅。
-- 比方进入标题、结论或多个章节，迫使读者同时维护两套对象。
+- 比方进入标题、结论或多个章节，使每个本体都获得一个喻体代号，迫使读者持续翻译两套对象。
 - 解释每个专业词，却没有说明这些词之间怎样连接。
 
 ## 完成条件
 
-读者能说出发生了什么、每个新对象为何出现、对象之间怎样连接，以及哪些部分仍然未知。</script>
+读者能说出发生了什么、每个新对象为何出现、对象之间怎样连接，以及哪些部分仍然未知。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/investigation.md"># 技术调查与异常说明
 
 ## 使用目标
@@ -1121,7 +1139,7 @@ status: active
 ## 写法
 
 - 先交代正常流程、用户动作和可观察症状，再引入内部模块与技术名称。
-- 事件按时间和信息依赖展开。参与者、动作、状态变化和后果逐步出现。
+- 事件按时间和信息依赖展开，一次推进一个主要状态变化。参与者、动作、状态变化和后果逐步出现。
 - 直接原因、促成条件、独立问题、后续影响和未证实猜测分别陈述。
 - 日志、代码、受控实验和历史材料各自支持到哪里，就把结论写到哪里。
 - 缺少“系统为什么作出某个决定”的记录时，明确记录缺口，不用后来的代码行为补写历史动机。
@@ -1136,7 +1154,8 @@ status: active
 
 ## 完成条件
 
-首次了解事件的读者能复述正常流程、异常链、证据范围、未知内容和当前系统状态。</script>
+首次了解事件的读者能复述正常流程、异常链、证据范围、未知内容和当前系统状态。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/academic.md"># 学术写作与研究报告
 
 ## 使用目标
@@ -1161,7 +1180,8 @@ status: active
 
 ## 完成条件
 
-同行能够核查研究做了什么、数据支持什么、结论适用于哪里，以及哪些限制会改变解释。</script>
+同行能够核查研究做了什么、数据支持什么、结论适用于哪里，以及哪些限制会改变解释。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/presentation.md"># PPT 与演讲材料
 
 ## 使用目标
@@ -1186,7 +1206,8 @@ status: active
 
 ## 完成条件
 
-听众只看标题就能复述讲述路线；查看任一数据页时能判断数字表示什么、来自哪里、限制是什么。</script>
+听众只看标题就能复述讲述路线；查看任一数据页时能判断数字表示什么、来自哪里、限制是什么。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/workplace.md"># 邮件、项目报告与决策材料
 
 ## 使用目标
@@ -1211,7 +1232,8 @@ status: active
 
 ## 完成条件
 
-读者能回答当前发生了什么、自己要做什么、何时完成、依赖谁，以及不行动会造成什么后果。</script>
+读者能回答当前发生了什么、自己要做什么、何时完成、依赖谁，以及不行动会造成什么后果。
+</script>
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/creative.md"># 创意与叙事写作
 
 ## 使用目标
@@ -1236,119 +1258,120 @@ status: active
 
 ## 完成条件
 
-读者获得预定体验；叙述中的含蓄与多义能够追溯到有意安排；事实性内容仍然可靠。</script>
+读者获得预定体验；叙述中的含蓄与多义能够追溯到有意安排；事实性内容仍然可靠。
+</script>
 
   <script>
     const scenes = {
       plain: {
         title: "给初学者解释概念",
-        position: "共享背景少 · 主要任务是建立理解",
+        position: "不了解主题 · 无需采取行动",
         reader: "第一次接触主题、只见过表面现象的人",
         goal: "补齐必要背景，让读者理解对象、过程和结论",
         rules: "从亲身经历开始；概念先讲作用再给名称；例子用于检验理解；比方及时接回真实对象",
         risk: "为了浅白删掉条件，或用持续比方替代真实系统",
         profile: "profiles/explanation.md",
-        why: "读者共享背景少，当前目标以理解为主，通常没有立即决策压力"
+        why: "读者不了解主题，内容用于建立基本理解"
       },
       popular: {
         title: "给公众写科普文章",
-        position: "共享背景较少 · 需要形成稳定理解",
+        position: "对主题了解较少 · 无需采取行动",
         reader: "对主题有兴趣，但没有接受过系统训练的公众",
         goal: "解释问题为何存在、研究如何回答、结论受哪些限制",
         rules: "保留故事线和具体例子；术语首次出现时解释；证据限制靠近结论",
         risk: "追求生动导致夸张，或把尚未确定的研究写成定论",
         profile: "profiles/explanation.md + profiles/academic.md",
-        why: "读者需要较多背景，成品以理解和评价信息为主"
+        why: "读者了解较少，内容主要帮助理解和评价信息"
       },
       creative: {
         title: "为陌生读者写故事",
-        position: "共享背景中低 · 主要任务是体验",
+        position: "熟悉程度因作品而异 · 无需按内容采取行动",
         reader: "进入作品情境、接受有意留白和多义的读者",
         goal: "通过声音、节奏、意象或情节产生预定体验",
         rules: "控制叙述视角；允许有意延迟信息；意象保持内部一致；事实性内容继续准确",
         risk: "把对象和时间失控解释成风格，或用金句密度代替感染力",
         profile: "profiles/creative.md",
-        why: "作品不依赖大量共同专业知识，也不以立即行动为目标"
+        why: "作品可以自行建立情境，读者无需根据内容完成具体动作"
       },
       instruction: {
         title: "给首次用户写指引",
-        position: "共享背景少 · 行动压力高",
+        position: "不了解系统 · 需要按内容操作",
         reader: "需要完成任务，但不熟悉系统和术语的人",
         goal: "让读者知道当前状态、下一步动作、完成信号和出错后的处理",
         rules: "一步一个动作；按钮和页面名称与真实界面一致；条件先于动作；给出可观察的完成标准",
         risk: "解释实现机制过多，或省略前置条件导致读者在中途卡住",
         profile: "profiles/workplace.md + profiles/explanation.md",
-        why: "读者背景少，但需要立即完成具体动作"
+        why: "读者不熟悉系统，需要立即完成具体操作"
       },
       patient: {
         title: "给患者解释方案",
-        position: "共享背景较少 · 决策影响较高",
+        position: "医学知识较少 · 可能据此询问或选择",
         reader: "关心个人含义、未必熟悉医学和统计术语的人",
         goal: "理解选项、获益、风险、不确定性以及需要向专业人员确认的内容",
         rules: "区分群体研究与个人结论；解释数字的实际含义；保留风险和未知；不替代临床判断",
         risk: "为了安慰而弱化风险，或把统计关联直接写成个人预测",
         profile: "profiles/explanation.md + profiles/academic.md",
-        why: "读者缺少专业背景，信息又可能影响重要决定"
+        why: "读者医学知识有限，内容会影响后续咨询或选择"
       },
       teachingPpt: {
         title: "给学生做教学演示",
-        position: "共享背景中等 · 主要任务是理解",
+        position: "了解部分背景 · 主要用于学习",
         reader: "在现场跟随讲者逐步建立知识的学习者",
         goal: "让每页完成一个概念步骤，并在整场结束后形成可复述结构",
         rules: "标题陈述每页问题或结论；图承担关系；讲稿承担展开；独立阅读版本补足上下文",
         risk: "把教材段落切成页面，或一页同时承载多个概念跳跃",
         profile: "profiles/presentation.md + profiles/explanation.md",
-        why: "讲者与听众共享部分背景，页面主要帮助理解"
+        why: "读者了解部分背景，页面主要帮助学习"
       },
       email: {
         title: "给同事发协作邮件",
-        position: "共享背景中等 · 行动压力高",
+        position: "了解部分项目背景 · 需要回复或处理",
         reader: "了解部分项目背景、需要处理请求或决定的人",
         goal: "确认当前情况、所需动作、责任人和时间",
         rules: "来意尽早出现；事实和请求分开；点名责任人、交付物、截止时间和依赖",
         risk: "礼貌铺垫淹没请求，或用“尽快、相关人员”留下执行空白",
         profile: "profiles/workplace.md",
-        why: "双方通常共享项目背景，邮件需要推动明确动作"
+        why: "读者了解部分项目背景，邮件要求明确回复或处理"
       },
       decisionPpt: {
         title: "给管理者做决策汇报",
-        position: "共享背景较高 · 行动压力很高",
+        position: "熟悉项目背景 · 需要作出选择",
         reader: "掌握业务背景、需要在会议中作出取舍的决策者",
         goal: "在有限时间内看清现状、选择、依据、代价和推荐",
         rules: "每页服务一个决定；标题陈述发现或选择；图表承担比较；附录保留核查细节",
         risk: "把报告压成小字，或只给推荐而隐藏失效条件",
         profile: "profiles/presentation.md + profiles/workplace.md",
-        why: "读者已有较多背景，页面直接服务决策与资源行动"
+        why: "读者熟悉项目，材料直接服务选择和资源安排"
       },
       investigation: {
         title: "给团队写故障调查",
-        position: "共享背景较高 · 判断与行动并重",
+        position: "熟悉系统背景 · 需要判断后续处理",
         reader: "了解系统或项目，需要判断原因和后续工作的团队",
         goal: "还原正常流程、异常链、证据范围、未知内容和当前状态",
         rules: "事件按时间和依赖展开；原因分级；证据靠近判断；建议与调查结果分开",
         risk: "内部名称突然出现，把复现当普遍规律，或用根因标签替代因果链",
         profile: "profiles/investigation.md",
-        why: "团队共享技术背景，调查结果通常会影响修复和优先级"
+        why: "读者熟悉系统，调查结果会影响修复和优先级"
       },
       paper: {
         title: "给同行写研究论文",
-        position: "共享背景高 · 主要任务是核查与评价",
+        position: "熟悉学科背景 · 主要用于核查和评价",
         reader: "熟悉学科术语、研究设计和证据规范的同行",
         goal: "准确呈现研究问题、方法、结果、解释和限制",
         rules: "保留领域术语；当前研究独有定义仍需介绍；结果与讨论分工；主张和证据强度一致",
         risk: "为显得学术而堆抽象名词，或把统计显著写成临床重要",
         profile: "profiles/academic.md",
-        why: "同行共享大量前置知识，主要任务是理解、复现和评价证据"
+        why: "读者熟悉学科，主要任务是核查和评价证据"
       },
       defense: {
         title: "向评审做研究答辩",
-        position: "共享背景高 · 判断压力中高",
+        position: "熟悉学科背景 · 需要现场判断和回应",
         reader: "熟悉领域、会追问方法和解释边界的评审或同行",
         goal: "在口头交流中清楚陈述主张、依据、限制和对质疑的回应",
         rules: "答案先回应问题；术语按共同体惯例；区分数据结果和解释；承认未覆盖范围",
         risk: "用强硬语气掩盖未知，或重复准备稿而没有回答现场问题",
         profile: "profiles/presentation.md + profiles/academic.md",
-        why: "双方共享专业知识，交流会直接影响评价与后续决定"
+        why: "读者熟悉学科，需要现场判断并回应质疑"
       }
     };
 
