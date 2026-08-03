@@ -24,6 +24,7 @@
   --red: #934b44;
   --red-soft: #f7ebe8;
   --purple: #6a5888;
+  --purple-soft: #f0ecf6;
   --scene-understand: #477b94;
   --scene-understand-soft: rgba(71, 123, 148, .25);
   --scene-guide: #9a6b21;
@@ -279,6 +280,112 @@ th {
 }
 td { font-size: .87rem; }
 tbody tr:last-child td { border-bottom: 0; }
+.phrase-table td:first-child {
+  background: #faf9f5;
+  color: var(--green-dark);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: 650;
+}
+
+.annotated-example {
+  max-width: 900px;
+  margin: 22px 0 26px;
+  overflow: hidden;
+  border: 1px solid #ccd5d0;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 10px 25px rgba(31, 50, 44, .06);
+}
+.example-kicker {
+  display: block;
+  padding: 9px 16px;
+  border-bottom: 1px solid #34463f;
+  background: #263630;
+  color: #bfd2cb;
+  font-size: .72rem;
+  font-weight: 760;
+  letter-spacing: .04em;
+}
+.example-source {
+  max-width: none;
+  margin: 0;
+  padding: 21px 22px 23px;
+  background: #1d2b26;
+  color: #edf4f1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: .95rem;
+  font-weight: 560;
+  line-height: 1.9;
+}
+.annotated-fragment {
+  --tone: var(--blue);
+  --tone-soft: var(--blue-soft);
+  --tone-wash: rgba(63, 112, 137, .34);
+  padding: .08em .16em .12em;
+  border-bottom: 2px solid var(--tone);
+  border-radius: 4px 4px 2px 2px;
+  background: var(--tone-wash);
+  color: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.annotated-fragment::after {
+  content: attr(data-note);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35em;
+  height: 1.35em;
+  margin-left: .28em;
+  border-radius: 999px;
+  background: var(--tone);
+  color: #fff;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: .64em;
+  font-weight: 800;
+  line-height: 1;
+  vertical-align: .24em;
+}
+.tone-blue { --tone: var(--blue); --tone-soft: var(--blue-soft); --tone-wash: rgba(63, 112, 137, .34); }
+.tone-amber { --tone: var(--amber); --tone-soft: var(--amber-soft); --tone-wash: rgba(139, 102, 31, .38); }
+.tone-red { --tone: var(--red); --tone-soft: var(--red-soft); --tone-wash: rgba(147, 75, 68, .38); }
+.tone-purple { --tone: var(--purple); --tone-soft: var(--purple-soft); --tone-wash: rgba(106, 88, 136, .4); }
+.annotation-list { margin: 0; padding: 0; }
+.annotation-item {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 17px;
+  align-items: start;
+  padding: 13px 16px;
+  border-top: 1px solid var(--line);
+}
+.annotation-item:first-child { border-top: 0; }
+.annotation-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 7px;
+  padding: 4px 9px 4px 5px;
+  border: 1px solid color-mix(in srgb, var(--tone) 32%, transparent);
+  border-radius: 999px;
+  background: var(--tone-soft);
+  color: var(--tone);
+  font-size: .72rem;
+  font-weight: 780;
+  line-height: 1.4;
+}
+.annotation-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 999px;
+  background: var(--tone);
+  color: #fff;
+  font-size: .82em;
+}
+.annotation-item p { max-width: none; margin: 2px 0 0; color: #45534f; font-size: .88rem; }
 
 .before-after {
   display: grid;
@@ -288,7 +395,7 @@ tbody tr:last-child td { border-bottom: 0; }
   margin: 22px 0;
 }
 .before-after > div {
-  padding: 19px 20px;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--paper);
@@ -297,12 +404,24 @@ tbody tr:last-child td { border-bottom: 0; }
 .before-after > div:last-child { border-top: 4px solid var(--green); }
 .before-after strong {
   display: block;
-  margin-bottom: 8px;
+  padding: 9px 15px 10px;
   color: var(--muted);
   font-size: .74rem;
   letter-spacing: .05em;
 }
-.before-after p:last-child { margin-bottom: 0; }
+.before-after > div:first-child strong { background: var(--red-soft); color: var(--red); }
+.before-after > div:last-child strong { background: var(--green-soft); color: var(--green-dark); }
+.before-after p {
+  max-width: none;
+  min-height: 116px;
+  margin: 0;
+  padding: 18px 19px 20px;
+  background: #1d2b26;
+  color: #edf4f1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: .9rem;
+  line-height: 1.75;
+}
 
 .cause-list {
   max-width: var(--text);
@@ -540,6 +659,9 @@ footer a { color: #c0e5da; }
   .reading-index span { text-align: left; }
   .symptom-list li { grid-template-columns: 1fr; gap: 3px; }
   .before-after, .checklist, .architecture, .scenario-detail, .scenario-facts { grid-template-columns: 1fr; }
+  .annotation-item { grid-template-columns: 1fr; gap: 6px; }
+  .example-source { padding: 18px 17px 20px; font-size: .9rem; }
+  .before-after p { min-height: 0; }
   .quadrant-shell { padding: 12px; border-radius: 15px; }
   .quadrant { min-height: 610px; margin: 35px 18px 56px 45px; }
   .scene-point { min-width: 58px; min-height: 44px; max-width: 82px; padding: 7px; font-size: .62rem; }
@@ -565,6 +687,8 @@ footer a { color: #c0e5da; }
   .layout { display: block; max-width: none; padding: 28px 0; }
   section { break-inside: avoid; margin-bottom: 36px; }
   .quadrant-shell, .skill-panel { box-shadow: none; }
+  .example-source, .before-after p { border: 1px solid #999; background: #fff; color: #111; }
+  .example-kicker { border: 1px solid #999; background: #eee; color: #222; }
   pre { max-height: none; white-space: pre-wrap; }
 }
   </style>
@@ -618,7 +742,16 @@ footer a { color: #c0e5da; }
       <article>
         <section id="atlas">
           <h2>一段文字会怎样让人读不下去</h2>
-          <p>一份报告开头写：“系统已经完成语义对齐并形成协同闭环，因此显著提升了执行效果，结果已经得到充分验证。”读者还不知道两个内部名称指什么，句子已经跳到效果提升；过程没有展开，验证所依据的材料也没有出现。</p>
+          <p>一份报告用下面这句话开头。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">报告开头的原句</span>
+            <blockquote class="example-source">“系统已经完成 <mark class="annotated-fragment tone-blue" data-note="1">语义对齐并形成协同闭环</mark>，<mark class="annotated-fragment tone-amber" data-note="2">因此显著提升了执行效果</mark>，结果已经得到 <mark class="annotated-fragment tone-red" data-note="3">充分验证</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-blue" id="atlas-note-1"><span class="annotation-tag"><span class="annotation-number">1</span>名称没有解释</span><p>“语义对齐”和“协同闭环”此前没有出现，读者不知道它们具体指什么。</p></div>
+              <div class="annotation-item tone-amber" id="atlas-note-2"><span class="annotation-tag"><span class="annotation-number">2</span>过程被跳过</span><p>“因此”直接跳到效果提升，中间发生了什么没有展开。</p></div>
+              <div class="annotation-item tone-red" id="atlas-note-3"><span class="annotation-tag"><span class="annotation-number">3</span>证据没有出现</span><p>“充分验证”没有对应的材料、测试范围或限制条件。</p></div>
+            </figcaption>
+          </figure>
           <p>阅读负担还会来自表达和页面：作者反复预告、强调和总结，连续解释又被卡片和标签切开。下方列出五种常见困难，可以从自己正在遇到的一项开始查看。</p>
 
           <div class="reading-index" aria-label="按阅读困难查找对应章节">
@@ -648,7 +781,16 @@ footer a { color: #c0e5da; }
 
         <section id="background">
           <h2>读者进不去：背景和概念没有对准起点</h2>
-          <p>“系统已经完成上下文重构，并进入多智能体协同阶段。”参与开发的人也许知道这句话在说什么。第一次阅读项目说明的人会停在三个地方：原来的上下文出了什么问题，为什么需要重构，多智能体与当前任务有什么关系。</p>
+          <p>参与开发的人也许熟悉下面这句话。第一次阅读项目说明的人会在三个位置停下来。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">项目说明中的原句</span>
+            <blockquote class="example-source">“系统已经 <mark class="annotated-fragment tone-blue" data-note="1">完成上下文重构</mark>，<mark class="annotated-fragment tone-amber" data-note="2">并进入</mark> <mark class="annotated-fragment tone-purple" data-note="3">多智能体协同阶段</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-blue"><span class="annotation-tag"><span class="annotation-number">1</span>原由缺失</span><p>原来的上下文出了什么问题，为什么需要重构，原句没有交代。</p></div>
+              <div class="annotation-item tone-amber"><span class="annotation-tag"><span class="annotation-number">2</span>转换条件缺失</span><p>“进入”以前发生了什么，系统依据什么判断阶段已经改变，原句没有说明。</p></div>
+              <div class="annotation-item tone-purple"><span class="annotation-tag"><span class="annotation-number">3</span>当前关系缺失</span><p>多智能体与当前任务有什么关系，读者还不知道。</p></div>
+            </figcaption>
+          </figure>
           <p>AI 在写这句话以前，可能已经读过需求、代码和讨论记录。那些名称在它的上下文里反复出现，于是写作时被当成了现成背景。读者只看到最终成品，没有经历这段阅读过程。</p>
           <p>背景也可能占据过多篇幅。比如，管理者打开一封请求批准预算的邮件。前三段依次介绍项目如何启动、团队经历了哪些调整、此前讨论到了哪里。需要批准的金额直到第四段才出现。读者要先穿过这段历史，才能知道邮件希望他做什么。</p>
           <p>在前一个例子里，读者缺少理解术语所需的前提。在预算邮件里，行动请求出现得太晚。背景是否合适，要看读者能否理解眼前的对象，并知道接下来需要判断或完成什么。</p>
@@ -699,7 +841,17 @@ footer a { color: #c0e5da; }
 
         <section id="structure">
           <h2>读者跟不上：信息顺序和关系出现缺口</h2>
-          <p>“评审发现方案存在风险，因此完成调整并进入下一阶段。”这句话省略了三个问题：评审发现了什么风险，谁调整了方案，调整满足了什么条件。一个“因此”把句子接在了一起，事情的过程仍然没有出现。</p>
+          <p>一句“因此”把风险、调整和阶段转换压成了连续结果。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">省略了中间过程的原句</span>
+            <blockquote class="example-source">“评审发现方案 <mark class="annotated-fragment tone-blue" data-note="1">存在风险</mark>，<mark class="annotated-fragment tone-amber" data-note="2">因此</mark> <mark class="annotated-fragment tone-purple" data-note="3">完成调整</mark>并 <mark class="annotated-fragment tone-red" data-note="4">进入下一阶段</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-blue"><span class="annotation-tag"><span class="annotation-number">1</span>风险不具体</span><p>评审发现了什么风险，读者仍然不知道。</p></div>
+              <div class="annotation-item tone-amber"><span class="annotation-tag"><span class="annotation-number">2</span>连接词代替过程</span><p>“因此”连接了前后结果，中间采取了什么行动没有出现。</p></div>
+              <div class="annotation-item tone-purple"><span class="annotation-tag"><span class="annotation-number">3</span>执行者消失</span><p>谁调整了方案，原句没有点名。</p></div>
+              <div class="annotation-item tone-red"><span class="annotation-tag"><span class="annotation-number">4</span>完成条件缺失</span><p>调整满足了什么条件，为什么能够进入下一阶段，原句没有说明。</p></div>
+            </figcaption>
+          </figure>
           <p>读者需要先认识对象，再理解对象之间的关系；先知道原来的状态，再看哪里发生变化。文章若从最终结论或作者的调查顺序开始，后文就会频繁依赖尚未介绍的内容。</p>
           <p>“结论先行”只在读者已经理解结论中的对象时有效。面对陌生主题，可以先给一句不依赖内部术语的概括，随后建立对象和过程。把压缩后的最终结论直接放在开头，会把作者的终点变成读者的起点。</p>
 
@@ -713,11 +865,11 @@ footer a { color: #c0e5da; }
 
           <div class="before-after">
             <div>
-              <strong>关系被压进抽象名词</strong>
+              <strong>原句｜关系被压进抽象名词</strong>
               <p>数据异常触发了流程修正，随后完成迁移并实现稳定性提升。</p>
             </div>
             <div>
-              <strong>对象和动作按顺序出现</strong>
+              <strong>改写｜对象和动作按顺序出现</strong>
               <p>校验程序先发现三条记录缺少日期。数据团队补齐日期后，迁移脚本重新运行。第二次迁移完成，监控在随后两小时内没有再记录同类错误。</p>
             </div>
           </div>
@@ -744,7 +896,14 @@ footer a { color: #c0e5da; }
 
         <section id="evidence">
           <h2>读者不敢信：结论的确定程度超过材料</h2>
-          <p>一项为期两周的测试结束后，报告写道：“新方案已经得到全面验证。”读者还需要知道测试覆盖了多少人、比较了什么、哪些使用情形没有出现。缺少这些内容，“全面”只能表达作者的确信。</p>
+          <p>一项为期两周的测试结束后，报告使用了下面的结论。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">测试结束后的报告结论</span>
+            <blockquote class="example-source">“新方案已经得到 <mark class="annotated-fragment tone-red" data-note="1">全面验证</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-red"><span class="annotation-tag"><span class="annotation-number">1</span>结论超过测试范围</span><p>报告没有说明测试人数、比较对象和未覆盖情形。“全面”只能表达作者的确信。</p></div>
+            </figcaption>
+          </figure>
           <p>AI 能把不同来源的内容写成同一种流畅语气。日志里的直接观察、代码规定的行为、一次实验结果和作者的综合推断，因而可能看起来同样确定。</p>
           <p>读者需要知道每项判断依据哪类材料。新证据出现后，还应看得出哪些结论需要修改，哪些仍然成立。</p>
 
@@ -762,11 +921,11 @@ footer a { color: #c0e5da; }
 
           <div class="before-after">
             <div>
-              <strong>判断范围超过实验</strong>
+              <strong>原句｜判断范围超过实验</strong>
               <p>研究已经证明新方案全面提升了用户满意度。</p>
             </div>
             <div>
-              <strong>结论停在实验覆盖范围</strong>
+              <strong>改写｜结论停在实验覆盖范围</strong>
               <p>在本次测试的 120 名参与者中，新方案组的平均满意度评分高出 0.6 分。测试持续两周，长期使用结果尚未观察。</p>
             </div>
           </div>
@@ -776,10 +935,10 @@ footer a { color: #c0e5da; }
 
         <section id="voice">
           <h2>文字显得生硬：作者姿态和固定句式压过内容</h2>
-          <p>一篇文章反复出现“我们将从三个层面分析”“先说最重要的结论”，读者会不断离开内容，转而听作者介绍写法。后文若继续纠正没人提出的观点、宣布分析深度、用排比收尾，写作姿态就会盖过实际信息。</p>
+          <p>一篇文章反复预告分析层次和结论顺序，读者会不断离开内容，转而听作者介绍写法。后文若继续纠正没人提出的观点、宣布分析深度、用排比收尾，写作姿态就会盖过实际信息。</p>
 
           <div class="table-wrap">
-            <table>
+            <table class="phrase-table">
               <thead><tr><th>常见写法</th><th>读者感受到什么</th><th>修改方向</th></tr></thead>
               <tbody>
                 <tr><td>“我们接下来从三个方面说明”</td><td>作者在主持流程，三个方面的实际内容尚未出现</td><td>用能够概括三个方面的内容标题进入正文</td></tr>
@@ -795,7 +954,17 @@ footer a { color: #c0e5da; }
           </div>
 
           <h3>标题告诉读者这一节发生了什么</h3>
-          <p>“第一套后台仍在服务，第二套后台尚未接管”直接说明了本节要解释的状态。“我们将连续回答六个问题”只说明作者准备怎样组织文章。读者从前一句获得事件信息，从后一句只能看到写作方法。</p>
+          <div class="before-after">
+            <div>
+              <strong>原句｜标题只写作者安排</strong>
+              <p>我们将连续回答六个问题</p>
+            </div>
+            <div>
+              <strong>改写｜标题直接写出状态</strong>
+              <p>第一套后台仍在服务，第二套后台尚未接管</p>
+            </div>
+          </div>
+          <p>读者从改写后的标题获得事件信息，并且知道本节要解释什么。原句只介绍作者准备怎样组织文章。</p>
           <p>调查报告、论文和项目材料都可以让标题承担内容：发生了什么、发现了什么、比较结果怎样、读者需要作出什么决定。写作流程和作者的分析姿态留在幕后。</p>
 
           <h3>词表只能处理表面</h3>
@@ -803,7 +972,15 @@ footer a { color: #c0e5da; }
           <p>修改句子以前，先确认这句话要完成什么。需要交代动作，就让执行者靠近动词；需要表达限制，就把条件放在结论附近；没有增加对象、证据、条件或后果的总结句，可以删除。</p>
 
           <h3>解释不能连续停留在原则上</h3>
-          <p>“分类用于定位。修改应从源头开始。页面形式需要服务内容。”这些句子单独看都像道理。连续读三句，读者仍没有看到它们分别约束什么，也不知道怎样检查自己的文字。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">只有原则、没有对象的原句</span>
+            <blockquote class="example-source">“<mark class="annotated-fragment tone-blue" data-note="1">分类用于定位</mark>。<mark class="annotated-fragment tone-amber" data-note="2">修改应从源头开始</mark>。<mark class="annotated-fragment tone-purple" data-note="3">页面形式需要服务内容</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-blue"><span class="annotation-tag"><span class="annotation-number">1</span>定位对象缺失</span><p>分类要定位哪一种阅读困难，原句没有说明。</p></div>
+              <div class="annotation-item tone-amber"><span class="annotation-tag"><span class="annotation-number">2</span>“源头”没有所指</span><p>概念、因果、证据还是页面，读者不知道应先检查哪里。</p></div>
+              <div class="annotation-item tone-purple"><span class="annotation-tag"><span class="annotation-number">3</span>检查方法缺失</span><p>什么形式适合什么内容关系，原句没有给出判断方法。</p></div>
+            </figcaption>
+          </figure>
           <p>一段解释可以先放入一句原文、一个阅读时刻或一个具体后果，让读者看到困难怎样发生；随后再说明原因，最后给出修改动作。抽象原则有了落点，段落也不会反复使用同一种判断节奏。</p>
 
           <h3>转折需要回应读者已经形成的预期</h3>
@@ -833,9 +1010,13 @@ footer a { color: #c0e5da; }
                 <tr><td>层级、所有权或嵌套</td><td>树状图</td><td>只有两层时直接点名关系</td></tr>
                 <tr><td>多个条件形成分支</td><td>流程图</td><td>线性步骤使用编号列表</td></tr>
                 <tr><td>连续解释和论证</td><td>正文段落</td><td>无需额外视觉组件</td></tr>
+                <tr><td>原句中的多个片段需要逐项批注</td><td>独立原文块，并用编号和颜色连接批注</td><td>只有一个问题时把说明紧邻原句</td></tr>
               </tbody>
             </table>
           </div>
+
+          <h3>批注应当贴近被分析的原文</h3>
+          <p>逐句分析一个案例时，原文需要独立呈现。批注使用编号和颜色连接具体片段，读者便能立即看出每项判断指向哪里。颜色只帮助配对，标签文字仍要说明问题。</p>
 
           <p>页面形式应在内容关系明确以后选择。卡片适合并列对象，表格适合统一维度，图适合文字难以呈现的空间、时间或分支关系。连续推理通常需要连续正文。</p>
         </section>
@@ -897,6 +1078,7 @@ footer a { color: #c0e5da; }
             <label class="check"><input type="checkbox">辅助标签确实帮助查找；只增加层级的标签已经删除。</label>
             <label class="check"><input type="checkbox">删除强调词后，事实仍能说明事情的分量。</label>
             <label class="check"><input type="checkbox">建议可以沿当前目标、限制条件和原因向前追溯。</label>
+            <label class="check"><input type="checkbox">逐句批注能够直接对应原文片段，颜色之外仍有文字标签。</label>
             <label class="check"><input type="checkbox">每个表格和图都表达了一项明确关系。</label>
           </div>
         </section>
@@ -993,7 +1175,7 @@ footer a { color: #c0e5da; }
         <section id="skill">
           <p class="section-label">附录四</p>
           <h2>write-for-reader Skill 文件</h2>
-          <p class="intro">页面末尾收录当前 0.2.2 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
+          <p class="intro">页面末尾收录当前 0.2.3 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
 
           <div class="skill-panel">
             <div class="skill-file-tabs" id="skillFileTabs" role="tablist" aria-label="Skill 文件"></div>
@@ -1029,7 +1211,7 @@ description: >
   场景需要的 profile，避免论文、PPT、外行讲解等规则同时进入上下文。user 说“写清楚”
   “用人话讲”“讲透”“重写”“润色”“像 AI”“缺少背景”“做报告”“做 PPT”“写论文”
   “写邮件”时也使用。源代码、配置、机器读数据和要求逐字保留的原文除外。
-version: 0.2.2
+version: 0.2.3
 status: active
 ---
 
@@ -1128,6 +1310,7 @@ status: active
 
 - 表格、图、卡片和颜色是否明显减少了理解困难。
 - “入口、路径、层级”等辅助标签是否提供读者需要的信息；只增加层级的标签直接删除。
+- 逐句分析原文时，批注是否直接对应具体片段；编号或颜色是否同时保留文字标签。
 - 载体是否要求独立阅读，必要上下文是否完整。
 - 删除一段前，读者是否会失去理解、判断或行动所需的信息；不会则删除。
 - 交付正文不附规则复述、内部评分或自我评价。
@@ -1222,6 +1405,7 @@ status: active
 - 每页完成一个明确任务。标题陈述该页对象、发现、问题或关系。
 - 页面只保留听众当下需要看见的信息。讲稿承担解释，附录承担核查细节。
 - 比较用图表，时间变化用时间线，层级和流程用相应图形。图形无法减少解释时使用文字。
+- 页面逐句分析原文时，把原文独立呈现，并用编号和颜色把具体片段与批注配对；颜色之外保留文字标签。
 - 相邻页面之间写出问题如何推进。章节页说明下一段将回答什么。
 - 数据页保留口径、单位、样本和限制，避免醒目数字脱离条件。
 
