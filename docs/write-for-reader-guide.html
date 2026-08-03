@@ -4,1283 +4,872 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="分层分析 AI 文字为什么令人难读或反感，说明每类问题的成因与修正方法，并附带采用渐进式披露的 write-for-reader Skill。">
-  <title>AI 的文字为什么让人读得不舒服</title>
+  <meta name="description" content="从具体例子说明 AI 写作中常见的背景缺失、因果压缩、证据越界、语气模板和页面切碎问题，并提供修改顺序与 write-for-reader Skill。">
+  <title>AI 写作中的阅读问题与修改方法</title>
   <style>
-    :root {
-      --ink: #26332f;
-      --muted: #66736f;
-      --page: #eeeee9;
-      --paper: #fffefa;
-      --soft: #f6f5ef;
-      --line: #d8d8d0;
-      --green: #176b59;
-      --green-dark: #17483d;
-      --green-soft: #e7f1ed;
-      --blue: #396c88;
-      --blue-soft: #e9f1f6;
-      --amber: #8c651e;
-      --amber-soft: #f8f0dc;
-      --red: #98463f;
-      --red-soft: #f7e9e6;
-      --purple: #6a5888;
-      --purple-soft: #f0ecf6;
-      --max: 1190px;
-      --radius: 14px;
-      --shadow: 0 12px 30px rgba(31, 50, 44, .07);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--page);
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      font-size: 17px;
-      line-height: 1.78;
-    }
-    a { color: var(--green); text-underline-offset: 3px; }
-    code {
-      padding: .1em .34em;
-      border-radius: 5px;
-      background: #ecebe5;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .88em;
-    }
-    .skip {
-      position: fixed;
-      z-index: 100;
-      top: 8px;
-      left: 8px;
-      transform: translateY(-180%);
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: #fff;
-      color: var(--green-dark);
-    }
-    .skip:focus { transform: none; }
-    header {
-      padding: 60px 24px 50px;
-      border-bottom: 1px solid #35675a;
-      background: #174a3f;
-      color: #fff;
-    }
-    .header-inner { max-width: var(--max); margin: 0 auto; }
-    .eyebrow {
-      margin: 0 0 11px;
-      color: #b9d9d1;
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .11em;
-    }
-    h1, h2, h3, h4 { line-height: 1.3; letter-spacing: -.018em; }
-    h1 {
-      max-width: 1060px;
-      margin: 0;
-      font-size: clamp(2.35rem, 5vw, 4.25rem);
-    }
-    .lead {
-      max-width: 930px;
-      margin: 21px 0 0;
-      color: #dcebe6;
-      font-size: 1.09rem;
-    }
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px 20px;
-      margin-top: 25px;
-      color: #bdd7d0;
-      font-size: .84rem;
-    }
-    .top-nav {
-      position: sticky;
-      z-index: 30;
-      top: 0;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 254, 250, .95);
-      backdrop-filter: blur(12px);
-    }
-    .top-nav > div {
-      display: flex;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 9px 22px;
-      gap: 5px;
-      overflow-x: auto;
-    }
-    .top-nav a {
-      flex: 0 0 auto;
-      padding: 6px 9px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: .78rem;
-      font-weight: 720;
-      text-decoration: none;
-    }
-    .top-nav a:hover, .top-nav a.active {
-      background: var(--green-soft);
-      color: var(--green-dark);
-    }
-    .layout {
-      display: grid;
-      grid-template-columns: 222px minmax(0, 1fr);
-      gap: 40px;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 47px 22px 98px;
-    }
-    aside {
-      position: sticky;
-      top: 76px;
-      align-self: start;
-      max-height: calc(100vh - 94px);
-      overflow: auto;
-    }
-    aside p {
-      margin: 15px 0 5px;
-      color: var(--muted);
-      font-size: .7rem;
-      font-weight: 820;
-      letter-spacing: .09em;
-    }
-    aside p:first-child { margin-top: 0; }
-    aside a {
-      display: block;
-      padding: 7px 9px;
-      border-left: 2px solid transparent;
-      color: var(--muted);
-      font-size: .81rem;
-      line-height: 1.45;
-      text-decoration: none;
-    }
-    aside a:hover, aside a.active {
-      border-color: var(--green);
-      background: var(--green-soft);
-      color: var(--green-dark);
-    }
-    main, article { min-width: 0; }
-    section {
-      margin-bottom: 82px;
-      scroll-margin-top: 78px;
-    }
-    .section-label {
-      margin: 0 0 7px;
-      color: var(--green);
-      font-size: .74rem;
-      font-weight: 820;
-      letter-spacing: .1em;
-    }
-    h2 {
-      margin: 0 0 17px;
-      font-size: clamp(1.75rem, 3vw, 2.48rem);
-    }
-    h3 {
-      margin: 31px 0 11px;
-      font-size: clamp(1.17rem, 2vw, 1.45rem);
-    }
-    h4 { margin: 0 0 8px; font-size: 1rem; }
-    p { margin: 0 0 14px; }
-    ul, ol { padding-left: 1.35em; }
-    li { margin: 7px 0; }
-    .intro {
-      max-width: 860px;
-      color: var(--muted);
-      font-size: 1.02rem;
-    }
-    .notice {
-      margin: 20px 0;
-      padding: 18px 20px;
-      border-left: 5px solid var(--green);
-      border-radius: 0 11px 11px 0;
-      background: var(--green-soft);
-    }
-    .notice.blue { border-color: var(--blue); background: var(--blue-soft); }
-    .notice.amber { border-color: var(--amber); background: var(--amber-soft); }
-    .notice.red { border-color: var(--red); background: var(--red-soft); }
-    .notice p:last-child { margin-bottom: 0; }
-    .quote {
-      margin: 16px 0;
-      padding: 17px 20px;
-      border-left: 4px solid #a9b8b3;
-      background: var(--soft);
-      color: #42524e;
-    }
-    .quote p:last-child { margin-bottom: 0; }
-    .source {
-      display: block;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: .76rem;
-    }
-    .grid-2, .grid-3, .grid-4 {
-      display: grid;
-      gap: 13px;
-      margin-top: 18px;
-    }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .mini {
-      padding: 19px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .mini p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .87rem;
-    }
-    .mini.green { background: var(--green-soft); border-color: #bad5cc; }
-    .mini.blue { background: var(--blue-soft); border-color: #bed1dc; }
-    .mini.amber { background: var(--amber-soft); border-color: #dfca99; }
-    .mini.red { background: var(--red-soft); border-color: #e0b9b4; }
-    .mini.purple { background: var(--purple-soft); border-color: #d0c4df; }
-    .table-wrap {
-      margin-top: 18px;
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    table {
-      width: 100%;
-      min-width: 760px;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      background: var(--soft);
-      color: var(--green-dark);
-      font-size: .8rem;
-    }
-    td { font-size: .87rem; }
-    tbody tr:last-child td { border-bottom: 0; }
-    .compare {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 13px;
-      margin: 19px 0;
-    }
-    .example {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .example.bad { border-top: 5px solid var(--red); }
-    .example.good { border-top: 5px solid var(--green); }
-    .example .label {
-      display: block;
-      margin-bottom: 9px;
-      color: var(--muted);
-      font-size: .74rem;
-      font-weight: 820;
-      letter-spacing: .06em;
-    }
-    .example p:last-child { margin-bottom: 0; }
-    .feedback {
-      display: grid;
-      grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr);
-      gap: 14px;
-      margin-top: 17px;
-    }
-    .feedback > div {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .feedback .diagnosis {
-      background: var(--soft);
-      color: var(--muted);
-    }
-    .feedback strong {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--green-dark);
-    }
-    .feedback p:last-child { margin-bottom: 0; }
-    .layers {
-      margin: 24px 0 0;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .layer {
-      display: grid;
-      grid-template-columns: 74px 210px minmax(0, 1fr);
-      gap: 14px;
-      align-items: center;
-      padding: 16px 19px;
-      border-bottom: 1px solid rgba(30, 56, 48, .1);
-    }
-    .layer:last-child { border-bottom: 0; }
-    .layer:nth-child(1) { background: #e6f0ec; }
-    .layer:nth-child(2) { background: #eaf1ee; }
-    .layer:nth-child(3) { background: #edf3f0; }
-    .layer:nth-child(4) { background: #f1f3ec; }
-    .layer:nth-child(5) { background: #f5f1e8; }
-    .layer:nth-child(6) { background: #f7eee8; }
-    .layer:nth-child(7) { background: #f4edf1; }
-    .layer-no {
-      color: var(--green-dark);
-      font-size: .73rem;
-      font-weight: 820;
-      letter-spacing: .06em;
-    }
-    .layer strong { color: var(--ink); }
-    .layer span {
-      color: var(--muted);
-      font-size: .85rem;
-      line-height: 1.55;
-    }
-    .layer-note {
-      margin: 11px 0 0;
-      color: var(--muted);
-      font-size: .83rem;
-    }
-    .diagnostic {
-      margin-top: 22px;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper);
-      box-shadow: var(--shadow);
-    }
-    .diagnostic h3:first-child { margin-top: 0; }
-    .diagnostic-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 17px 0;
-    }
-    .diagnostic-grid > div {
-      padding: 15px;
-      border-radius: 10px;
-      background: var(--soft);
-    }
-    .diagnostic-grid strong {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--green-dark);
-      font-size: .8rem;
-    }
-    .diagnostic-grid p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .84rem;
-    }
-    .repair {
-      margin-top: 18px;
-      padding: 17px 19px;
-      border-left: 4px solid var(--green);
-      background: var(--green-soft);
-    }
-    .repair strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--green-dark);
-    }
-    .repair p:last-child, .repair ol:last-child { margin-bottom: 0; }
-    .cause-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .cause-row {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      gap: 17px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .cause-row:last-child { border-bottom: 0; }
-    .cause-row strong { color: var(--green-dark); }
-    .cause-row p { margin: 0; color: var(--muted); }
-    .revision-steps {
-      counter-reset: repair;
-      margin-top: 22px;
-    }
-    .revision-step {
-      position: relative;
-      margin: 0 0 13px 18px;
-      padding: 20px 21px 20px 58px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .revision-step::before {
-      counter-increment: repair;
-      content: counter(repair);
-      position: absolute;
-      top: 19px;
-      left: -18px;
-      display: grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--green-dark);
-      color: #fff;
-      font-size: .82rem;
-      font-weight: 820;
-    }
-    .revision-step h3 { margin: 0 0 7px; }
-    .revision-step p:last-child { margin-bottom: 0; }
-    .runtime-flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 23px;
-    }
-    .flow-step {
-      position: relative;
-      min-height: 150px;
-      padding: 17px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .flow-step::after {
-      content: "→";
-      position: absolute;
-      z-index: 2;
-      top: 50%;
-      right: -18px;
-      transform: translateY(-50%);
-      color: #8da39c;
-      font-size: 1.2rem;
-    }
-    .flow-step:last-child::after { content: none; }
-    .flow-step strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--green-dark);
-    }
-    .flow-step span {
-      display: block;
-      color: var(--muted);
-      font-size: .84rem;
-      line-height: 1.55;
-    }
-    .quadrant-shell {
-      margin-top: 23px;
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper);
-      box-shadow: var(--shadow);
-    }
-    .quadrant {
-      position: relative;
-      min-height: 560px;
-      margin: 28px 38px 45px 56px;
-      border: 1px solid #bcc8c3;
-      background:
-        linear-gradient(to right, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px)),
-        linear-gradient(to top, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px));
-      overflow: visible;
-    }
-    .quadrant-zone {
-      position: absolute;
-      z-index: 0;
-      width: 50%;
-      height: 50%;
-      padding: 14px;
-      color: rgba(38, 51, 47, .53);
-      font-size: .72rem;
-      font-weight: 780;
-      letter-spacing: .04em;
-      pointer-events: none;
-    }
-    .zone-tl { top: 0; left: 0; background: rgba(248, 240, 220, .55); }
-    .zone-tr { top: 0; right: 0; background: rgba(231, 241, 237, .72); text-align: right; }
-    .zone-bl { bottom: 0; left: 0; background: rgba(233, 241, 246, .65); display: flex; align-items: flex-end; }
-    .zone-br { right: 0; bottom: 0; background: rgba(240, 236, 246, .55); display: flex; align-items: flex-end; justify-content: flex-end; text-align: right; }
-    .axis-label {
-      position: absolute;
-      z-index: 3;
-      color: var(--muted);
-      font-size: .73rem;
-      font-weight: 760;
-      pointer-events: none;
-    }
-    .axis-y-high { top: -30px; left: -43px; }
-    .axis-y-low { bottom: -30px; left: -43px; }
-    .axis-x-low { bottom: -35px; left: 0; }
-    .axis-x-high { right: 0; bottom: -35px; }
-    .axis-y-title {
-      top: 50%;
-      left: -103px;
-      transform: rotate(-90deg) translateY(-50%);
-      transform-origin: center;
-      color: var(--ink);
-    }
-    .axis-x-title {
-      right: 50%;
-      bottom: -58px;
-      transform: translateX(50%);
-      color: var(--ink);
-    }
-    .scene-point {
-      --point: var(--green);
-      position: absolute;
-      z-index: 5;
-      left: var(--x);
-      bottom: var(--y);
-      transform: translate(-50%, 50%);
-      cursor: pointer;
-      min-width: 74px;
-      max-width: 112px;
-      padding: 7px 9px;
-      border: 2px solid #fff;
-      border-radius: 999px;
-      background: var(--point);
-      color: #fff;
-      box-shadow: 0 3px 11px rgba(31, 50, 44, .18);
-      font: inherit;
-      font-size: .72rem;
-      font-weight: 780;
-      line-height: 1.2;
-    }
-    .scene-point:hover, .scene-point:focus-visible {
-      z-index: 9;
-      outline: 3px solid rgba(23, 107, 89, .2);
-      transform: translate(-50%, 50%) scale(1.06);
-    }
-    .scene-point.active {
-      z-index: 8;
-      outline: 4px solid rgba(23, 107, 89, .24);
-      box-shadow: 0 4px 16px rgba(31, 50, 44, .26);
-    }
-    .point-understand { --point: #477b94; }
-    .point-guide { --point: #a8792c; }
-    .point-expert { --point: #725f91; }
-    .point-decide { --point: #20705e; }
-    .scenario-detail {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 22px;
-      margin-top: 24px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--soft);
-    }
-    .scenario-detail h3 { margin: 0 0 7px; }
-    .scenario-position {
-      color: var(--muted);
-      font-size: .82rem;
-    }
-    .scenario-facts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .scenario-facts div {
-      padding: 12px 13px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: var(--paper);
-      color: var(--muted);
-      font-size: .82rem;
-    }
-    .scenario-facts strong {
-      display: block;
-      color: var(--green-dark);
-      font-size: .72rem;
-      letter-spacing: .04em;
-    }
-    .architecture {
-      display: grid;
-      grid-template-columns: 1fr 1.25fr;
-      gap: 18px;
-      margin-top: 22px;
-    }
-    .architecture > div {
-      padding: 21px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--paper);
-    }
-    .file-tree {
-      margin: 0;
-      padding: 17px;
-      border-radius: 10px;
-      background: #1d2b26;
-      color: #dfeae6;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .8rem;
-      line-height: 1.72;
-      white-space: pre;
-      overflow-x: auto;
-    }
-    .load-rule {
-      display: grid;
-      gap: 10px;
-      margin-top: 14px;
-    }
-    .load-rule div {
-      padding: 12px 14px;
-      border-left: 4px solid var(--green);
-      background: var(--green-soft);
-      font-size: .84rem;
-    }
-    .checklist {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 9px 18px;
-      margin-top: 18px;
-    }
-    .check {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      padding: 9px 0;
-      color: #465651;
-      font-size: .88rem;
-    }
-    .check input {
-      flex: 0 0 auto;
-      margin-top: 6px;
-      accent-color: var(--green);
-    }
-    button, .button-link {
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 38px;
-      padding: 8px 13px;
-      border: 1px solid #adc8c0;
-      border-radius: 999px;
-      background: #fff;
-      color: var(--green-dark);
-      font: inherit;
-      font-size: .79rem;
-      font-weight: 740;
-      text-decoration: none;
-    }
-    button:hover, .button-link:hover { background: var(--green-soft); }
-    .skill-panel {
-      overflow: hidden;
-      margin-top: 22px;
-      border: 1px solid #354b44;
-      border-radius: 14px;
-      background: #17231f;
-      box-shadow: var(--shadow);
-    }
-    .skill-file-tabs {
-      display: flex;
-      gap: 7px;
-      padding: 12px 14px;
-      overflow-x: auto;
-      border-bottom: 1px solid #34463f;
-      background: #1e2d28;
-    }
-    .skill-file-tabs button {
-      flex: 0 0 auto;
-      min-height: 33px;
-      padding: 6px 10px;
-      border-color: #516a61;
-      background: #243a33;
-      color: #d6e6e0;
-      font-size: .72rem;
-    }
-    .skill-file-tabs button.active {
-      border-color: #a6cbbf;
-      background: #dfeee9;
-      color: #183f35;
-    }
-    .skill-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 13px 15px;
-      border-bottom: 1px solid #34463f;
-      background: #1b2924;
-    }
-    .skill-toolbar span {
-      color: #bcd0c9;
-      font-size: .78rem;
-      font-weight: 720;
-    }
-    .skill-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 8px;
-    }
-    .skill-toolbar button, .skill-toolbar .button-link {
-      min-height: 34px;
-      border-color: #516a61;
-      background: #243a33;
-      color: #e4f0ec;
-    }
-    .skill-toolbar button:hover, .skill-toolbar .button-link:hover { background: #315047; }
-    pre {
-      max-height: 720px;
-      margin: 0;
-      padding: 22px;
-      overflow: auto;
-      color: #e2ece8;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .8rem;
-      line-height: 1.62;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      tab-size: 2;
-    }
-    pre code {
-      padding: 0;
-      background: transparent;
-      color: inherit;
-      font: inherit;
-    }
-    .copy-status {
-      min-height: 1.4em;
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: .8rem;
-    }
-    footer {
-      padding: 31px 24px 48px;
-      background: var(--green-dark);
-      color: #c7dcd6;
-    }
-    footer > div { max-width: var(--max); margin: 0 auto; }
-    footer p { margin: 5px 0; font-size: .83rem; }
-    footer a { color: #c0e5da; }
-    @media (max-width: 1000px) {
-      .layout { grid-template-columns: 1fr; }
-      aside { display: none; }
-      .runtime-flow { grid-template-columns: 1fr; }
-      .flow-step { min-height: 0; }
-      .flow-step::after {
-        top: auto;
-        right: 50%;
-        bottom: -22px;
-        transform: translateX(50%) rotate(90deg);
-      }
-      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .quadrant { min-height: 520px; }
-    }
-    @media (max-width: 760px) {
-      body { font-size: 16px; }
-      header { padding: 44px 20px 38px; }
-      .top-nav { position: static; }
-      .layout { padding: 34px 18px 74px; }
-      .grid-2, .grid-3, .grid-4, .compare, .feedback, .diagnostic-grid,
-      .checklist, .architecture, .scenario-detail, .scenario-facts { grid-template-columns: 1fr; }
-      .layer { grid-template-columns: 55px minmax(0, 1fr); }
-      .layer span { grid-column: 1 / -1; }
-      .cause-row { grid-template-columns: 1fr; gap: 4px; }
-      .quadrant-shell { padding: 10px; }
-      .quadrant {
-        min-height: 610px;
-        margin: 35px 18px 56px 45px;
-      }
-      .scene-point {
-        min-width: 58px;
-        max-width: 80px;
-        padding: 6px 7px;
-        font-size: .64rem;
-      }
-      .axis-y-title, .axis-x-low, .axis-x-high { display: none; }
-      .axis-x-title { bottom: -62px; }
-      .axis-y-high { top: -30px; left: 0; }
-      .axis-y-low { bottom: -30px; left: 0; }
-      .skill-toolbar { align-items: flex-start; flex-direction: column; }
-      .skill-actions { justify-content: flex-start; }
-      .meta { display: grid; gap: 4px; }
-      pre { max-height: 590px; font-size: .73rem; }
-    }
-    @media print {
-      .top-nav, aside, .skill-actions, .skip, .skill-file-tabs { display: none !important; }
-      body { background: #fff; font-size: 11pt; }
-      header { padding: 28px 0; background: #fff; color: #111; border-bottom: 2px solid #222; }
-      .lead, .meta { color: #444; }
-      .layout { display: block; max-width: none; padding: 28px 0; }
-      section { break-inside: avoid; margin-bottom: 36px; }
-      .diagnostic, .quadrant-shell, .skill-panel { box-shadow: none; }
-      pre { max-height: none; white-space: pre-wrap; }
-    }
+:root {
+  --ink: #25332f;
+  --muted: #64716d;
+  --page: #f1f0eb;
+  --paper: #fffefa;
+  --soft: #f6f5f0;
+  --line: #d8d9d2;
+  --green: #176b59;
+  --green-dark: #17483d;
+  --green-soft: #e7f1ed;
+  --blue: #3f7089;
+  --blue-soft: #eaf2f6;
+  --amber: #8b661f;
+  --amber-soft: #f8f0dc;
+  --red: #934b44;
+  --red-soft: #f7ebe8;
+  --purple: #6a5888;
+  --max: 1120px;
+  --text: 760px;
+  --radius: 12px;
+  --shadow: 0 12px 28px rgba(31, 50, 44, .06);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 17px;
+  line-height: 1.78;
+}
+a { color: var(--green); text-underline-offset: 3px; }
+code {
+  padding: .1em .34em;
+  border-radius: 5px;
+  background: #ecebe5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .88em;
+}
+
+.skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-180%);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--green-dark);
+}
+.skip:focus { transform: none; }
+
+header {
+  padding: 56px 24px 44px;
+  border-bottom: 1px solid #cfd7d3;
+  background: #f8faf7;
+}
+.header-inner { max-width: var(--max); margin: 0 auto; }
+h1, h2, h3 { line-height: 1.34; letter-spacing: -.018em; }
+h1 {
+  max-width: 860px;
+  margin: 0;
+  color: #1d4037;
+  font-size: clamp(2.2rem, 4.3vw, 3.45rem);
+  font-weight: 760;
+}
+.lead {
+  max-width: 850px;
+  margin: 22px 0 0;
+  color: #485a55;
+  font-size: 1.04rem;
+}
+.lead:last-child { margin-bottom: 0; }
+
+.top-nav {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 254, 250, .96);
+  backdrop-filter: blur(12px);
+}
+.top-nav > div {
+  display: flex;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 9px 20px;
+  gap: 4px;
+  overflow-x: auto;
+}
+.top-nav a {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.top-nav a:hover, .top-nav a.active {
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 205px minmax(0, 1fr);
+  gap: 52px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 50px 22px 100px;
+}
+aside {
+  position: sticky;
+  top: 76px;
+  align-self: start;
+  max-height: calc(100vh - 94px);
+  overflow: auto;
+}
+aside p {
+  margin: 18px 0 6px;
+  color: #78837f;
+  font-size: .69rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+aside p:first-child { margin-top: 0; }
+aside a {
+  display: block;
+  padding: 7px 9px;
+  border-left: 2px solid transparent;
+  color: var(--muted);
+  font-size: .81rem;
+  line-height: 1.45;
+  text-decoration: none;
+}
+aside a:hover, aside a.active {
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+main, article { min-width: 0; }
+section {
+  margin-bottom: 78px;
+  scroll-margin-top: 78px;
+}
+.appendix-start {
+  padding-top: 58px;
+  border-top: 1px solid #c8cbc5;
+}
+.section-label {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+h2 {
+  max-width: 840px;
+  margin: 0 0 20px;
+  font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+  font-weight: 740;
+}
+h3 {
+  margin: 32px 0 11px;
+  font-size: clamp(1.12rem, 1.9vw, 1.36rem);
+  font-weight: 720;
+}
+p { max-width: var(--text); margin: 0 0 15px; }
+ul, ol { max-width: var(--text); padding-left: 1.35em; }
+li { margin: 8px 0; }
+.intro { color: var(--muted); font-size: 1.01rem; }
+.small-note { color: var(--muted); font-size: .84rem; }
+
+.case-context {
+  max-width: var(--text);
+  margin: 24px 0;
+  padding: 18px 20px;
+  border-left: 4px solid var(--blue);
+  background: var(--blue-soft);
+}
+.case-context strong { display: block; margin-bottom: 5px; color: #315d73; }
+.case-context p:last-child { margin-bottom: 0; }
+blockquote {
+  max-width: var(--text);
+  margin: 20px 0;
+  padding: 18px 21px;
+  border-left: 4px solid #a8b3af;
+  background: var(--soft);
+  color: #3f504b;
+}
+blockquote p:last-child { margin-bottom: 0; }
+.reading-list {
+  max-width: var(--text);
+  margin: 18px 0 26px;
+  padding-left: 1.35em;
+}
+.reading-list strong { color: var(--green-dark); }
+
+.rewrite {
+  max-width: var(--text);
+  margin: 25px 0;
+  padding: 21px 23px;
+  border: 1px solid #bcd4cc;
+  border-radius: var(--radius);
+  background: var(--green-soft);
+}
+.rewrite .label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--green-dark);
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+.rewrite p:last-child { margin-bottom: 0; }
+
+.sequence {
+  max-width: var(--text);
+  margin: 22px 0 26px;
+  padding: 0;
+  counter-reset: sequence;
+  list-style: none;
+}
+.sequence li {
+  position: relative;
+  min-height: 43px;
+  margin: 0;
+  padding: 9px 0 17px 47px;
+  border-left: 1px solid #aebdb7;
+}
+.sequence li:last-child { border-left-color: transparent; }
+.sequence li::before {
+  counter-increment: sequence;
+  content: counter(sequence);
+  position: absolute;
+  top: 4px;
+  left: -17px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--green-dark);
+  color: #fff;
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.table-wrap {
+  max-width: 900px;
+  margin: 22px 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--soft);
+  color: var(--green-dark);
+  font-size: .79rem;
+}
+td { font-size: .87rem; }
+tbody tr:last-child td { border-bottom: 0; }
+
+.before-after {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+  gap: 14px;
+  margin: 22px 0;
+}
+.before-after > div {
+  padding: 19px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.before-after > div:first-child { border-top: 4px solid var(--red); }
+.before-after > div:last-child { border-top: 4px solid var(--green); }
+.before-after strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: .74rem;
+  letter-spacing: .05em;
+}
+.before-after p:last-child { margin-bottom: 0; }
+
+.boundary-note {
+  max-width: var(--text);
+  margin: 20px 0;
+  padding: 17px 19px;
+  border-left: 4px solid var(--amber);
+  background: var(--amber-soft);
+}
+.boundary-note p:last-child { margin-bottom: 0; }
+
+.cause-list {
+  max-width: var(--text);
+  margin-top: 22px;
+}
+.cause-list h3 { margin: 25px 0 6px; font-size: 1.06rem; }
+.cause-list p { color: #475651; }
+
+.revision-list {
+  max-width: var(--text);
+  margin: 24px 0;
+  padding-left: 1.35em;
+}
+.revision-list li { padding-left: 5px; margin: 14px 0; }
+.revision-list strong { color: var(--green-dark); }
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+  gap: 4px 26px;
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 7px 0;
+  color: #465651;
+  font-size: .87rem;
+}
+.check input { flex: 0 0 auto; margin-top: 6px; accent-color: var(--green); }
+
+.runtime-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 23px;
+}
+.flow-step {
+  position: relative;
+  min-height: 138px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.flow-step::after {
+  content: "→";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -18px;
+  transform: translateY(-50%);
+  color: #8da39c;
+  font-size: 1.2rem;
+}
+.flow-step:last-child::after { content: none; }
+.flow-step strong { display: block; margin-bottom: 6px; color: var(--green-dark); }
+.flow-step span { display: block; color: var(--muted); font-size: .82rem; line-height: 1.55; }
+
+.quadrant-shell {
+  margin-top: 23px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.quadrant {
+  position: relative;
+  min-height: 560px;
+  margin: 28px 38px 45px 56px;
+  border: 1px solid #bcc8c3;
+  background:
+    linear-gradient(to right, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(to top, transparent calc(50% - .5px), #92a69f calc(50% - .5px), #92a69f calc(50% + .5px), transparent calc(50% + .5px));
+  overflow: visible;
+}
+.quadrant-zone {
+  position: absolute;
+  z-index: 0;
+  width: 50%;
+  height: 50%;
+  padding: 14px;
+  color: rgba(38, 51, 47, .55);
+  font-size: .71rem;
+  font-weight: 760;
+  letter-spacing: .03em;
+  pointer-events: none;
+}
+.zone-tl { top: 0; left: 0; background: rgba(248, 240, 220, .55); }
+.zone-tr { top: 0; right: 0; background: rgba(231, 241, 237, .72); text-align: right; }
+.zone-bl { bottom: 0; left: 0; background: rgba(233, 241, 246, .65); display: flex; align-items: flex-end; }
+.zone-br { right: 0; bottom: 0; background: rgba(240, 236, 246, .55); display: flex; align-items: flex-end; justify-content: flex-end; text-align: right; }
+.axis-label {
+  position: absolute;
+  z-index: 3;
+  color: var(--muted);
+  font-size: .73rem;
+  font-weight: 740;
+  pointer-events: none;
+}
+.axis-y-high { top: -30px; left: -43px; }
+.axis-y-low { bottom: -30px; left: -43px; }
+.axis-x-low { bottom: -35px; left: 0; }
+.axis-x-high { right: 0; bottom: -35px; }
+.axis-y-title { top: 50%; left: -103px; transform: rotate(-90deg) translateY(-50%); transform-origin: center; color: var(--ink); }
+.axis-x-title { right: 50%; bottom: -58px; transform: translateX(50%); color: var(--ink); }
+.scene-point {
+  --point: var(--green);
+  position: absolute;
+  z-index: 5;
+  left: var(--x);
+  bottom: var(--y);
+  transform: translate(-50%, 50%);
+  cursor: pointer;
+  min-width: 76px;
+  max-width: 118px;
+  padding: 7px 9px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: var(--point);
+  color: #fff;
+  box-shadow: 0 3px 11px rgba(31, 50, 44, .18);
+  font: inherit;
+  font-size: .7rem;
+  font-weight: 760;
+  line-height: 1.2;
+}
+.scene-point:hover, .scene-point:focus-visible { z-index: 9; outline: 3px solid rgba(23, 107, 89, .2); transform: translate(-50%, 50%) scale(1.06); }
+.scene-point.active { z-index: 8; outline: 4px solid rgba(23, 107, 89, .24); box-shadow: 0 4px 16px rgba(31, 50, 44, .26); }
+.point-understand { --point: #477b94; }
+.point-guide { --point: #a8792c; }
+.point-expert { --point: #725f91; }
+.point-decide { --point: #20705e; }
+.scenario-detail {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 22px;
+  margin-top: 24px;
+  padding: 21px;
+  border-top: 1px solid var(--line);
+  background: var(--soft);
+}
+.scenario-detail h3 { margin: 0 0 7px; }
+.scenario-position { color: var(--muted); font-size: .82rem; }
+.scenario-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.scenario-facts div { padding: 11px 12px; border-left: 3px solid #b9c9c3; background: var(--paper); color: var(--muted); font-size: .81rem; }
+.scenario-facts strong { display: block; color: var(--green-dark); font-size: .71rem; letter-spacing: .04em; }
+
+.architecture {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+.architecture > div { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+.architecture h3 { margin-top: 0; }
+.file-tree {
+  margin: 0;
+  padding: 16px;
+  border-radius: 9px;
+  background: #1d2b26;
+  color: #dfeae6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .78rem;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+}
+.load-rule { margin: 4px 0 15px; padding-left: 1.2em; }
+.load-rule li { margin: 8px 0; font-size: .87rem; }
+
+button, .button-link {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid #adc8c0;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--green-dark);
+  font: inherit;
+  font-size: .79rem;
+  font-weight: 720;
+  text-decoration: none;
+}
+button:hover, .button-link:hover { background: var(--green-soft); }
+.skill-panel {
+  overflow: hidden;
+  margin-top: 22px;
+  border: 1px solid #354b44;
+  border-radius: var(--radius);
+  background: #17231f;
+  box-shadow: var(--shadow);
+}
+.skill-file-tabs { display: flex; gap: 7px; padding: 12px 14px; overflow-x: auto; border-bottom: 1px solid #34463f; background: #1e2d28; }
+.skill-file-tabs button { flex: 0 0 auto; min-height: 33px; padding: 6px 10px; border-color: #516a61; background: #243a33; color: #d6e6e0; font-size: .72rem; }
+.skill-file-tabs button.active { border-color: #a6cbbf; background: #dfeee9; color: #183f35; }
+.skill-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 15px; border-bottom: 1px solid #34463f; background: #1b2924; }
+.skill-toolbar span { color: #bcd0c9; font-size: .78rem; font-weight: 700; }
+.skill-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.skill-toolbar button, .skill-toolbar .button-link { min-height: 34px; border-color: #516a61; background: #243a33; color: #e4f0ec; }
+.skill-toolbar button:hover, .skill-toolbar .button-link:hover { background: #315047; }
+pre { max-height: 720px; margin: 0; padding: 22px; overflow: auto; color: #e2ece8; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .8rem; line-height: 1.62; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; }
+pre code { padding: 0; background: transparent; color: inherit; font: inherit; }
+.copy-status { min-height: 1.4em; margin: 10px 0 0; color: var(--muted); font-size: .8rem; }
+
+footer { padding: 30px 24px 44px; background: var(--green-dark); color: #c7dcd6; }
+footer > div { max-width: var(--max); margin: 0 auto; }
+footer p { margin: 5px 0; font-size: .82rem; }
+footer a { color: #c0e5da; }
+
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  aside { display: none; }
+  .runtime-flow { grid-template-columns: 1fr; }
+  .flow-step { min-height: 0; }
+  .flow-step::after { top: auto; right: 50%; bottom: -22px; transform: translateX(50%) rotate(90deg); }
+  .quadrant { min-height: 520px; }
+}
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  header { padding: 42px 20px 36px; }
+  .top-nav { position: static; }
+  .layout { padding: 35px 18px 74px; }
+  .before-after, .checklist, .architecture, .scenario-detail, .scenario-facts { grid-template-columns: 1fr; }
+  .quadrant-shell { padding: 10px; }
+  .quadrant { min-height: 610px; margin: 35px 18px 56px 45px; }
+  .scene-point { min-width: 58px; max-width: 82px; padding: 6px 7px; font-size: .62rem; }
+  .axis-y-title, .axis-x-low, .axis-x-high { display: none; }
+  .axis-x-title { bottom: -62px; }
+  .axis-y-high { top: -30px; left: 0; }
+  .axis-y-low { bottom: -30px; left: 0; }
+  .skill-toolbar { align-items: flex-start; flex-direction: column; }
+  .skill-actions { justify-content: flex-start; }
+  pre { max-height: 590px; font-size: .73rem; }
+}
+@media print {
+  .top-nav, aside, .skill-actions, .skip, .skill-file-tabs { display: none !important; }
+  body { background: #fff; font-size: 11pt; }
+  header { padding: 28px 0; background: #fff; color: #111; border-bottom: 2px solid #222; }
+  .lead { color: #444; }
+  .layout { display: block; max-width: none; padding: 28px 0; }
+  section { break-inside: avoid; margin-bottom: 36px; }
+  .quadrant-shell, .skill-panel { box-shadow: none; }
+  pre { max-height: none; white-space: pre-wrap; }
+}
   </style>
 </head>
 <body>
   <a class="skip" href="#content">跳到正文</a>
   <header>
     <div class="header-inner">
-      <p class="eyebrow">语言问题诊断与修正 · 2026-08-03</p>
-      <h1>AI 的文字为什么让人读得不舒服</h1>
-      <p class="lead">这份说明从真实反馈出发，分层整理概念突然出现、叙述顺序混乱、代词漂移、因果压缩、证据越界、作者自我表演、句式僵硬和页面装饰过度等问题。每一层都说明症状、成因和修正办法。页面后部用流程图概括 Skill 的运行方式，并用可点击的二维象限展示不同写作场景。</p>
-      <div class="meta">
-        <span>正文重点：不满的分类、原因、批判与修正</span>
-        <span>交互图：场景二维象限</span>
-        <span>Skill：write-for-reader 0.2.0</span>
-      </div>
+      <h1>AI 写作中的阅读问题与修改方法</h1>
+      <p class="lead">这份说明源于一次具体的修改经历。原稿要解释程序后台的启动异常，却在开头集中放入 Worker、任务边界、重复收尾等内部概念。读者还不知道事情怎样发生，文章已经给出了压缩后的调查结论。</p>
+      <p class="lead">后续反馈还指出，标题经常谈论作者的写法，句子反复使用对立，页面又把连续解释切成许多卡片。下面从这段原稿出发，逐项说明这些写法增加了哪些阅读负担，以及可以怎样修改。</p>
     </div>
   </header>
 
   <nav class="top-nav" aria-label="页面导航">
     <div>
-      <a href="#feedback">真实反馈</a>
-      <a href="#layers">七层问题</a>
-      <a href="#reader">读者起点</a>
-      <a href="#structure">信息顺序</a>
-      <a href="#causality">对象与因果</a>
-      <a href="#evidence">证据</a>
-      <a href="#stance">作者姿态</a>
-      <a href="#rhythm">句子节奏</a>
-      <a href="#visual">页面形式</a>
-      <a href="#repair">修正顺序</a>
-      <a href="#quadrant">场景象限</a>
+      <a href="#case">具体例子</a>
+      <a href="#background">背景与概念</a>
+      <a href="#actions">动作与因果</a>
+      <a href="#evidence">证据范围</a>
+      <a href="#voice">标题与语气</a>
+      <a href="#page">页面形式</a>
+      <a href="#causes">反复出现的原因</a>
+      <a href="#revision">修改顺序</a>
+      <a href="#runtime">Skill 如何运行</a>
+      <a href="#quadrant">任务示意图</a>
       <a href="#skill">Skill 文件</a>
     </div>
   </nav>
 
   <div class="layout">
     <aside aria-label="章节目录">
-      <p>问题从哪里来</p>
-      <a href="#feedback">四条真实反馈</a>
-      <a href="#layers">七层问题怎样连接</a>
-      <p>逐层诊断</p>
-      <a href="#reader">一：读者起点错位</a>
-      <a href="#structure">二：信息依赖倒置</a>
-      <a href="#causality">三：对象与因果缺口</a>
-      <a href="#evidence">四：证据与判断越界</a>
-      <a href="#stance">五：作者姿态过重</a>
-      <a href="#rhythm">六：句式和节奏僵硬</a>
-      <a href="#visual">七：页面形式替代组织</a>
-      <p>怎样修正</p>
-      <a href="#model-causes">AI 为什么容易这样写</a>
-      <a href="#repair">从上游到下游重写</a>
-      <a href="#acceptance">读者验收</a>
-      <p>Skill 与场景</p>
-      <a href="#runtime">运行流程图</a>
-      <a href="#quadrant">可点击场景象限</a>
-      <a href="#architecture">渐进式披露结构</a>
+      <p>从原稿开始</p>
+      <a href="#case">读者在哪里跟丢</a>
+      <p>五类阅读问题</p>
+      <a href="#background">概念出现得太早</a>
+      <a href="#actions">动作和因果被压缩</a>
+      <a href="#evidence">判断超过证据</a>
+      <a href="#voice">标题与语气干扰内容</a>
+      <a href="#page">页面切断连续说明</a>
+      <p>怎样修改</p>
+      <a href="#causes">这些写法为何反复出现</a>
+      <a href="#revision">一篇文章的修改顺序</a>
+      <p>附录</p>
+      <a href="#runtime">Skill 的运行流程</a>
+      <a href="#quadrant">不同写作任务的差别</a>
+      <a href="#architecture">文件如何按需加载</a>
       <a href="#skill">完整 Skill 文件包</a>
     </aside>
 
     <main id="content">
       <article>
-        <section id="feedback">
-          <p class="section-label">真实反馈</p>
-          <h2>让人不满的地方分布在整篇文章的不同层面</h2>
-          <p class="intro">下面四条反馈表面上分别指向标题、开头、句式和语气。继续往下拆，会看到读者知识、文章顺序、对象关系和作者姿态同时出了问题。单独换几个词只能缓解表面症状。</p>
+        <section id="case">
+          <p class="section-label">从原稿开始</p>
+          <h2>这段开头让读者在哪里跟丢</h2>
+          <p>事情发生在一个科研软件里。用户打开项目后，发现原先启动的后台仍在提供服务，准备接手的新后台却迟迟没有接管。用户想知道环境准备和数据摸排是否互相干扰，也想知道后台为什么会退出。</p>
 
-          <div class="feedback">
-            <div>
-              <strong>“我们不是从代码名词出发，而是连续回答你提出的六个问题”</strong>
-              <p>标题在说明作者采用了什么写法。读者打开文章时想知道事件内容，这个标题没有提供对象、动作或问题。</p>
-            </div>
-            <div class="diagnosis">
-              <strong>涉及三层问题</strong>
-              <p>作者姿态进入标题；先设置一个没有必要的对立；方法说明占据了内容标题的位置。</p>
-            </div>
+          <div class="case-context">
+            <strong>读者当时掌握的信息</strong>
+            <p>页面上同时出现了旧后台仍在服务、新后台尚未接管、数据摸排被打断等现象。至于后台由谁启动、怎样交接、任务失败后由谁处理，读者尚未得到解释。</p>
           </div>
 
-          <div class="feedback">
-            <div>
-              <strong>“先说最重要的结论……数据 Worker 的失败被两个模块重复收尾……”</strong>
-              <p>一句话里出现 Worker、模块、收尾、任务边界和后台。它们都来自调查后的内部知识。读者还不知道这些对象怎样进入故事，也不知道动作顺序。</p>
-            </div>
-            <div class="diagnosis">
-              <strong>涉及五层问题</strong>
-              <p>读者起点错位；信息依赖倒置；对象未经介绍；因果链被压扁；强调词替事实决定重要性。</p>
-            </div>
+          <p>原稿一开头写道：</p>
+          <blockquote>
+            <p>先说最重要的结论：原事故不是“环境准备太慢，所以后台被迫关闭”。真正让后台退出的是，一项数据 Worker 的失败被两个模块重复收尾，第二次收尾产生内部冲突，错误随后逃出了任务边界，带走了整个后台。</p>
+          </blockquote>
+
+          <p>这段话对已经完成调查的人很紧凑。第一次接触事情的人会连续遇到四个障碍：</p>
+          <ol class="reading-list">
+            <li><strong>开头先纠正一个观点。</strong>读者未必认定“环境准备太慢导致后台关闭”，却要先处理这场没有交代来源的争论。</li>
+            <li><strong>五个概念同时出现。</strong>Worker、模块、收尾、任务边界和后台都没有说明，它们之间的关系也没有出现。</li>
+            <li><strong>六个动作被压成一句话。</strong>任务怎样失败、两个模块为何都来处理、第二个错误为何没有被接住，都留给读者补全。</li>
+            <li><strong>强调先于证据。</strong>“最重要”“真正”等词已经替读者作出判断，支持这些判断的日志、代码和实验还在后文。</li>
+          </ol>
+
+          <div class="rewrite">
+            <span class="label">先补背景，再说明当前发现</span>
+            <p>用户进入项目后，页面仍然连接着此前启动的后台。系统同时在准备一套新的运行环境；新环境准备完成后，后续请求才会交给新启动的后台。因此，页面在一段时间内会同时涉及前后两套后台。</p>
+            <p>日志显示，此次退出发生在一项数据任务失败之后。负责调度任务的模块先把任务标记为结束，另一个模块随后又处理了同一个结束动作。第二次处理产生了新的错误。任务执行代码没有接住这个错误，后台进程随之退出。</p>
           </div>
 
-          <div class="feedback">
-            <div>
-              <strong>“新旧后台不是两个固定产品，而是同一研究值班室的前后两班人”</strong>
-              <p>句子先纠正一个读者未必持有的观点，随后又要求读者理解一套值班室比方。真实后台的创建、交接和退出仍未出现。</p>
-            </div>
-            <div class="diagnosis">
-              <strong>涉及四层问题</strong>
-              <p>虚构对立；比方抢在事实前面；真实对象被替换；读者需要同时维护技术系统和比方系统。</p>
-            </div>
-          </div>
-
-          <div class="feedback">
-            <div>
-              <strong>“还有很多上价值、下判断、喊口号的内容”</strong>
-              <p>文章不断告诉读者哪些内容最深、最关键、最接近本质。事件后果和证据没有承担这些判断，作者的声音因而压过材料。</p>
-            </div>
-            <div class="diagnosis">
-              <strong>涉及三层问题</strong>
-              <p>证据与判断脱节；作者自我评价；语言节奏被口号、排比和结论预告控制。</p>
-            </div>
-          </div>
-
-          <div class="notice">
-            <p>这些不满共享一个结果：作者把本应写在纸面上的关系留给读者猜。读者需要自行补背景、认对象、排时间、接因果、判断证据，还要抵抗作者不断发出的重要性指令。</p>
-          </div>
+          <p>改写后的文字更长，却减少了猜测。每个新对象都有来由，动作按发生顺序出现，读者也能指出哪些句子来自页面现象，哪些句子来自调查证据。</p>
         </section>
 
-        <section id="layers">
-          <p class="section-label">问题之间的关系</p>
-          <h2>同一段文字可以同时在七个层面失效</h2>
-          <p class="intro">前四层决定读者能否理解内容，第五和第六层决定文章是否像一个人在认真说明事情，第七层决定页面能否帮助读者找到关系。上游没有修好时，下游润色只能让混乱变得更顺口。</p>
+        <section id="background">
+          <p class="section-label">背景与概念</p>
+          <h2>概念为什么像从半空出现</h2>
+          <p>AI 写作时通常已经看过对话、代码、日志和调查记录。它容易从自己已经形成的完整理解开始写。读者只看到最后的文章，没有经历前面的调查过程。</p>
+          <p>这会形成一种知识差。作者觉得“后台”“Worker”“任务边界”已经反复出现，读者却可能第一次见到这些词。一个陌生词尚可暂时记住；多个陌生词同时进入一句话时，读者还要猜它们的层级和关系。</p>
 
-          <div class="layers" aria-label="AI 文字问题的七个层面">
-            <div class="layer"><span class="layer-no">第一层</span><strong>读者起点</strong><span>文章是否从读者已经知道的事情开始，新概念是否有进入故事的理由。</span></div>
-            <div class="layer"><span class="layer-no">第二层</span><strong>信息顺序</strong><span>前提、对象和事件是否在被使用以前出现，多条问题线是否得到分开。</span></div>
-            <div class="layer"><span class="layer-no">第三层</span><strong>对象与因果</strong><span>谁做了什么、状态怎样变化、一个结果怎样走到下一个结果。</span></div>
-            <div class="layer"><span class="layer-no">第四层</span><strong>证据与判断</strong><span>观察、代码、实验、推断和未知是否拥有相符的语气与结论范围。</span></div>
-            <div class="layer"><span class="layer-no">第五层</span><strong>作者姿态</strong><span>正文是否在说明事情，还是在展示作者多会分析、多有洞察。</span></div>
-            <div class="layer"><span class="layer-no">第六层</span><strong>句式与节奏</strong><span>词语、句长、转折和段落是否自然，是否反复出现模型常用模板。</span></div>
-            <div class="layer"><span class="layer-no">第七层</span><strong>页面形式</strong><span>标题、卡片、颜色、表格和图是否承担真实关系，还是只制造完成感。</span></div>
-          </div>
-          <p class="layer-note">阅读时从第一层向下建立理解；修改时也应从第一层开始。先做句式润色会掩盖仍未解决的结构缺口。</p>
-        </section>
+          <h3>新概念进入文章前需要三个落点</h3>
+          <ol>
+            <li><strong>它是什么。</strong>后台是一个持续运行的程序进程；Worker 是这个进程里执行具体任务的工作单元。</li>
+            <li><strong>它为什么此时出现。</strong>文章正在解释一次任务失败如何影响整个后台，因此需要介绍任务与后台的关系。</li>
+            <li><strong>后文要用它说明什么。</strong>读者随后会看到任务内部的错误怎样越过原有处理范围，影响后台进程。</li>
+          </ol>
 
-        <section id="reader">
-          <p class="section-label">第一层：读者起点</p>
-          <h2>AI 从自己掌握的全量材料开始写，读者只能看到成品</h2>
-          <p class="intro">AI 在写作时已经读过代码、日志、对话和调查结论。它容易把这些信息当作共同背景。读者没有经历这段内部过程，第一段里的每个内部名称都会形成新的理解负担。</p>
+          <p>解释多少取决于读者已有的知识。写给同一项目的开发者，可以省略通用的进程概念；当前事故里特有的模块分工和交接顺序仍要说明。写给首次接触产品的人，则应从页面现象和用户操作开始。</p>
 
-          <div class="diagnostic">
-            <h3>这一层的常见症状</h3>
-            <div class="diagnostic-grid">
-              <div><strong>概念凭空出现</strong><p>后台、环境、Worker、任务边界等名称没有来源，也没有说明当前为何需要它们。</p></div>
-              <div><strong>背景从作者经验开始</strong><p>文章从调查者已经形成的架构图开始，忽略用户实际看到的页面和操作。</p></div>
-              <div><strong>解释数量与读者无关</strong><p>面对专家仍重复常识，面对新读者又直接使用内部词。</p></div>
+          <div class="before-after">
+            <div>
+              <strong>概念先出现</strong>
+              <p>第二套后台未接管时，数据 Worker 已越过环境准入并触发异常收尾。</p>
             </div>
-
-            <h3>读者被迫完成什么工作</h3>
-            <p>读者需要暂停当前句子，猜一个词属于程序、进程、任务还是角色。多个新词同时出现时，读者还要猜它们之间的层级。猜测一旦错误，后面的因果关系会全部建立在错误地图上。</p>
-
-            <div class="compare">
-              <div class="example bad">
-                <span class="label">作者已经知道全部结构</span>
-                <p>第二套后台未接管时，数据 Worker 已越过环境准入并触发异常收尾。</p>
-              </div>
-              <div class="example good">
-                <span class="label">从用户实际经历开始</span>
-                <p>用户打开项目后，页面仍然连接着此前启动的后台。页面同时准备新的运行环境。系统原本要等新环境可用，再把后续请求交给新的后台。</p>
-              </div>
-            </div>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <ol>
-                <li>列出读者亲自见过的操作、页面现象和错误提示。</li>
-                <li>第一段只使用这些内容，以及一个得到立即解释的新对象。</li>
-                <li>每个新概念第一次出现时，说明它是什么、为何此时出现、后文为什么需要它。</li>
-                <li>解释深度由目标读者决定。专家共同知识可以省略，当前事件独有的对象不能省略。</li>
-              </ol>
+            <div>
+              <strong>经历先出现</strong>
+              <p>用户打开项目后，页面仍连接着此前启动的后台。与此同时，系统开始准备新的运行环境。数据摸排任务在这段准备期间启动了。</p>
             </div>
           </div>
+
+          <p>后一句仍然会继续解释环境、数据任务和两套后台的关系。第一句只承担一个任务：把读者带到事情发生的现场。</p>
         </section>
 
-        <section id="structure">
-          <p class="section-label">第二层：信息顺序</p>
-          <h2>后一句依赖的知识，需要在前一句出现</h2>
-          <p class="intro">文章的顺序不能只跟随作者想到结论的顺序。读者需要先认识参与者，再理解参与者之间的关系；先看到正常流程，再判断异常发生在哪里。</p>
+        <section id="actions">
+          <p class="section-label">动作与因果</p>
+          <h2>一句话省略了哪些动作</h2>
+          <p>“重复收尾导致错误逃逸”听起来像一个完整原因，实际把多个参与者和多次状态变化折叠在了抽象名词里。读者能记住结论，却难以复述发生过程。</p>
 
-          <div class="diagnostic">
-            <h3>这一层的常见症状</h3>
-            <div class="diagnostic-grid">
-              <div><strong>结论抢在概念前面</strong><p>开头给出压缩后的根因，结论中的词要到后文才获得解释。</p></div>
-              <div><strong>多条问题线挤在一起</strong><p>后台退出、环境竞态和退出时重生同时出现，读者无法判断它们是否属于同一因果链。</p></div>
-              <div><strong>背景与当前问题脱节</strong><p>文章列出完整架构和调查过程，却没有说明哪些背景服务于眼前的问题。</p></div>
+          <p>把原句展开后，可以看到六个连续动作：</p>
+          <ol class="sequence">
+            <li>数据任务报告失败。</li>
+            <li>负责调度任务的模块把任务标记为结束。</li>
+            <li>另一个模块再次尝试结束同一个任务。</li>
+            <li>第二次操作发现任务已经结束，于是产生新的错误。</li>
+            <li>任务执行代码没有在自己的范围内处理这个新错误。</li>
+            <li>错误继续向外传播，最终使后台进程退出。</li>
+          </ol>
+
+          <p>展开动作有两个作用。第一，读者能检查每一步是否有日志或代码支持。第二，解决方案有了明确落点：系统可以让结束动作允许重复调用，也可以规定只有一个模块负责结束任务，还可以在任务边界接住第二次操作产生的错误。</p>
+
+          <h3>代词会进一步隐藏参与者</h3>
+          <p>一句话里同时出现任务、模块、错误和后台时，“它”“这个问题”“该过程”都可能指向多个对象。重复名称看起来略显笨拙，却能避免读者回头猜指向。技术说明中，稳定的对象名称通常比表面上的词语变化更重要。</p>
+
+          <div class="before-after">
+            <div>
+              <strong>抽象名词承担过程</strong>
+              <p>重复收尾造成异常逃逸，并触发后台替换。</p>
             </div>
-
-            <h3>为什么“结论先行”会在这里失效</h3>
-            <p>结论可以提前出现，前提是读者已经认识结论中的对象。把最终调查结论原样搬到开头，只是把作者的终点放到了读者的起点。读者必须先记住一串暂时无法理解的词，随后再回头修改这些词的含义。</p>
-
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>文章任务</th><th>需要先出现</th><th>随后才能讨论</th></tr></thead>
-                <tbody>
-                  <tr><td>说明后台为何退出</td><td>后台负责什么、谁启动它、正常情况下怎样结束任务</td><td>哪一步产生了错误，错误怎样离开任务范围</td></tr>
-                  <tr><td>说明新旧后台交接</td><td>为什么会启动第二套后台、接管的完成条件</td><td>旧后台为何仍在服务，第二套为何尚未接管</td></tr>
-                  <tr><td>说明数据摸排竞态</td><td>数据任务何时产生、环境准备何时开始</td><td>两条工作如何重叠，谁打断了谁</td></tr>
-                  <tr><td>提出修正方案</td><td>现状、原因、约束和仍然未知的范围</td><td>哪些改法能够覆盖问题，代价是什么</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <p>先为每一节写出它要回答的具体问题，再列出回答这个问题必须知道的前提。前提仍未出现时，把解释移到前面。两条线可以分别完整复述时，先分开叙述；直到关系得到证据支持，再把它们连接起来。</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="causality">
-          <p class="section-label">第三层：对象与因果</p>
-          <h2>读者需要知道谁做了什么，变化怎样一步步发生</h2>
-          <p class="intro">抽象名词、被动语态和代词能够把多步过程压成一句话。句子变短了，读者承担的推理却变多了。技术调查、论文和项目报告都会因此出现“好像有结论，但说不清过程”的感觉。</p>
-
-          <div class="diagnostic">
-            <h3>这一层的常见症状</h3>
-            <div class="diagnostic-grid">
-              <div><strong>动作没有执行者</strong><p>“发生收尾”“完成切换”“触发接管”没有说明哪个模块执行动作。</p></div>
-              <div><strong>代词跨越多个对象</strong><p>连续出现“它、这、该问题”，任何一个都可能指向进程、任务或错误。</p></div>
-              <div><strong>连接词替代中间过程</strong><p>句子使用“所以、因此、随后”，触发条件和状态变化仍然缺失。</p></div>
-            </div>
-
-            <h3>一句话为什么会显得莫名其妙</h3>
-            <div class="quote">
-              <p>“一项数据 Worker 的失败被两个模块重复收尾，第二次收尾产生内部冲突，错误随后逃出了任务边界，带走了整个后台。”</p>
-            </div>
-            <p>这句话包含至少五个动作：任务失败、模块一结束任务、模块二再次结束任务、第二次操作报错、错误离开任务处理范围、后台进程退出。作者把动作压进一个句子后，谁执行了哪一步、第二次操作为何发生、错误为何能够离开任务范围都消失了。</p>
-
-            <div class="compare">
-              <div class="example bad">
-                <span class="label">名词化压缩</span>
-                <p>重复收尾造成异常逃逸并触发后台替换。</p>
-              </div>
-              <div class="example good">
-                <span class="label">参与者和状态逐步出现</span>
-                <p>数据任务先报告失败。负责调度任务的模块随后把它标记为结束。另一个模块又尝试结束同一个任务，第二次操作产生了新的错误。任务处理代码没有接住这个错误，后台进程因此退出。</p>
-              </div>
-            </div>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <p>为每个关键句标出“执行者—动作—对象—状态变化”。一句话包含多个主要动作时拆开。因果链至少写出触发条件、中间变化和后果。代词可能指向两个对象时，直接重复名称。</p>
+            <div>
+              <strong>参与者承担动作</strong>
+              <p>调度模块已经结束任务后，任务管理模块又执行了一次结束操作。第二次操作报错，后台进程随后退出。编排程序检测到退出后，才启动替代后台。</p>
             </div>
           </div>
         </section>
 
         <section id="evidence">
-          <p class="section-label">第四层：证据与判断</p>
-          <h2>材料能支持到哪里，结论就写到哪里</h2>
-          <p class="intro">语言流畅会让推断看起来像事实。AI 还容易把一次复现扩写成普遍规律，把时间接近扩写成因果，把缺失日志留下的空白补成确定动机。</p>
+          <p class="section-label">证据范围</p>
+          <h2>哪些判断超过了现有材料</h2>
+          <p>流畅的叙述很容易把观察、代码规则、实验结果和作者推断写成同一种确定语气。读者随后难以判断哪些内容可以直接核查，哪些内容仍可能被新证据推翻。</p>
 
-          <div class="diagnostic">
-            <h3>四种内容需要不同语气</h3>
-            <div class="grid-4">
-              <div class="mini green"><h4>直接观察</h4><p>日志、页面、测量和原始材料确实记录了什么。</p></div>
-              <div class="mini blue"><h4>规则与代码</h4><p>当前实现规定在某个条件下会执行什么。</p></div>
-              <div class="mini amber"><h4>合理推断</h4><p>多项事实共同支持的解释，以及它成立所需的条件。</p></div>
-              <div class="mini red"><h4>仍然未知</h4><p>历史记录缺失、实验没有覆盖或材料相互冲突的部分。</p></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>内容来源</th><th>可以怎样写</th><th>需要保留的边界</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>日志与页面记录</td><td>在某个时间发生了什么，哪个进程退出，页面显示了什么</td><td>日志未记录的动机和分支不能自动补全</td></tr>
+                <tr><td>当前代码</td><td>满足某个条件时，程序会执行哪条路径</td><td>代码规则不等于事故当时一定走过这条路径</td></tr>
+                <tr><td>受控实验</td><td>在给定顺序和条件下，可以复现什么现象</td><td>一次复现不能覆盖尚未测试的顺序和环境</td></tr>
+                <tr><td>综合推断</td><td>哪些事实共同支持某种解释</td><td>应说明替代解释以及仍缺少的记录</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="boundary-note">
+            <p>事故记录里缺少“为什么决定替换后台”这条日志。因此，可以确认后台曾经退出，也可以从代码中找到触发替换的条件；单凭现有记录，还不能确定事故当时究竟是哪一个判断启动了第二套后台。</p>
+          </div>
+
+          <p>强调词会放大这个问题。“核心”“本质”“最关键”“已经证明”让推断听起来更加确定，却没有增加证据。需要说明事情重要时，应写出具体后果，例如用户请求被哪套后台处理、项目状态是否可能丢失、后续调查缺少哪条记录。</p>
+
+          <div class="before-after">
+            <div>
+              <strong>把一次实验扩大成普遍结论</strong>
+              <p>真实客户端实验已经证明退出阶段存在必然的后台重生问题。</p>
             </div>
-
-            <h3>强调词为什么会加重问题</h3>
-            <p>“最关键、真正、核心、本质”常常出现在证据尚未展开以前。它们先替读者完成了重要性判断。文章如果没有写出影响范围、失败后果和替代解释，这些词只增加作者确信的声音。</p>
-
-            <div class="compare">
-              <div class="example bad">
-                <span class="label">实验范围被扩大</span>
-                <p>真实客户端实验已经证明退出阶段存在必然的后台重生问题。</p>
-              </div>
-              <div class="example good">
-                <span class="label">结论停在实验覆盖范围</span>
-                <p>在这次客户端退出实验使用的顺序下，桌面应用关闭后又启动了一套后台。实验确认该顺序可以触发重生；其他退出顺序尚未覆盖。</p>
-              </div>
-            </div>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <p>每项判断旁边注明它来自观察、代码、实验还是推断。先写证据显示什么，再写作者如何解释。缺少记录时说明缺口会限制哪些结论。需要表达重要性时写出实际影响，让读者根据后果判断。</p>
+            <div>
+              <strong>结论停在实验覆盖范围</strong>
+              <p>在这次实验采用的退出顺序下，桌面应用关闭后又启动了一套后台。该顺序可以触发现象；其他退出顺序尚未测试。</p>
             </div>
           </div>
         </section>
 
-        <section id="stance">
-          <p class="section-label">第五层：作者姿态</p>
-          <h2>文章说明事情，作者的分析过程退到幕后</h2>
-          <p class="intro">AI 常用“我们将、我们发现、我们证明、接下来从三个层面”等句子维持篇章秩序。这些句子让作者持续站在读者和内容之间，也容易形成主持稿和汇报腔。</p>
+        <section id="voice">
+          <p class="section-label">标题与语气</p>
+          <h2>标题和句式怎样把注意力带离内容</h2>
+          <p>有些句子没有增加事实，却持续提醒读者作者正在分析、分类或纠正。文章因此像一场由作者主持的汇报，事件本身退到了后面。</p>
 
-          <div class="diagnostic">
-            <h3>作者姿态过重的几种形式</h3>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>写法</th><th>它在做什么</th><th>读者缺少什么</th><th>修正方向</th></tr></thead>
-                <tbody>
-                  <tr><td>“我们怎样证明这些根因”</td><td>展示调查者的方法</td><td>本节具体处理哪些证据</td><td>改为“六项实验分别排除了哪些解释”</td></tr>
-                  <tr><td>“从表象追到本质”</td><td>提前评价内容深度</td><td>本节的对象和问题</td><td>改为具体事件或因果问题</td></tr>
-                  <tr><td>“这不是 A，而是 B”</td><td>先替读者设置错误观点</td><td>A 是否真实存在、B 的条件是什么</td><td>分别说明 A 缺少的条件和现有材料支持的关系</td></tr>
-                  <tr><td>“先说最重要的结论”</td><td>要求读者接受优先级</td><td>重要性来自什么后果</td><td>直接陈述结论、范围和影响</td></tr>
-                  <tr><td>“我们终于查清了”</td><td>强调作者完成工作</td><td>证据究竟显示什么</td><td>让日志、代码或实验成为句子主语</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>比方为什么也可能成为作者表演</h3>
-            <p>比方适合处理一个难以直接看见的关系。它一旦进入标题、结论和多个章节，读者需要记住真实对象与比方对象的双重映射。比方越生动，越可能抢走本应属于事实的注意力。</p>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <p>标题写对象、事件、问题或关系。正文直接写材料显示什么。方法过程只有在读者需要判断可信度或复现时出现。比方完成局部解释后给出真实名称，随后淡出。</p>
-            </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>原来的写法</th><th>读者遇到的阻力</th><th>可以改成</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>我们不是从代码名词出发，而是连续回答你提出的六个问题</td><td>标题描述写作方法，没有说六个问题涉及什么事情</td><td>项目启动后，为什么会同时出现两套后台</td></tr>
+                <tr><td>从表象追到本质</td><td>作者先评价分析深度，读者仍不知道本节讨论哪个现象</td><td>后台退出前发生了哪些动作</td></tr>
+                <tr><td>先说最重要的结论</td><td>读者被要求先接受重要性判断，结论中的概念还未介绍</td><td>直接写结论；若背景不足，先补两句背景</td></tr>
+                <tr><td>A 不是……而是 B</td><td>每段都先制造一项对立，读者需要处理自己未必持有的观点</td><td>说明现有证据支持 B 的哪些部分，以及 A 缺少什么条件</td></tr>
+              </tbody>
+            </table>
           </div>
+
+          <p>句子节奏也会暴露模板。连续使用否定、转折和三段排比，文章会反复响起同一种拍子。长句若塞入多个动作，读者要等到句尾才知道主干；短句若像日志条目一样并排，动作之间的关系仍然缺失。</p>
+
+          <p>修改时应先确认一句话要完成什么，再调整词语。句子需要交代动作，就让执行者靠近动词；需要说明限制，就把条件和结论放在相邻句子；没有增加对象、证据、条件或后果的总结句，可以直接删除。</p>
         </section>
 
-        <section id="rhythm">
-          <p class="section-label">第六层：句式与节奏</p>
-          <h2>自然语言没有固定拍子，也不会每段都制造转折</h2>
-          <p class="intro">很多 AI 痕迹来自重复的句法节奏：先否定、再转折、再用三个并列项展开、最后用一句口号收尾。单段看起来完整，连续阅读时会像套用同一个模具。</p>
+        <section id="page">
+          <p class="section-label">页面形式</p>
+          <h2>页面怎样帮助阅读，又怎样打断阅读</h2>
+          <p>上一版页面把七类问题分别放进诊断框，每个框又包含症状卡片、对比例子和修正卡片。正文区域一共出现二十多个卡片式块。读者虽然能快速扫到许多标签，却很难连续读完一条解释。</p>
 
-          <div class="diagnostic">
-            <h3>常见的节奏问题</h3>
-            <div class="diagnostic-grid">
-              <div><strong>连续使用对立句</strong><p>每段都通过否定 A、宣布 B 来推进，文章不断制造并不存在的争论。</p></div>
-              <div><strong>长句塞入多条线</strong><p>括号、分号和连接词不断增加，句子直到末尾才出现主要动作。</p></div>
-              <div><strong>短句像日志条目</strong><p>句子虽然短，相邻句没有关系词和状态承接，读者仍要自行组织。</p></div>
-              <div><strong>抽象名词堆叠</strong><p>准入、收口、终态、边界、闭环等词一起出现，具体动作消失。</p></div>
-              <div><strong>同义反复</strong><p>段落用三个近义句重申同一个判断，信息没有推进。</p></div>
-              <div><strong>口号式结尾</strong><p>最后一句追求整齐和力度，条件、风险与未知被压掉。</p></div>
-            </div>
+          <p>首页也占用了接近一屏的深色区域。标题提出“AI 的文字为什么让人不舒服”，范围远大于页面实际分析的材料；下面的说明又先列出八个抽象类别。读者在看到第一个例子以前，已经读过一段制作说明和三条页面元数据。</p>
 
-            <h3>删掉“AI 词”仍然难读的原因</h3>
-            <p>词语只是线索。第一段同时引入五个陌生对象时，删除“核心”和“真正”不会恢复背景。因果链缺少中间步骤时，把长句拆成四个短句也不会自动产生关系。</p>
+          <p>这一版采用了更简单的分工：</p>
+          <ul>
+            <li>连续因果使用正文和编号步骤，避免每一步单独装进卡片。</li>
+            <li>只有两个写法需要横向比较时，才使用并排区域。</li>
+            <li>表格只比较同一组维度，例如证据来源、表达范围和限制。</li>
+            <li>流程图和任务示意图放在附录，因为它们解释 Skill 的使用方式，不属于正文论证。</li>
+            <li>颜色只区分示例、提醒和交互点，不负责替文章宣布严重程度。</li>
+          </ul>
 
-            <div class="repair">
-              <strong>修正办法</strong>
-              <ol>
-                <li>先确认句子在整段中的任务，再修改词语。</li>
-                <li>用具体动词替换抽象名词组合，施动者靠近动作。</li>
-                <li>一个句子承载一个主要动作，条件较多时先写条件，再另起一句写结果。</li>
-                <li>长短句跟随信息变化。默读一遍，检查真人是否会用同样节奏连续说三段。</li>
-                <li>删除没有增加对象、条件、证据或后果的重复句。</li>
-              </ol>
-            </div>
-          </div>
+          <p>页面设计无法补上缺失的背景和因果。视觉形式应表达已经明确的关系：比较用对齐，时间变化用时间线，分支用流程图，连续解释保留连续段落。</p>
         </section>
 
-        <section id="visual">
-          <p class="section-label">第七层：页面形式</p>
-          <h2>卡片、颜色和图表需要承担明确的阅读关系</h2>
-          <p class="intro">HTML 很容易把每段话放进卡片，再用多种颜色制造层次。页面看起来经过设计，连续阅读却被不断切断。视觉元素如果没有表达比较、顺序、层级或状态，只会增加扫描目标。</p>
-
-          <div class="diagnostic">
-            <h3>页面形式怎样掩盖内容问题</h3>
-            <div class="grid-3">
-              <div class="mini red"><h4>卡片代替分段</h4><p>本可连续解释的内容被切成许多小块，读者需要自行恢复段落关系。</p></div>
-              <div class="mini amber"><h4>颜色代替证据等级</h4><p>绿色让推断看起来已证实，红色让普通限制看起来像严重事故。</p></div>
-              <div class="mini blue"><h4>图表代替选择</h4><p>所有信息都被可视化，真正需要比较的关系反而没有获得突出。</p></div>
-            </div>
-
-            <h3>选择视觉形式前先问什么</h3>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>信息关系</th><th>适合的形式</th><th>不需要视觉化时</th></tr></thead>
-                <tbody>
-                  <tr><td>多个对象横向比较</td><td>表格或对齐卡片</td><td>只有一个对象时写连续段落</td></tr>
-                  <tr><td>状态随时间变化</td><td>时间线</td><td>只有一次变化时写前后两句</td></tr>
-                  <tr><td>层级、所有权或嵌套</td><td>树状图</td><td>层级只有两层时直接点名关系</td></tr>
-                  <tr><td>多个因素位于连续维度</td><td>坐标图或散点图</td><td>只有两个固定选项时使用短对比</td></tr>
-                  <tr><td>分支和条件路径</td><td>流程图</td><td>线性步骤使用编号列表</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="repair">
-              <strong>修正办法</strong>
-              <p>先用文字说明页面要表达的关系，再选择最小可用形式。颜色只表示已经定义的状态。卡片只用于并列对象。正文需要连续推理时保持连续，不为了“丰富”而切碎。</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="model-causes">
-          <p class="section-label">生成机制</p>
-          <h2>AI 为什么反复产生这些写法</h2>
-          <p class="intro">这些问题不等于模型缺少词汇。模型在组织信息、预测常见文章形态和压缩上下文时，会自然滑向几种稳定模式。Skill 需要干预这些模式，不能只提供一张禁用词表。</p>
+        <section id="causes">
+          <p class="section-label">形成原因</p>
+          <h2>这些写法为什么容易反复出现</h2>
+          <p>下面的解释用于指导写作和 Skill 设计。它来自对成品模式的归纳，没有直接测量模型内部每一步计算，因此应看作工作解释。</p>
 
           <div class="cause-list">
-            <div class="cause-row"><strong>模型同时看见全部材料</strong><p>它容易从最终理解状态开始写，把自己刚读到的内部信息当作读者背景。读者起点因此消失。</p></div>
-            <div class="cause-row"><strong>局部句子比全篇依赖更容易优化</strong><p>每句话可以语法完整，章节之间仍然缺少前提顺序。模型需要明确检查后文依赖是否已在前文出现。</p></div>
-            <div class="cause-row"><strong>熟悉的修辞模板容易生成</strong><p>否定—转折、三段并列和口号收尾在训练文本中很常见。它们能够快速产生“像文章”的外形。</p></div>
-            <div class="cause-row"><strong>压缩常发生在错误位置</strong><p>模型删掉背景、条件和中间过程，却保留作者预告、强调词和格式性段落。字数减少，推理负担转移给读者。</p></div>
-            <div class="cause-row"><strong>确信语气能够遮住证据缺口</strong><p>当材料不完整时，强烈的判断词会让段落显得稳定。稳定感不能增加证据，反而让未知范围更难发现。</p></div>
-            <div class="cause-row"><strong>页面组件容易制造完成感</strong><p>卡片、标签和颜色可以快速形成层次。模型若没有先判断信息关系，视觉层次会与内容结构脱节。</p></div>
+            <h3>AI 掌握的背景多于读者</h3>
+            <p>模型在写作前读过大量材料，容易把刚刚获得的信息当作共同知识。最终结论离它很近，读者的最初问题反而容易被遗忘。</p>
+
+            <h3>局部流畅比全篇依赖更容易形成</h3>
+            <p>每句话可以单独通顺，章节之间仍可能缺少前提。模型若没有先安排概念和证据的出现顺序，后文会频繁依赖尚未介绍的内容。</p>
+
+            <h3>常见文章模板提供了现成外形</h3>
+            <p>结论预告、三段并列、否定后转折和口号式收尾能够快速产生完整文章的样子。它们在某些场合有效，连续重复时会遮住内容本身的节奏。</p>
+
+            <h3>“专业、全面、有深度”容易被翻译成可见装饰</h3>
+            <p>抽象名词、强烈判断、分层标题和大量卡片都能制造正式感。若任务没有同时规定读者、证据边界和读后任务，模型可能优先满足这种外观。</p>
+
+            <h3>压缩经常删错位置</h3>
+            <p>背景、条件和中间动作被删掉，作者预告、强调语和重复总结却被保留。字数减少以后，原本写在纸面上的推理工作转移给了读者。</p>
           </div>
         </section>
 
-        <section id="repair">
-          <p class="section-label">修正顺序</p>
-          <h2>从读者起点开始重建，再处理句子和页面</h2>
-          <p class="intro">重写需要先修上游。读者模型、证据边界和信息依赖确定以后，句子才有稳定的内容可以表达。下面的顺序适用于技术报告、论文解释、PPT 文稿和一般长文。</p>
+        <section id="revision">
+          <p class="section-label">修改方法</p>
+          <h2>一篇文章可以按什么顺序修改</h2>
+          <p>先改句子通常收效有限。背景和证据尚未整理时，润色只会让原有跳跃读起来更加顺滑。下面的顺序适用于技术说明，也可以用于研究报告、论文、PPT 文稿和工作邮件。</p>
 
-          <div class="revision-steps">
-            <div class="revision-step">
-              <h3>重建读者起点</h3>
-              <p>写下读者亲自经历过什么、已经读过什么、没有理由知道什么，以及读完后要完成什么。删除作者内部调查过程形成的默认知识。</p>
-            </div>
-            <div class="revision-step">
-              <h3>整理事实、推断和未知</h3>
-              <p>在写正文前确定每项材料能够支持到哪里。存在记录缺口时先划定未知范围，避免后续叙事为了流畅自动补全。</p>
-            </div>
-            <div class="revision-step">
-              <h3>建立信息依赖顺序</h3>
-              <p>每节只回答一个具体问题。列出回答它需要的对象和前提，确保这些内容已经在前文出现。独立问题先分开。</p>
-            </div>
-            <div class="revision-step">
-              <h3>展开对象、动作和状态变化</h3>
-              <p>点名执行者、动作、对象和结果。将压缩成抽象名词的过程恢复为读者能够复述的步骤。</p>
-            </div>
-            <div class="revision-step">
-              <h3>清理作者姿态和句式模板</h3>
-              <p>标题改成实际内容。删除自我评价、虚构对立、预告深度和无依据的强调。随后调整句长、动词和段落连接。</p>
-            </div>
-            <div class="revision-step">
-              <h3>选择必要的页面形式</h3>
-              <p>只有比较、时间、层级、坐标或分支关系需要视觉表达时才加图。连续推理保留连续正文。最后在真实屏幕上完整阅读。</p>
-            </div>
-          </div>
-        </section>
+          <ol class="revision-list">
+            <li><strong>写下读者的起点。</strong>读者亲自见过什么，已经读过什么，没有理由知道什么，读完后要理解或完成什么。</li>
+            <li><strong>分开事实、代码规则、实验、推断和未知。</strong>先确定每项材料能支持到哪里，再决定使用多强的语气。</li>
+            <li><strong>安排概念和前提的出现顺序。</strong>每一节回答一个具体问题。后文需要的对象，应在前文得到介绍。</li>
+            <li><strong>展开关键动作。</strong>写清谁做了什么、对象怎样变化、下一步为何发生。多个主要动作不要挤在一句话里。</li>
+            <li><strong>处理标题和作者语气。</strong>标题说明实际内容。删除没有证据支撑的强调、虚构对立、深度预告和重复总结。</li>
+            <li><strong>最后调整句子和页面。</strong>用具体动词替换抽象名词，检查代词指向，再决定哪些关系确实需要表格、图或卡片。</li>
+          </ol>
 
-        <section id="acceptance">
-          <p class="section-label">读者验收</p>
-          <h2>成品需要让首次接触内容的人完成预定任务</h2>
-          <p class="intro">验收不看作者是否覆盖了所有规则。它检查读者能否沿着文章形成正确理解，并据此判断或行动。</p>
-
+          <h3>交付前让一位首次接触内容的人检查</h3>
           <div class="checklist">
-            <label class="check"><input type="checkbox">开头连接读者已经知道或亲自经历的事情。</label>
-            <label class="check"><input type="checkbox">每个新概念在被用于结论以前获得了足够介绍。</label>
-            <label class="check"><input type="checkbox">章节依赖的前提和对象已经在前文出现。</label>
-            <label class="check"><input type="checkbox">每个关键动作都有执行者、对象和状态变化。</label>
-            <label class="check"><input type="checkbox">代词只有一个可能指向，同一对象名称稳定。</label>
-            <label class="check"><input type="checkbox">触发条件、中间过程和最终后果能够按顺序复述。</label>
-            <label class="check"><input type="checkbox">直接观察、规则、实验、推断和未知可以区分。</label>
-            <label class="check"><input type="checkbox">标题说明内容，没有评价作者方法或内容深度。</label>
-            <label class="check"><input type="checkbox">删除强调词后，事实仍然能够显示事情的分量。</label>
-            <label class="check"><input type="checkbox">句子长短随内容变化，没有连续的模板式转折。</label>
-            <label class="check"><input type="checkbox">比方解决局部困难后回到了真实名称。</label>
-            <label class="check"><input type="checkbox">每个视觉元素都表达了明确关系。</label>
+            <label class="check"><input type="checkbox">开头连接了读者亲自见过或已经知道的事情。</label>
+            <label class="check"><input type="checkbox">新概念在进入结论前已经得到介绍。</label>
+            <label class="check"><input type="checkbox">关键动作都有明确的执行者和对象。</label>
+            <label class="check"><input type="checkbox">因果链可以按照发生顺序复述。</label>
+            <label class="check"><input type="checkbox">事实、实验、推断和未知能够区分。</label>
+            <label class="check"><input type="checkbox">标题说明内容，没有评价作者的写法或深度。</label>
+            <label class="check"><input type="checkbox">删除强调词后，后果仍能说明事情的分量。</label>
+            <label class="check"><input type="checkbox">表格和图各自表达了一项明确关系。</label>
           </div>
         </section>
 
-        <section id="runtime">
-          <p class="section-label">Skill 的运行方式</p>
-          <h2>场景判断在内部完成，只加载当前需要的规则</h2>
-          <p class="intro">这部分只说明 Skill 怎样减少使用负担。用户不需要填写表格，也不需要在多个写作 Skill 之间选择。</p>
+        <section id="runtime" class="appendix-start">
+          <p class="section-label">附录一</p>
+          <h2>Skill 怎样选择当前需要的规则</h2>
+          <p class="intro">用户只需提出写作任务。Skill 根据对话判断读者、已有知识、读后任务和成品形式，再加载一份主要场景文件。长文或高风险内容才增加检查文件。</p>
 
           <div class="runtime-flow" aria-label="write-for-reader 的运行流程">
-            <div class="flow-step"><strong>读取请求和历史</strong><span>识别 user 已给出的读者、材料、偏好和成品类型。</span></div>
-            <div class="flow-step"><strong>判断四项信息</strong><span>读者、已有知识、读后任务、呈现载体。判断留在内部。</span></div>
-            <div class="flow-step"><strong>加载一个 profile</strong><span>选择解释、调查、学术、PPT、工作或创意中的一个主要文件。</span></div>
-            <div class="flow-step"><strong>必要时补一层</strong><span>混合成品再加一个次要 profile；长文或高风险内容加载 AUDIT。</span></div>
-            <div class="flow-step"><strong>交付自然成品</strong><span>不展示路由、规则和评分。缺少关键信息时只问一个实际差别问题。</span></div>
+            <div class="flow-step"><strong>读取请求</strong><span>从用户的话和对话历史中识别已有信息。</span></div>
+            <div class="flow-step"><strong>判断读者</strong><span>确认谁会读、读者知道什么、读后要做什么。</span></div>
+            <div class="flow-step"><strong>选择场景文件</strong><span>从解释、调查、学术、演示、工作或创意中选择一个。</span></div>
+            <div class="flow-step"><strong>增加必要检查</strong><span>混合任务补一个次要场景；长文或高风险任务加载 AUDIT。</span></div>
+            <div class="flow-step"><strong>交付成品</strong><span>路由过程留在内部；缺少关键信息时只问一个实际问题。</span></div>
           </div>
         </section>
 
         <section id="quadrant">
-          <p class="section-label">写作场景二维象限</p>
-          <h2>读者的已有知识与行动压力共同改变写法</h2>
-          <p class="intro">横轴表示作者和读者共享多少背景知识，纵轴表示成品需要推动决定或行动的程度。点击图中的场景，可以查看代表性读者、沟通任务和特定要求。位置表达常见情况，具体任务仍会因用户上下文移动。</p>
+          <p class="section-label">附录二</p>
+          <h2>不同写作任务会怎样改变表达</h2>
+          <p class="intro">图中的每个点都代表一项完整任务，包含读者和成品，例如“给初学者解释概念”或“给开发团队写故障调查”。横轴表示双方共享多少背景，纵轴表示成品需要推动行动或决定的程度。位置用于比较常见差别，不是固定评分。</p>
 
           <div class="quadrant-shell">
-            <div class="quadrant" role="group" aria-label="写作场景二维象限图">
-              <div class="quadrant-zone zone-tl">低共享背景 · 高行动压力<br>先建立最低必要理解，再给可执行动作</div>
-              <div class="quadrant-zone zone-tr">高共享背景 · 高行动压力<br>减少共同背景，明确决定、责任和后果</div>
-              <div class="quadrant-zone zone-bl">低共享背景 · 低行动压力<br>帮助理解、体验和建立概念</div>
-              <div class="quadrant-zone zone-br">高共享背景 · 低行动压力<br>支持同行理解、核查和评价</div>
+            <div class="quadrant" role="group" aria-label="写作任务二维示意图">
+              <div class="quadrant-zone zone-tl">共享背景少 · 行动压力高<br>先建立最低必要理解，再给出动作</div>
+              <div class="quadrant-zone zone-tr">共享背景多 · 行动压力高<br>减少共同背景，明确决定、责任和后果</div>
+              <div class="quadrant-zone zone-bl">共享背景少 · 行动压力低<br>帮助读者理解、体验和建立概念</div>
+              <div class="quadrant-zone zone-br">共享背景多 · 行动压力低<br>支持同行理解、核查和评价</div>
               <span class="axis-label axis-y-high">决定 / 行动</span>
               <span class="axis-label axis-y-low">理解 / 体验</span>
               <span class="axis-label axis-x-low">共享背景少</span>
@@ -1288,22 +877,22 @@
               <span class="axis-label axis-y-title">读后任务</span>
               <span class="axis-label axis-x-title">读者已有知识</span>
 
-              <button class="scene-point point-understand active" style="--x: 13%; --y: 18%;" data-scene="plain">通俗解释</button>
-              <button class="scene-point point-understand" style="--x: 24%; --y: 38%;" data-scene="popular">科普文章</button>
-              <button class="scene-point point-understand" style="--x: 38%; --y: 9%;" data-scene="creative">创意叙事</button>
-              <button class="scene-point point-guide" style="--x: 14%; --y: 77%;" data-scene="instruction">操作指引</button>
-              <button class="scene-point point-guide" style="--x: 33%; --y: 63%;" data-scene="patient">患者说明</button>
-              <button class="scene-point point-understand" style="--x: 53%; --y: 26%;" data-scene="teachingPpt">教学型 PPT</button>
-              <button class="scene-point point-decide" style="--x: 58%; --y: 82%;" data-scene="email">工作邮件</button>
-              <button class="scene-point point-decide" style="--x: 70%; --y: 91%;" data-scene="decisionPpt">决策型 PPT</button>
-              <button class="scene-point point-decide" style="--x: 74%; --y: 64%;" data-scene="investigation">技术调查</button>
-              <button class="scene-point point-expert" style="--x: 89%; --y: 23%;" data-scene="paper">学术论文</button>
-              <button class="scene-point point-expert" style="--x: 89%; --y: 56%;" data-scene="defense">同行答辩</button>
+              <button class="scene-point point-understand active" style="--x: 13%; --y: 18%;" data-scene="plain">给初学者解释概念</button>
+              <button class="scene-point point-understand" style="--x: 24%; --y: 38%;" data-scene="popular">给公众写科普文章</button>
+              <button class="scene-point point-understand" style="--x: 38%; --y: 9%;" data-scene="creative">为陌生读者写故事</button>
+              <button class="scene-point point-guide" style="--x: 14%; --y: 77%;" data-scene="instruction">给首次用户写指引</button>
+              <button class="scene-point point-guide" style="--x: 33%; --y: 63%;" data-scene="patient">给患者解释方案</button>
+              <button class="scene-point point-understand" style="--x: 53%; --y: 26%;" data-scene="teachingPpt">给学生做教学演示</button>
+              <button class="scene-point point-decide" style="--x: 58%; --y: 82%;" data-scene="email">给同事发协作邮件</button>
+              <button class="scene-point point-decide" style="--x: 70%; --y: 91%;" data-scene="decisionPpt">给管理者做决策汇报</button>
+              <button class="scene-point point-decide" style="--x: 74%; --y: 64%;" data-scene="investigation">给团队写故障调查</button>
+              <button class="scene-point point-expert" style="--x: 89%; --y: 23%;" data-scene="paper">给同行写研究论文</button>
+              <button class="scene-point point-expert" style="--x: 89%; --y: 56%;" data-scene="defense">向评审做研究答辩</button>
             </div>
 
             <div class="scenario-detail" aria-live="polite">
               <div>
-                <h3 id="sceneTitle">通俗解释</h3>
+                <h3 id="sceneTitle">给初学者解释概念</h3>
                 <p class="scenario-position" id="scenePosition">共享背景少 · 主要任务是建立理解</p>
               </div>
               <div class="scenario-facts">
@@ -1312,16 +901,16 @@
                 <div><strong>特定要求</strong><span id="sceneRules">从亲身经历开始；概念先讲作用再给名称；例子用于检验理解；比方及时接回真实对象</span></div>
                 <div><strong>主要风险</strong><span id="sceneRisk">为了浅白删掉条件，或用持续比方替代真实系统</span></div>
                 <div><strong>加载文件</strong><span id="sceneProfile">profiles/explanation.md</span></div>
-                <div><strong>位置为什么在这里</strong><span id="sceneWhy">读者共享背景少，当前目标以理解为主，通常没有立即决策压力</span></div>
+                <div><strong>位置说明</strong><span id="sceneWhy">读者共享背景少，当前目标以理解为主，通常没有立即决策压力</span></div>
               </div>
             </div>
           </div>
         </section>
 
         <section id="architecture">
-          <p class="section-label">渐进式披露</p>
-          <h2>主文件负责路由，场景要求按需进入上下文</h2>
-          <p class="intro">0.1.0 把六种场景全部写在同一份提示词里。普通邮件也会携带论文、PPT、技术调查和创意写作规则。0.2.0 将这些要求拆开，减少无关指令彼此干扰。</p>
+          <p class="section-label">附录三</p>
+          <h2>Skill 文件怎样按需加载</h2>
+          <p class="intro">主文件保存各场景共同使用的要求。六份场景文件只在对应任务中进入上下文，从而减少无关规则互相干扰。</p>
 
           <div class="architecture">
             <div>
@@ -1338,22 +927,22 @@
     └── creative.md</pre>
             </div>
             <div>
-              <h3>加载规则</h3>
-              <div class="load-rule">
-                <div><strong>普通任务：</strong>主文件 + 一个 profile。</div>
-                <div><strong>混合任务：</strong>主文件 + 一个主要 profile + 一个次要 profile。主要文件决定结构。</div>
-                <div><strong>长文或高风险任务：</strong>在上述文件之外加载 AUDIT.md，进行五轮检查。</div>
-                <div><strong>明确禁止：</strong>为了显得完整一次加载全部 profile。</div>
-              </div>
-              <p>例如，学术会议汇报以 <code>presentation.md</code> 决定页面结构，再由 <code>academic.md</code> 补充术语、数据和证据要求。普通工作邮件只加载 <code>workplace.md</code>。</p>
+              <h3>加载方式</h3>
+              <ul class="load-rule">
+                <li>普通任务加载主文件和一份场景文件。</li>
+                <li>混合任务可以增加一份次要场景文件，由主要场景决定结构。</li>
+                <li>长文或高风险任务再加载 <code>AUDIT.md</code>。</li>
+                <li>所有场景文件不会同时加载。</li>
+              </ul>
+              <p>例如，学术会议汇报以 <code>presentation.md</code> 安排页面，再由 <code>academic.md</code> 补充证据和术语要求。普通工作邮件只需 <code>workplace.md</code>。</p>
             </div>
           </div>
         </section>
 
         <section id="skill">
-          <p class="section-label">可直接复制的 Skill 文件包</p>
-          <h2><code>write-for-reader</code> 0.2.0</h2>
-          <p class="intro">下面展示 GitHub 仓库中的完整文件。点击标签切换文件；可以复制当前文件，也可以复制带文件名分隔的整套内容。GitHub 文件夹保留版本历史。</p>
+          <p class="section-label">附录四</p>
+          <h2>write-for-reader Skill 文件</h2>
+          <p class="intro">下面保留当前 0.2.0 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
 
           <div class="skill-panel">
             <div class="skill-file-tabs" id="skillFileTabs" role="tablist" aria-label="Skill 文件"></div>
@@ -1376,12 +965,10 @@
 
   <footer>
     <div>
-      <p>语言问题诊断与 write-for-reader 0.2.0</p>
-      <p>GitHub：<a href="https://github.com/JianyuLin1999/JianyuLin-agent-craft">JianyuLin1999/JianyuLin-agent-craft</a></p>
-      <p>正文解释写作问题；页面末尾提供采用渐进式披露的完整 Skill 文件包。</p>
+      <p>AI 写作中的阅读问题与修改方法</p>
+      <p>Skill 与版本记录：<a href="https://github.com/JianyuLin1999/JianyuLin-agent-craft">JianyuLin1999/JianyuLin-agent-craft</a></p>
     </div>
   </footer>
-
   <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/SKILL.md">---
 name: write-for-reader
 description: >
@@ -1636,7 +1223,7 @@ status: active
   <script>
     const scenes = {
       plain: {
-        title: "通俗解释",
+        title: "给初学者解释概念",
         position: "共享背景少 · 主要任务是建立理解",
         reader: "第一次接触主题、只见过表面现象的人",
         goal: "补齐必要背景，让读者理解对象、过程和结论",
@@ -1646,7 +1233,7 @@ status: active
         why: "读者共享背景少，当前目标以理解为主，通常没有立即决策压力"
       },
       popular: {
-        title: "科普文章",
+        title: "给公众写科普文章",
         position: "共享背景较少 · 需要形成稳定理解",
         reader: "对主题有兴趣，但没有接受过系统训练的公众",
         goal: "解释问题为何存在、研究如何回答、结论受哪些限制",
@@ -1656,7 +1243,7 @@ status: active
         why: "读者需要较多背景，成品以理解和评价信息为主"
       },
       creative: {
-        title: "创意叙事",
+        title: "为陌生读者写故事",
         position: "共享背景中低 · 主要任务是体验",
         reader: "进入作品情境、接受有意留白和多义的读者",
         goal: "通过声音、节奏、意象或情节产生预定体验",
@@ -1666,7 +1253,7 @@ status: active
         why: "作品不依赖大量共同专业知识，也不以立即行动为目标"
       },
       instruction: {
-        title: "操作指引",
+        title: "给首次用户写指引",
         position: "共享背景少 · 行动压力高",
         reader: "需要完成任务，但不熟悉系统和术语的人",
         goal: "让读者知道当前状态、下一步动作、完成信号和出错后的处理",
@@ -1676,7 +1263,7 @@ status: active
         why: "读者背景少，但需要立即完成具体动作"
       },
       patient: {
-        title: "患者说明",
+        title: "给患者解释方案",
         position: "共享背景较少 · 决策影响较高",
         reader: "关心个人含义、未必熟悉医学和统计术语的人",
         goal: "理解选项、获益、风险、不确定性以及需要向专业人员确认的内容",
@@ -1686,7 +1273,7 @@ status: active
         why: "读者缺少专业背景，信息又可能影响重要决定"
       },
       teachingPpt: {
-        title: "教学型 PPT",
+        title: "给学生做教学演示",
         position: "共享背景中等 · 主要任务是理解",
         reader: "在现场跟随讲者逐步建立知识的学习者",
         goal: "让每页完成一个概念步骤，并在整场结束后形成可复述结构",
@@ -1696,7 +1283,7 @@ status: active
         why: "讲者与听众共享部分背景，页面主要帮助理解"
       },
       email: {
-        title: "工作邮件",
+        title: "给同事发协作邮件",
         position: "共享背景中等 · 行动压力高",
         reader: "了解部分项目背景、需要处理请求或决定的人",
         goal: "确认当前情况、所需动作、责任人和时间",
@@ -1706,7 +1293,7 @@ status: active
         why: "双方通常共享项目背景，邮件需要推动明确动作"
       },
       decisionPpt: {
-        title: "决策型 PPT",
+        title: "给管理者做决策汇报",
         position: "共享背景较高 · 行动压力很高",
         reader: "掌握业务背景、需要在会议中作出取舍的决策者",
         goal: "在有限时间内看清现状、选择、依据、代价和推荐",
@@ -1716,7 +1303,7 @@ status: active
         why: "读者已有较多背景，页面直接服务决策与资源行动"
       },
       investigation: {
-        title: "技术调查",
+        title: "给团队写故障调查",
         position: "共享背景较高 · 判断与行动并重",
         reader: "了解系统或项目，需要判断原因和后续工作的团队",
         goal: "还原正常流程、异常链、证据范围、未知内容和当前状态",
@@ -1726,7 +1313,7 @@ status: active
         why: "团队共享技术背景，调查结果通常会影响修复和优先级"
       },
       paper: {
-        title: "学术论文",
+        title: "给同行写研究论文",
         position: "共享背景高 · 主要任务是核查与评价",
         reader: "熟悉学科术语、研究设计和证据规范的同行",
         goal: "准确呈现研究问题、方法、结果、解释和限制",
@@ -1736,7 +1323,7 @@ status: active
         why: "同行共享大量前置知识，主要任务是理解、复现和评价证据"
       },
       defense: {
-        title: "同行答辩",
+        title: "向评审做研究答辩",
         position: "共享背景高 · 判断压力中高",
         reader: "熟悉领域、会追问方法和解释边界的评审或同行",
         goal: "在口头交流中清楚陈述主张、依据、限制和对质疑的回应",
