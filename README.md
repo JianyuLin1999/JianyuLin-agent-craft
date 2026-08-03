@@ -42,7 +42,7 @@ GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 +
 
 | 名称 | 它替你干啥 |
 |---|---|
-| [`write-for-reader`](skills/write-for-reader/SKILL.md) | 让 AI 写任何面向人类的内容前,先自己判断谁会读、读者已经知道什么、读后需要什么、内容通过什么载体呈现。主文件只保留共同要求和路由;每次从外行讲解、技术调查、论文、PPT、工作文档和创意写作中按需加载一份场景文件,避免无关规则同时进入上下文。默认自动使用,不要求 user 填表或记口令。它已经取代原来的 `talk-clear`。配套的[详细 HTML 说明](docs/write-for-reader-guide.html)重点分析 AI 文字令人不满的七层原因,并在末尾提供完整文件包。 |
+| [`write-for-reader`](skills/write-for-reader/SKILL.md) | 让 AI 写任何面向人类的内容前,先自己判断谁会读、读者已经知道什么、读后需要什么、内容通过什么载体呈现。主文件只保留共同要求和路由;每次从外行讲解、技术调查、论文、PPT、工作文档和创意写作中按需加载一份场景文件,避免无关规则同时进入上下文。默认自动使用,不要求用户填表或记口令。它已经取代原来的 `talk-clear`。配套的[详细 HTML 说明](docs/write-for-reader-guide.html)从背景与概念、结构与关系、证据与判断、语气与节奏、页面形式五类阅读困难展开,并在末尾提供完整文件包。 |
 | [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 **NotebookLM**(Google 出的研究笔记 AI 工具)输出的讲解更通俗易懂,但深度不丢 — 像一个会讲课的教授,而不是干瘪的学术摘要。 |
 | [`caveman-cn`](skills/caveman-cn/SKILL.md) | 你跟 AI 聊天觉得她**废话太多**,喊一句"少废话",她立刻切到极简模式 — 只留结论、原因、风险、下一步,不绕弯。 |
 | [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | 跟 AI 讨论一个方案的时候,**强制她先翻你项目的术语表和决策档案**,用你项目的语言跟你讨论,不会自己发明词。像新来的咨询师必须先把"内部黑话本子"翻熟了再开会。 |
