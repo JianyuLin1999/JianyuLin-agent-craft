@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="一套适用于对话、技术调查、学术写作、PPT、报告和邮件的通用 AI 表达要求，并附可直接复制的 write-for-reader Skill。">
+  <title>AI 写作前如何判断读者与场景</title>
+  <style>
+    :root {
+      --ink: #24322e;
+      --muted: #64726d;
+      --page: #efeee9;
+      --paper: #fffefa;
+      --soft: #f7f5ef;
+      --line: #d8d8d0;
+      --green: #176b59;
+      --green-dark: #17483d;
+      --green-soft: #e7f1ed;
+      --blue: #376984;
+      --blue-soft: #e9f1f5;
+      --amber: #8b651d;
+      --amber-soft: #f8f0dc;
+      --red: #98463f;
+      --red-soft: #f7e9e6;
+      --max: 1180px;
+      --radius: 14px;
+      --shadow: 0 12px 32px rgba(33, 54, 47, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 17px;
+      line-height: 1.78;
+    }
+    a { color: var(--green); text-underline-offset: 3px; }
+    code {
+      padding: .1em .34em;
+      border-radius: 5px;
+      background: #ecebe5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .88em;
+    }
+    .skip {
+      position: fixed;
+      z-index: 100;
+      top: 8px;
+      left: 8px;
+      transform: translateY(-180%);
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--green-dark);
+    }
+    .skip:focus { transform: none; }
+    header {
+      padding: 58px 24px 48px;
+      border-bottom: 1px solid #35675a;
+      background: #174a3f;
+      color: #fff;
+    }
+    .header-inner { max-width: var(--max); margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 11px;
+      color: #b9d9d1;
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .11em;
+    }
+    h1, h2, h3, h4 { line-height: 1.3; letter-spacing: -.018em; }
+    h1 {
+      max-width: 1050px;
+      margin: 0;
+      font-size: clamp(2.25rem, 4.8vw, 4.15rem);
+    }
+    .lead {
+      max-width: 900px;
+      margin: 20px 0 0;
+      color: #dcebe6;
+      font-size: 1.08rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 20px;
+      margin-top: 25px;
+      color: #bdd7d0;
+      font-size: .84rem;
+    }
+    .top-nav {
+      position: sticky;
+      z-index: 30;
+      top: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 254, 250, .95);
+      backdrop-filter: blur(12px);
+    }
+    .top-nav > div {
+      display: flex;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 9px 22px;
+      gap: 5px;
+      overflow-x: auto;
+    }
+    .top-nav a {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 720;
+      text-decoration: none;
+    }
+    .top-nav a:hover, .top-nav a.active {
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 39px;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 46px 22px 96px;
+    }
+    aside {
+      position: sticky;
+      top: 76px;
+      align-self: start;
+      max-height: calc(100vh - 94px);
+      overflow: auto;
+    }
+    aside p {
+      margin: 15px 0 5px;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 820;
+      letter-spacing: .09em;
+    }
+    aside p:first-child { margin-top: 0; }
+    aside a {
+      display: block;
+      padding: 7px 9px;
+      border-left: 2px solid transparent;
+      color: var(--muted);
+      font-size: .81rem;
+      line-height: 1.45;
+      text-decoration: none;
+    }
+    aside a:hover, aside a.active {
+      border-color: var(--green);
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+    main, article { min-width: 0; }
+    section {
+      margin-bottom: 78px;
+      scroll-margin-top: 78px;
+    }
+    .section-label {
+      margin: 0 0 7px;
+      color: var(--green);
+      font-size: .74rem;
+      font-weight: 820;
+      letter-spacing: .1em;
+    }
+    h2 {
+      margin: 0 0 17px;
+      font-size: clamp(1.72rem, 3vw, 2.45rem);
+    }
+    h3 {
+      margin: 30px 0 11px;
+      font-size: clamp(1.16rem, 2vw, 1.43rem);
+    }
+    h4 { margin: 0 0 8px; font-size: 1rem; }
+    p { margin: 0 0 14px; }
+    ul, ol { padding-left: 1.35em; }
+    li { margin: 7px 0; }
+    .intro {
+      max-width: 850px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+    .notice {
+      margin: 20px 0;
+      padding: 18px 20px;
+      border-left: 5px solid var(--green);
+      border-radius: 0 11px 11px 0;
+      background: var(--green-soft);
+    }
+    .notice.blue { border-color: var(--blue); background: var(--blue-soft); }
+    .notice.amber { border-color: var(--amber); background: var(--amber-soft); }
+    .notice.red { border-color: var(--red); background: var(--red-soft); }
+    .notice p:last-child { margin-bottom: 0; }
+    .quote {
+      margin: 16px 0;
+      padding: 16px 19px;
+      border-left: 4px solid #a9b8b3;
+      background: var(--soft);
+      color: #42524e;
+    }
+    .quote p:last-child { margin-bottom: 0; }
+    .source {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 13px;
+      margin-top: 18px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .mini {
+      padding: 19px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+    }
+    .mini p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .87rem;
+    }
+    .mini.green { background: var(--green-soft); border-color: #bad5cc; }
+    .mini.blue { background: var(--blue-soft); border-color: #bed1dc; }
+    .mini.amber { background: var(--amber-soft); border-color: #dfca99; }
+    .mini.red { background: var(--red-soft); border-color: #e0b9b4; }
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
+      gap: 20px;
+      margin-top: 20px;
+      align-items: start;
+    }
+    .ratio {
+      display: grid;
+      grid-template-columns: 17fr 3fr;
+      min-height: 90px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+    }
+    .ratio > div {
+      display: grid;
+      align-content: center;
+      padding: 18px;
+    }
+    .ratio strong { display: block; font-size: 1.35rem; }
+    .ratio span { font-size: .78rem; line-height: 1.45; }
+    .ratio .base { background: var(--green-dark); color: #fff; }
+    .ratio .profile { background: #ddba66; color: #3f3217; }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 22px;
+    }
+    .flow-step {
+      position: relative;
+      min-height: 145px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+    }
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      right: -18px;
+      transform: translateY(-50%);
+      color: #8da39c;
+      font-size: 1.2rem;
+    }
+    .flow-step:last-child::after { content: none; }
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--green-dark);
+    }
+    .flow-step span {
+      display: block;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.55;
+    }
+    .table-wrap {
+      margin-top: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--soft);
+      color: var(--green-dark);
+      font-size: .8rem;
+    }
+    td { font-size: .87rem; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+      margin: 18px 0;
+    }
+    .example {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+    }
+    .example.bad { border-top: 5px solid var(--red); }
+    .example.good { border-top: 5px solid var(--green); }
+    .example .label {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 820;
+      letter-spacing: .06em;
+    }
+    .example p:last-child { margin-bottom: 0; }
+    .scenario {
+      margin-top: 20px;
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    button, .button-link {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 13px;
+      border: 1px solid #adc8c0;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green-dark);
+      font: inherit;
+      font-size: .79rem;
+      font-weight: 740;
+      text-decoration: none;
+    }
+    button:hover, .button-link:hover { background: var(--green-soft); }
+    button.active {
+      border-color: var(--green-dark);
+      background: var(--green-dark);
+      color: #fff;
+    }
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 22px;
+    }
+    .facts {
+      padding: 17px;
+      border-radius: 11px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    .facts strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink);
+    }
+    .profile-output h3 { margin-top: 0; }
+    .profile-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .profile-meta div {
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .profile-meta strong {
+      display: block;
+      color: var(--green-dark);
+      font-size: .73rem;
+    }
+    .sample-output {
+      margin: 16px 0 0;
+      padding: 17px 19px;
+      border-left: 4px solid var(--green);
+      background: var(--green-soft);
+    }
+    .relationship {
+      display: grid;
+      grid-template-columns: minmax(170px, .55fr) minmax(0, 1.45fr);
+      gap: 16px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .relationship:last-child { border-bottom: 0; }
+    .relationship strong { color: var(--green-dark); }
+    .relationship p { margin: 0; color: var(--muted); }
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px 18px;
+      margin-top: 18px;
+    }
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 0;
+      color: #465651;
+      font-size: .88rem;
+    }
+    .check input {
+      flex: 0 0 auto;
+      margin-top: 6px;
+      accent-color: var(--green);
+    }
+    .skill-panel {
+      overflow: hidden;
+      margin-top: 22px;
+      border: 1px solid #354b44;
+      border-radius: 14px;
+      background: #17231f;
+      box-shadow: var(--shadow);
+    }
+    .skill-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 15px;
+      border-bottom: 1px solid #34463f;
+      background: #1e2d28;
+    }
+    .skill-toolbar span {
+      color: #bcd0c9;
+      font-size: .8rem;
+      font-weight: 720;
+    }
+    .skill-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .skill-toolbar button, .skill-toolbar .button-link {
+      min-height: 34px;
+      border-color: #516a61;
+      background: #243a33;
+      color: #e4f0ec;
+    }
+    .skill-toolbar button:hover, .skill-toolbar .button-link:hover {
+      background: #315047;
+    }
+    pre {
+      max-height: 720px;
+      margin: 0;
+      padding: 22px;
+      overflow: auto;
+      color: #e2ece8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .8rem;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      tab-size: 2;
+    }
+    pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+    }
+    .copy-status {
+      min-height: 1.4em;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    footer {
+      padding: 31px 24px 48px;
+      background: var(--green-dark);
+      color: #c7dcd6;
+    }
+    footer > div { max-width: var(--max); margin: 0 auto; }
+    footer p { margin: 5px 0; font-size: .83rem; }
+    footer a { color: #c0e5da; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { display: none; }
+      .flow { grid-template-columns: 1fr; }
+      .flow-step { min-height: 0; }
+      .flow-step::after {
+        top: auto;
+        right: 50%;
+        bottom: -22px;
+        transform: translateX(50%) rotate(90deg);
+      }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      body { font-size: 16px; }
+      header { padding: 44px 20px 38px; }
+      .layout { padding: 34px 18px 72px; }
+      .grid-2, .grid-3, .grid-4, .compare, .checklist,
+      .scenario-grid, .profile-meta, .split { grid-template-columns: 1fr; }
+      .ratio { grid-template-columns: 4fr 1fr; }
+      .relationship { grid-template-columns: 1fr; gap: 4px; }
+      .skill-toolbar { align-items: flex-start; flex-direction: column; }
+      .skill-actions { justify-content: flex-start; }
+      .meta { display: grid; gap: 4px; }
+      pre { max-height: 600px; font-size: .74rem; }
+    }
+    @media print {
+      .top-nav, aside, .tabs, .skill-actions, .skip { display: none !important; }
+      body { background: #fff; font-size: 11pt; }
+      header { padding: 28px 0; background: #fff; color: #111; border-bottom: 2px solid #222; }
+      .lead, .meta { color: #444; }
+      .layout { display: block; max-width: none; padding: 28px 0; }
+      section { break-inside: avoid; margin-bottom: 36px; }
+      .scenario, .mini, .example { box-shadow: none; }
+      pre { max-height: none; white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">跳到正文</a>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">通用表达要求 · 2026-08-03</p>
+      <h1>AI 写作前如何判断读者与场景</h1>
+      <p class="lead">这份说明把我们在技术调查中发现的语言问题推广到对话、报告、论文、PPT、邮件和其他面向人类的内容。页面末尾附有完整的 <code>write-for-reader</code> Skill，可以直接复制，也可以从 GitHub 获取。</p>
+      <div class="meta">
+        <span>适用范围：所有面向人类的文字和演示材料</span>
+        <span>默认行为：AI 自行判断场景</span>
+        <span>配套 Skill：write-for-reader 0.1.0</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="top-nav" aria-label="页面导航">
+    <div>
+      <a href="#decision">已经确定</a>
+      <a href="#origin">要求来源</a>
+      <a href="#positioning">写作前判断</a>
+      <a href="#automatic">自动判断</a>
+      <a href="#shared">共同要求</a>
+      <a href="#variable">场景变化</a>
+      <a href="#profiles">场景示例</a>
+      <a href="#language">语言习惯</a>
+      <a href="#evidence">证据</a>
+      <a href="#relations">现有 Skill</a>
+      <a href="#acceptance">验收</a>
+      <a href="#skill">复制 Skill</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside aria-label="章节目录">
+      <p>形成过程</p>
+      <a href="#decision">通用要求与场景调整</a>
+      <a href="#origin">从技术调查推广到更多场景</a>
+      <p>AI 怎样开始写</p>
+      <a href="#positioning">四项写作前判断</a>
+      <a href="#automatic">少打扰用户的判断流程</a>
+      <p>成品怎样组织</p>
+      <a href="#shared">始终保留的要求</a>
+      <a href="#variable">可以随场景改变的部分</a>
+      <a href="#profiles">同一材料的不同写法</a>
+      <a href="#structure">读者知识与信息顺序</a>
+      <a href="#language">标题、句子和节奏</a>
+      <a href="#evidence">事实、推断和未知</a>
+      <p>使用与维护</p>
+      <a href="#relations">与现有 Skill 的分工</a>
+      <a href="#limits">适用边界</a>
+      <a href="#acceptance">交付前怎样验收</a>
+      <a href="#skill">完整 Skill</a>
+    </aside>
+
+    <main id="content">
+      <article>
+        <section id="decision">
+          <p class="section-label">已经确定的设计</p>
+          <h2>通用要求与场景调整同时存在</h2>
+          <p class="intro">我们讨论的语言偏好可以大范围复用。读者需要清楚的对象、连续的因果、合适的背景和可靠的证据边界。论文、PPT、邮件和对话又有各自的篇幅、术语和结构要求。新的 Skill 同时处理这两部分。</p>
+
+          <div class="split">
+            <div>
+              <p>按重要程度估计，大约 85% 可以作为所有场景共用的要求。剩余约 15% 由读者和载体决定。这个比例用于帮助设计，没有把主观偏好伪装成精确测量。</p>
+              <p>共同要求包括：从读者已知的事情开始；先介绍后文依赖的概念；点名动作主体；把因果步骤写出来；区分事实、推断和未知；使用自然、准确的语言。</p>
+              <p>场景调整包括：术语解释到什么程度；结论放在哪里；一页或一段容纳多少信息；是否使用引文、图表和附录；语气需要多正式；是否允许有意留白。</p>
+            </div>
+            <div class="ratio" aria-label="约百分之八十五为共同要求，百分之十五为场景调整">
+              <div class="base"><strong>约 85%</strong><span>所有场景共用</span></div>
+              <div class="profile"><strong>约 15%</strong><span>随场景调整</span></div>
+            </div>
+          </div>
+
+          <div class="notice">
+            <p>这些规则按条件使用。AI 可以省略目标读者已经熟悉的知识，也可以根据载体压缩内容。每次省略都要有读者依据，并且不能让理解、准确性或证据范围发生变化。</p>
+          </div>
+
+          <div class="notice blue">
+            <p><code>write-for-reader</code> 将取代原来的 <code>talk-clear</code>。原 Skill 中面向外行讲解、补充背景、举例和使用比方的能力已经进入新 Skill 的非专业读者场景。新 Skill 同时覆盖专家写作和不同载体，用户不需要在两份写作 Skill 之间选择。</p>
+          </div>
+        </section>
+
+        <section id="origin">
+          <p class="section-label">要求怎样形成</p>
+          <h2>技术调查暴露的问题也会出现在论文、PPT和报告中</h2>
+          <p class="intro">最初的反馈来自一份启动事故说明。文章把新旧后台、环境准备、数据任务和 Worker 等词同时放进开头。读者还没见过这些对象，后面的结论已经开始讨论它们之间的关系。</p>
+
+          <div class="quote">
+            <p>“先说最重要的结论……一项数据 Worker 的失败被两个模块重复收尾……错误随后逃出了任务边界……”</p>
+            <span class="source">此前成品中的句子。这里保留片段，用于说明阅读障碍。</span>
+          </div>
+
+          <p>这段话压入了多个未经介绍的对象，也省略了它们怎样出现、各自负责什么和事件如何一步步发展。强调词给结论分了等级，读者仍然不知道故事从哪里开始。</p>
+
+          <div class="grid-3">
+            <div class="mini">
+              <h4>读者起点缺失</h4>
+              <p>作者使用了调查后的知识，却没有从读者已经见过的页面操作和异常现象开始。</p>
+            </div>
+            <div class="mini">
+              <h4>信息顺序倒置</h4>
+              <p>文章先讨论对象之间的关系，之后才解释这些对象是谁以及为何出现。</p>
+            </div>
+            <div class="mini">
+              <h4>句子承担过多任务</h4>
+              <p>一条句子同时下结论、解释原因、区分问题和报告实验结果。</p>
+            </div>
+            <div class="mini">
+              <h4>作者姿态进入正文</h4>
+              <p>“我们怎样证明”“从表象到本质”描述写作者的工作，读者要找的事件退到后面。</p>
+            </div>
+            <div class="mini">
+              <h4>语言替内容制造分量</h4>
+              <p>“关键、真正、核心、本质”承担强调作用，但没有增加对象、条件或后果。</p>
+            </div>
+            <div class="mini">
+              <h4>形式先于理解</h4>
+              <p>标题、卡片和排比看起来完整，读者仍要自行补出背景、指代和因果。</p>
+            </div>
+          </div>
+
+          <h3>这些问题怎样迁移到其他场景</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>场景</th><th>相同的阅读障碍</th><th>在该场景中的表现</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>学术论文</td><td>前提没有先建立</td><td>摘要直接给出复杂结论，方法、样本范围和限制不足以支持读者理解。</td></tr>
+                <tr><td>PPT</td><td>页面让听众自行猜关系</td><td>一页堆入多张图和多个结论，标题只写“结果分析”或“核心洞察”。</td></tr>
+                <tr><td>工作报告</td><td>事实和判断混合</td><td>观察、推测、建议和责任分工写在同一段，读者难以决定下一步。</td></tr>
+                <tr><td>邮件</td><td>来意和动作主体不清</td><td>礼貌铺垫很长，收件人读到末尾仍不知道谁需要在什么时候做什么。</td></tr>
+                <tr><td>对话解释</td><td>概念从内部上下文突然出现</td><td>AI 直接抛出术语和结论，然后让用户追问每个词是什么意思。</td></tr>
+                <tr><td>创意写作</td><td>无意含混与有意留白混在一起</td><td>作者没有控制对象和时间，成品却把理解困难解释为风格。</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>这些场景共享同一个阅读过程：读者先识别对象，再理解动作和关系，最后形成判断。载体可以改变呈现方式，这个认知顺序仍然存在。</p>
+        </section>
+
+        <section id="positioning">
+          <p class="section-label">AI 动笔前的准备</p>
+          <h2>先判断谁读、已知什么、读后做什么、通过什么载体阅读</h2>
+          <p class="intro">这四项判断决定一段内容需要多少背景、可以使用哪些术语、应该采用什么结构，以及哪些信息必须出现在正文里。</p>
+
+          <div class="grid-4">
+            <div class="mini green">
+              <h4>谁会阅读</h4>
+              <p>区分用户本人、同行专家、跨学科合作者、管理者、患者、公众或混合读者。</p>
+            </div>
+            <div class="mini blue">
+              <h4>读者已经知道什么</h4>
+              <p>根据对话、材料和领域身份判断。作者的内部调查过程不自动属于读者知识。</p>
+            </div>
+            <div class="mini amber">
+              <h4>读后需要什么结果</h4>
+              <p>可能是理解原因、比较方案、作出决定、执行动作、复现实验或记住一个观点。</p>
+            </div>
+            <div class="mini">
+              <h4>内容通过什么载体呈现</h4>
+              <p>对话、论文、PPT、邮件和完整报告对篇幅、引用、视觉和独立阅读能力有不同要求。</p>
+            </div>
+          </div>
+
+          <h3>四项判断怎样影响成品</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>判断发生变化</th><th>写法随之改变</th><th>保持不变</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>读者从同行变成公众</td><td>增加必要背景，首次出现的术语获得解释，例子更贴近日常经验。</td><td>事实、限制和证据强度不变。</td></tr>
+                <tr><td>载体从论文变成 PPT</td><td>页面文字减少，标题承担结论，图表承担比较，细节转入讲稿或附录。</td><td>数据含义和适用范围不变。</td></tr>
+                <tr><td>目的从了解变成执行</td><td>责任人、动作、时间和完成条件进入前部。</td><td>背景足以解释为何这样做。</td></tr>
+                <tr><td>读者已经参与全部过程</td><td>减少重复背景，从双方共同经历的节点继续。</td><td>新出现的对象和变化仍需介绍。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="automatic">
+          <p class="section-label">减少使用负担</p>
+          <h2>AI 优先从上下文判断场景</h2>
+          <p class="intro">用户通常已经在请求里留下足够线索。“帮我写给导师的邮件”“把结果做成组会 PPT”“给我讲懂这份日志”都同时说明了读者、目的或载体。Skill 先使用这些线索，不要求用户重新填写。</p>
+
+          <div class="flow" aria-label="AI 自行判断写作场景的流程">
+            <div class="flow-step">
+              <strong>1. 读取明确要求</strong>
+              <span>识别 user 指定的读者、用途、格式、长度和语气。</span>
+            </div>
+            <div class="flow-step">
+              <strong>2. 连接对话历史</strong>
+              <span>判断已经解释过什么、用户卡在哪里、哪些偏好持续生效。</span>
+            </div>
+            <div class="flow-step">
+              <strong>3. 识别载体惯例</strong>
+              <span>根据论文、PPT、邮件或报告调整结构和信息密度。</span>
+            </div>
+            <div class="flow-step">
+              <strong>4. 检查歧义影响</strong>
+              <span>判断缺失信息会不会让两种成品在内容和形式上明显分叉。</span>
+            </div>
+            <div class="flow-step">
+              <strong>5. 直接写或问一次</strong>
+              <span>可以稳妥推断就继续；分叉影响明显时只问一个白话问题。</span>
+            </div>
+          </div>
+
+          <div class="compare">
+            <div class="example bad">
+              <span class="label">增加使用负担的做法</span>
+              <p>请提供目标受众、知识水平、沟通目标、内容媒介、正式程度、期望字数和术语密度。</p>
+            </div>
+            <div class="example good">
+              <span class="label">Skill 的默认做法</span>
+              <p>AI 从“给课题组做十分钟汇报”和当前研究对话中推断读者与载体，直接起草。只有是否包含未公开数据会改变成品时，才单独询问。</p>
+            </div>
+          </div>
+
+          <h3>AI 什么时候需要提问</h3>
+          <p>三个条件需要同时成立：上下文中确实存在两种合理理解；两种理解会产生明显不同的内容；AI 无法通过已有材料排除其中一种。问题应描述用户会得到的差别，例如“这份 PPT 会在现场讲解，还是需要发给别人独立阅读？”</p>
+          <p>拼写、句式、常见版式和可以安全修正的小缺口由 AI 自行处理。用户不需要担任写作流程的操作员。</p>
+        </section>
+
+        <section id="shared">
+          <p class="section-label">所有场景共同保留</p>
+          <h2>读者不负责补齐作者省略的内容</h2>
+          <p class="intro">通用要求集中处理读者最容易被迫猜测的地方。它们不会规定每篇文章必须有多少段，也不会把所有输出压成同一种语气。</p>
+
+          <div class="grid-2">
+            <div class="mini">
+              <h4>从读者已有的事情开始</h4>
+              <p>开头连接用户提出的问题、亲自经历的现象或材料中已经建立的事实。新概念出现时说明它为何进入当前内容。</p>
+            </div>
+            <div class="mini">
+              <h4>按信息依赖安排顺序</h4>
+              <p>解释关系以前先介绍参与者；讨论异常以前先说明正常流程；给出建议以前先展示需要改变的事实。</p>
+            </div>
+            <div class="mini">
+              <h4>点名对象和动作主体</h4>
+              <p>写清谁创建、判断、关闭、修改或批准。代词可能指向多个对象时，重复对象名称。</p>
+            </div>
+            <div class="mini">
+              <h4>让因果步骤连续</h4>
+              <p>触发条件、中间状态和最终后果依次出现。“因此”和“所以”只负责连接，不能代替被省略的原因。</p>
+            </div>
+            <div class="mini">
+              <h4>区分事实、解释和未知</h4>
+              <p>日志记录、代码规定、实验结果和合理推断拥有不同证明范围。缺少的历史记录继续保持未知。</p>
+            </div>
+            <div class="mini">
+              <h4>保持名称稳定</h4>
+              <p>一个对象在全文使用同一个名称。术语只解释读者理解当前任务所需的部分。</p>
+            </div>
+            <div class="mini">
+              <h4>使用自然、准确的句子</h4>
+              <p>具体动词推进内容。强调、排比和对仗不承担论证任务。长短句跟随信息自然变化。</p>
+            </div>
+            <div class="mini">
+              <h4>保留必要细节</h4>
+              <p>可读性依靠顺序、解释和分层。方法、限制、风险和证据不会因为追求简短而消失。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="variable">
+          <p class="section-label">场景可以改变</p>
+          <h2>术语、篇幅、语气和版式由具体任务决定</h2>
+          <p class="intro">“通俗”“简洁”“结论先行”都需要结合读者使用。把这些词写成无条件命令，会让专家论文出现多余科普，也会让陌生读者在开头收到一串无法理解的结论。</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>可以调整的部分</th><th>判断依据</th><th>调整时不能丢失</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>术语密度</td><td>读者所属领域和已有知识</td><td>专业含义与名称一致性</td></tr>
+                <tr><td>解释深度</td><td>读者完成当前任务需要哪些前置知识</td><td>理解后文所需的前提</td></tr>
+                <tr><td>结论位置</td><td>读者是否已认识结论中的概念，载体是否要求快速决策</td><td>结论成立的条件与适用范围</td></tr>
+                <tr><td>篇幅</td><td>阅读时间、页面空间和交付形式</td><td>必要背景、限制与行动信息</td></tr>
+                <tr><td>正式程度</td><td>关系、组织惯例和公开范围</td><td>明确来意与自然语言</td></tr>
+                <tr><td>引用方式</td><td>学科规范、审计要求和读者核查需要</td><td>主张能够追溯到证据</td></tr>
+                <tr><td>视觉密度</td><td>关系复杂度、现场讲解与独立阅读需求</td><td>图表含义和必要上下文</td></tr>
+                <tr><td>留白与多义</td><td>事实沟通或创意表达</td><td>有意安排与表达失误的区分</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="notice blue">
+            <p>向专家写作时，AI 可以直接使用该领域的常见术语。省略科普的理由来自明确的读者判断。AI 仍然需要介绍当前研究独有的变量、方法变化和证据限制。</p>
+          </div>
+        </section>
+
+        <section id="profiles">
+          <p class="section-label">同一材料的不同写法</p>
+          <h2>场景改变呈现方式，数据含义保持一致</h2>
+          <p class="intro">下面使用一组虚构研究结果展示 Skill 如何调整写法。点击不同场景，可以看到 AI 对读者、目的、载体和成品形式的判断。示例只说明表达差别，不提供医学建议。</p>
+
+          <div class="scenario">
+            <div class="tabs" role="tablist" aria-label="选择写作场景">
+              <button type="button" role="tab" data-profile="explain" class="active" aria-selected="true">给患者解释</button>
+              <button type="button" role="tab" data-profile="paper" aria-selected="false">学术论文</button>
+              <button type="button" role="tab" data-profile="ppt" aria-selected="false">组会 PPT</button>
+              <button type="button" role="tab" data-profile="report" aria-selected="false">项目报告</button>
+              <button type="button" role="tab" data-profile="email" aria-selected="false">工作邮件</button>
+              <button type="button" role="tab" data-profile="chat" aria-selected="false">对话回答</button>
+            </div>
+
+            <div class="scenario-grid">
+              <div class="facts">
+                <strong>共同使用的虚构材料</strong>
+                一项为期八周、共 60 人的随机研究。治疗组症状评分平均下降 4.2 分，对照组下降 1.5 分。组间差值为 2.7 分，95% 置信区间为 0.8 到 4.6 分。样本较小，随访时间较短。
+              </div>
+              <div class="profile-output" aria-live="polite">
+                <h3 id="profileTitle">给患者解释</h3>
+                <div class="profile-meta">
+                  <div><strong>读者</strong><span id="profileReader">关心结果含义、未必熟悉统计术语的人</span></div>
+                  <div><strong>目的</strong><span id="profileGoal">理解研究发现及其限制</span></div>
+                  <div><strong>载体</strong><span id="profileMedium">可连续阅读的说明</span></div>
+                  <div><strong>调整</strong><span id="profileAdjust">解释数字含义，保留样本和随访限制</span></div>
+                </div>
+                <div class="sample-output" id="profileSample">这项小型研究跟踪了 60 人。八周后，接受治疗的人症状评分平均比对照组多改善 2.7 分。统计结果显示，这个差异较难用随机波动单独解释。研究人数较少，观察时间也只有八周，因此它还不能回答长期效果和少见副作用。</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="copy-status">六种写法共享同一组数字。变化发生在解释深度、信息顺序、篇幅和行动重点。</p>
+        </section>
+
+        <section id="structure">
+          <p class="section-label">读者怎样建立理解</p>
+          <h2>每一段只引入读者当前能够接住的内容</h2>
+          <p class="intro">一篇文章可以很专业，也可以很长。阅读阻力通常来自省略和顺序。作者同时引入多个陌生对象时，读者会暂停正文，在脑中猜每个词的来源和关系。</p>
+
+          <h3>概念第一次出现时交代什么</h3>
+          <div class="grid-4">
+            <div class="mini"><h4>它是什么</h4><p>根据读者需要说明它在当前任务中实际做什么。</p></div>
+            <div class="mini"><h4>为什么现在出现</h4><p>连接到前一事件、用户动作或当前研究问题。</p></div>
+            <div class="mini"><h4>谁使用或创建它</h4><p>点名参与者，避免对象自行出现。</p></div>
+            <div class="mini"><h4>它影响后文什么</h4><p>让读者知道为什么需要记住这个名称。</p></div>
+          </div>
+
+          <p>这些信息无需每次全部展开。AI 根据读者已有知识选择所需部分。论文同行已经理解“置信区间”的一般含义，文章仍需说明当前研究的区间对应哪个结果。首次接触系统事故的读者不了解“后台”，文章需要先说明它负责接收项目请求。</p>
+
+          <h3>结论可以放在前面，但不能让陌生概念抢先出现</h3>
+          <div class="compare">
+            <div class="example bad">
+              <span class="label">概念先于背景</span>
+              <p>重复收尾导致异常逃出任务边界，最终触发后台替换。</p>
+            </div>
+            <div class="example good">
+              <span class="label">从读者经历开始</span>
+              <p>用户打开项目后，页面先把数据检查任务交给后台。任务失败时，两个模块先后尝试结束同一个任务。第二次操作产生了新的内部错误。这个错误没有停留在数据任务里，后台进程因此退出。</p>
+            </div>
+          </div>
+          <p>后一段增加了参与者、动作顺序和中间状态。它没有通过删技术细节来换取通俗，也没有用比方替代真实对象。</p>
+        </section>
+
+        <section id="language">
+          <p class="section-label">标题、句子和语言节奏</p>
+          <h2>文字说明事情，避免评价自己的写法</h2>
+          <p class="intro">AI 成品常用对立、排比和强调词制造完整感。读者会感到作者正在主持一场演讲，事件和证据却没有获得更多解释。</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>容易出现的写法</th><th>读者为何不舒服</th><th>调整方向</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>“我们不是从代码名词出发，而是连续回答六个问题”</td><td>标题或开头描述作者采用的方法，没有说明文章讨论的事件。</td><td>直接写“项目打开后的第一分钟发生了什么”。</td></tr>
+                <tr><td>“新旧后台不是两个固定产品，而是……”</td><td>先设置一个读者未必持有的错误观点，又立刻切换到比方。</td><td>分别说明后台由谁启动、为何先后存在、怎样完成交接。</td></tr>
+                <tr><td>“从表象追到本质”“第一性原理”</td><td>标题提前评价内容的深度，读者还不知道本节处理什么。</td><td>标题写具体对象、事件、问题或关系。</td></tr>
+                <tr><td>“最关键”“真正的问题”“核心结论”</td><td>强调词替文章决定重要性，条件和后果没有增加。</td><td>写出影响范围和实际后果，让读者自行判断分量。</td></tr>
+                <tr><td>“我们查清了”“本文证明了”</td><td>作者的工作过程占据正文，证据支持的发现退到后面。</td><td>写“日志记录了什么”“实验排除了什么”。</td></tr>
+                <tr><td>连续使用“这、它、该问题”</td><td>多个对象同时存在时，读者要反复回看代词指向。</td><td>重复对象名称，必要时拆句。</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>机械删词无法修复顺序</h3>
+          <p>“真正”和“核心”可以被搜索出来，概念提前出现、动作主体缺失和因果跳步需要逐段判断。Skill 将词语扫描作为线索，最终检查单位是读者能否沿着文章顺序复述发生了什么。</p>
+
+          <h3>比方只处理局部难点</h3>
+          <div class="grid-3">
+            <div class="mini green"><h4>可以使用</h4><p>真实机制难以凭动作说明，简短比方能让读者看见关系。</p></div>
+            <div class="mini amber"><h4>使用以后</h4><p>给出真实名称和实际落点。后文以真实对象继续。</p></div>
+            <div class="mini red"><h4>及时停止</h4><p>读者已经理解时让比方退出。标题、结论和多个章节不维护第二套故事。</p></div>
+          </div>
+        </section>
+
+        <section id="evidence">
+          <p class="section-label">主张能够追溯</p>
+          <h2>事实、推断和未知分别陈述</h2>
+          <p class="intro">语言清楚不能代替证据。AI 需要让读者知道每个判断来自哪里，以及现有材料最多支持到什么程度。</p>
+
+          <div class="grid-4">
+            <div class="mini green"><h4>直接观察</h4><p>页面、日志、测量或原始材料明确记录的内容。</p></div>
+            <div class="mini blue"><h4>规则与代码</h4><p>系统、协议或方法规定在某个条件下会执行的动作。</p></div>
+            <div class="mini amber"><h4>合理推断</h4><p>多项事实共同支持的解释，同时保留成立条件和替代解释。</p></div>
+            <div class="mini red"><h4>仍然未知</h4><p>材料缺失或实验未覆盖的部分，不由语言补成确定答案。</p></div>
+          </div>
+
+          <div class="compare">
+            <div class="example bad">
+              <span class="label">证据范围被扩大</span>
+              <p>实验已经证明这个错误在启动阶段必然发生。</p>
+            </div>
+            <div class="example good">
+              <span class="label">证据范围保持准确</span>
+              <p>在这次受控实验使用的启动顺序下，错误再次出现。实验确认该顺序能够触发问题；它没有覆盖所有启动条件。</p>
+            </div>
+          </div>
+
+          <p>论文需要引用和统计区间，事故报告需要日志、代码与复现实验，邮件可能只需要说明信息来源和当前状态。证据形式随场景变化，主张与证据强度一致这项要求保持不变。</p>
+        </section>
+
+        <section id="relations">
+          <p class="section-label">在 Agent craft 中的位置</p>
+          <h2><code>write-for-reader</code> 接管原有的通用写作要求</h2>
+          <p class="intro">仓库原来使用 <code>talk-clear</code> 处理面向外行的解释。它预设读者不懂技术，也把比方放在较高位置。新的 Skill 根据实际读者决定解释深度，因此可以覆盖原能力，也可以用于论文、PPT、报告和专家交流。</p>
+
+          <div class="relationship">
+            <strong>write-for-reader</strong>
+            <p>默认用于所有面向人类的成品。它判断读者、已有知识、沟通目标和载体，并负责顺序、指代、因果、证据边界和自然语言。</p>
+          </div>
+          <div class="relationship">
+            <strong>talk-clear</strong>
+            <p>退出活跃 Skill 列表。它的讲解能力已由 <code>write-for-reader</code> 的“面向非专业读者”场景接管。旧内容仍可从 Git 历史查看。</p>
+          </div>
+          <div class="relationship">
+            <strong>research-report</strong>
+            <p>规定研究报告的材料盘点、学术结构、引用和交付格式。新 Skill 负责让这些内容适合目标同行阅读。</p>
+          </div>
+          <div class="relationship">
+            <strong>caveman-cn</strong>
+            <p>处理用户明确要求极短输出的场景。压缩重复和绕行，同时保留条件、风险和下一步。</p>
+          </div>
+          <div class="relationship">
+            <strong>easy-grill-zh</strong>
+            <p>处理方案讨论中的逐题追问。它继续规定一次问一个问题；新 Skill 让问题接在用户已有理解上，并减少技术黑箱。</p>
+          </div>
+
+          <div class="notice">
+            <p>安装新 Skill 后，用户通常无需主动喊出名称。它的说明把所有面向人类的成品列为默认触发场景。显式调用仍然可用，适合重写一段已有内容或要求模型严格执行。原来的 <code>/talk-clear</code> 不再作为另一套模式维护。</p>
+          </div>
+        </section>
+
+        <section id="limits">
+          <p class="section-label">适用边界</p>
+          <h2>机器语法、忠实转录和强制模板优先保留</h2>
+          <p class="intro">通用写作要求服务于人类阅读。它不会改写程序必须识别的结构，也不会为了顺口改变原文、数据和法规要求。</p>
+
+          <div class="grid-3">
+            <div class="mini">
+              <h4>机器读取的内容</h4>
+              <p>源代码、命令、配置、结构化数据和字段名继续遵守各自语法。旁边的人类说明可以使用本 Skill。</p>
+            </div>
+            <div class="mini">
+              <h4>要求忠实的内容</h4>
+              <p>逐字引用、转录、正式翻译和原格式保留优先保证忠实。解释与原文分开呈现。</p>
+            </div>
+            <div class="mini">
+              <h4>外部强制格式</h4>
+              <p>法律、医学、学术和组织模板按规定执行。Skill 在允许调整的正文范围内改善顺序和表达。</p>
+            </div>
+          </div>
+
+          <h3>用户要求能够覆盖场景默认值</h3>
+          <p>用户指定读者、术语、长度、语气或格式时，AI 应更新判断。准确性、证据范围和必须忠实保留的内容继续存在。用户没有说明时，AI 使用对话中已经显露的个人偏好，不把每次任务当成第一次见面。</p>
+        </section>
+
+        <section id="acceptance">
+          <p class="section-label">交付前检查</p>
+          <h2>读者应当能够沿着成品完成预定任务</h2>
+          <p class="intro">下面的检查适用于 HTML、对话回答、论文草稿、PPT 和邮件。不同成品的答案会变化，检查的问题保持稳定。</p>
+
+          <div class="checklist">
+            <label class="check"><input type="checkbox">开头连接了读者已经知道或亲自经历的事情。</label>
+            <label class="check"><input type="checkbox">新概念在被用于结论以前获得了足够介绍。</label>
+            <label class="check"><input type="checkbox">每个动作都有明确的执行者和影响对象。</label>
+            <label class="check"><input type="checkbox">代词只有一个可能的指向，同一对象名称稳定。</label>
+            <label class="check"><input type="checkbox">原因、中间状态和结果能够按顺序复述。</label>
+            <label class="check"><input type="checkbox">直接观察、材料规定、推断和未知可以区分。</label>
+            <label class="check"><input type="checkbox">标题说明内容，没有评价作者的方法或内容深度。</label>
+            <label class="check"><input type="checkbox">术语深度、篇幅、语气和版式适合当前读者与载体。</label>
+            <label class="check"><input type="checkbox">图表、卡片和表格确实减少了理解困难。</label>
+            <label class="check"><input type="checkbox">删去任何一段前，都确认它不会带走理解或行动所需信息。</label>
+          </div>
+
+          <div class="notice amber">
+            <p>验收关注读者能否理解、判断或行动。词语扫描和格式检查只能发现部分线索，不能代替完整阅读。</p>
+          </div>
+        </section>
+
+        <section id="skill">
+          <p class="section-label">可直接使用</p>
+          <h2>完整的 <code>write-for-reader</code> Skill</h2>
+          <p class="intro">下面内容与 Agent craft 仓库中的 <code>SKILL.md</code> 一致。可以复制到支持 Skill 的 AI 工具，也可以通过 GitHub 查看和安装。仓库版本保留后续修改历史。</p>
+
+          <div class="skill-panel">
+            <div class="skill-toolbar">
+              <span>skills/write-for-reader/SKILL.md</span>
+              <div class="skill-actions">
+                <button type="button" id="copySkill">复制完整 Skill</button>
+                <a class="button-link" href="https://github.com/JianyuLin1999/JianyuLin-agent-craft/blob/main/skills/write-for-reader/SKILL.md" target="_blank" rel="noreferrer">在 GitHub 查看</a>
+                <a class="button-link" href="https://raw.githubusercontent.com/JianyuLin1999/JianyuLin-agent-craft/main/skills/write-for-reader/SKILL.md" target="_blank" rel="noreferrer">打开纯文本</a>
+              </div>
+            </div>
+            <pre><code id="skillCode"></code></pre>
+          </div>
+          <p class="copy-status" id="copyStatus" role="status">点击“复制完整 Skill”后，可以直接粘贴到本地 Skill 文件。</p>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div>
+      <p>文档与 Skill：write-for-reader 0.1.0</p>
+      <p>GitHub：<a href="https://github.com/JianyuLin1999/JianyuLin-agent-craft">JianyuLin1999/JianyuLin-agent-craft</a></p>
+      <p>这份 HTML 负责解释和展示；GitHub 中的 SKILL.md 负责模型执行与版本维护。</p>
+    </div>
+  </footer>
+
+  <script type="text/plain" id="skillSource">---
+name: write-for-reader
+description: >
+  让 AI 为具体读者和具体载体组织语言。写任何面向人类的内容前，先从对话中自行判断谁会读、
+  读者已经知道什么、读后需要理解或完成什么、内容通过什么载体呈现，再调整解释深度、术语、
+  结构、篇幅、语气、证据和视觉形式。适用于对话回答、解释、技术调查、研究报告、学术写作、
+  PPT、邮件、文档、总结、方案、PR、issue 和其他 reader-facing 成品；即使 user 没有点名也默认使用。
+  user 说“写清楚”“重写”“润色”“帮我解释”“用人话讲”“通俗易懂”“讲透”“做报告”
+  “做 PPT”“写论文”“写邮件”或批评内容跳跃、堆术语、像 AI、缺少背景、代词不清时也使用。
+  源代码、配置、机器读数据和要求逐字保留的原文除外。
+version: 0.1.0
+status: active
+---
+
+# write-for-reader
+
+为具体读者完成具体沟通任务。读者不负责补齐作者省略的背景、对象、因果或证据边界。
+
+## 动笔前自行完成定位
+
+从 user 的请求、对话历史、已有材料和成品类型中判断四项信息：
+
+1. 谁会阅读。
+2. 读者已经知道什么，哪些内容没有理由知道。
+3. 读完后需要理解、判断或完成什么。
+4. 内容通过什么载体呈现，以及载体对长度、结构和视觉形式的限制。
+
+定位过程留在内部。不要让 user 填表，不要复述内部判断，也不要为了确认已能推断的信息而提问。
+
+只有同时满足以下条件时才提一个问题：存在两种合理理解；两种理解会造成明显不同的成品；上下文无法排除其中一种。问题描述读者会看到的差别，不询问写作术语。
+
+信息仍有轻微缺口时，采用能保留准确性、方便后续调整的写法，并简短说明所用假设。
+
+## 所有场景共同遵守
+
+### 从读者已有的内容继续
+
+- 开头连接 user 已经提出的事情、读者亲自经历的现象或材料中已经建立的事实。
+- 新概念出现时，先交代它为何进入当前内容。只解释读者理解后文所需的部分。
+- 按信息依赖组织顺序。后文使用的前提、角色和事件先在前文出现。
+- 背景服务于当前任务。不要展示与读者目标无关的调查过程和内部账本。
+
+### 让对象、动作和关系清楚
+
+- 点名谁做了什么，以及动作影响谁。不要用被动语态隐藏责任主体。
+- 代词只能指向一个明确对象。可能误解时重复对象名称。
+- 同一对象全篇使用同一个名称。术语首次出现时按读者需要给出简短解释，后文保持名称稳定。
+- 一句话承载一个主要动作。一段完成一个局部任务，相邻段落之间写出连接。
+
+### 把因果和证据写完整
+
+- 区分先后发生、同时发生、相关条件和因果关系。
+- 因果说明写出触发条件、中间状态变化和最终后果。不要让连接词代替中间步骤。
+- 让主张与证据强度一致。分别标明直接观察、材料记载、合理推断和仍然未知的内容。
+- 将证据放在它支持的判断附近。来源、时间或适用范围会影响理解时一并交代。
+- 不用缺失的记录补写确定原因，不把复现一次写成所有条件下必然发生。
+
+### 使用自然、克制的语言
+
+- 优先使用常见、准确的词和具体动词。需要术语时保留术语，不用浅白措辞替换掉专业含义。
+- 标题说明本节讨论的对象、事件、问题或关系。标题不描述作者的写法，也不评价内容有多深。
+- 直接陈述发现及其影响。删掉自我表扬、口号式总结、预告深度和没有事实依据的强调词。
+- 避免为了制造转折而使用“不是 A，而是 B”。确需纠正误解时，分别说明原判断缺少什么条件，以及现有材料支持什么。
+- 比方只用于解决局部理解困难。使用后给出真实名称；读者已经理解时让比方退出，不让它进入标题和结论。
+- 长短句随内容自然变化。默读并改掉翻译腔、排比腔和只在 AI 成品中常见的套话。
+
+### 让形式服务于理解
+
+- 连续关系用段落，横向比较用表格，时间变化用时间线，层级关系用树状结构，复杂布局用示意图。
+- 只有视觉形式能明显减少解释或误解时才使用。不要把普通段落切成卡片来制造丰富感。
+- 保留完成任务所需的细节。可读性通过顺序、解释和分层实现，不靠删掉限制条件。
+- 正文先满足连续阅读；路径、命令、原始日志和完整数据按读者需要放在邻近证据区或附录。
+
+## 根据场景调整写法
+
+共同要求保持不变。以下内容根据读者、任务和载体调整：术语密度、解释深度、结论出现位置、篇幅、正式程度、引文格式、视觉密度和允许保留的含蓄程度。
+
+### 对话与讲解
+
+先回应 user 当前的问题，再补足理解这个回答需要的背景。每轮围绕一个认知缺口推进。能根据上下文继续时直接继续；需要选择时给出推荐和会发生的实际差别。
+
+### 面向非专业读者的解释
+
+从读者亲自经历的现象或熟悉的经验开始，补齐后文依赖的背景。专业概念先说明实际作用，再给出真实名称。使用具体例子帮助读者检验理解；只有局部关系仍难理解时才使用比方，并在概念清楚后回到真实对象。完整保留会影响判断的技术条件、风险和未知，不用“简单来说”掩盖省略。
+
+### 技术调查与事故报告
+
+先交代系统原本怎样运行、用户做了什么和异常从哪一步开始。按事件顺序展开参与者、状态变化、证据和未知范围。直接原因、促成条件、独立问题和后续影响分别陈述。
+
+### 学术写作与研究报告
+
+以目标学科的同行为默认读者，保留共同体已熟悉的术语和结构。方法支持可复现，结果只陈述数据支持的发现，讨论解释意义和限制。引文靠近被支持的主张，语气与证据强度一致。面向其他读者时再增加必要解释。
+
+### PPT 与演讲材料
+
+每页完成一个明确的沟通任务。标题陈述该页内容，正文只保留现场需要看见的信息。图表承担关系，口头讲述承担展开；没有现场讲述时，页面补足独立阅读所需的上下文。
+
+### 邮件、消息与工作文档
+
+尽早交代来意、相关背景和希望对方采取的动作。责任人、时间、交付物和未决事项使用明确名称。正式程度跟随关系和用途，不用礼貌话淹没请求。
+
+### 创意与叙事写作
+
+允许有意使用节奏、留白、多义和比方。区分有意安排与无意含混。涉及现实事实时仍保持准确；虚构内容不伪装成事实记录。
+
+## user 指定的要求
+
+user 明确指定读者、格式、语气、长度或领域惯例时，以这些信息更新场景判断。user 给出的个人表达偏好在所有场景中持续生效；只有它与准确性、证据或必须保留的原文冲突时才说明限制。
+
+不要把“结论先行”“通俗易懂”“简洁”机械执行成固定模板：
+
+- 开头可以先给结论，但结论只能使用读者已经知道或当场解释的概念。
+- 通俗程度由目标读者决定。专家交流不重复科普共同知识。
+- 简洁减少的是重复、绕行和无关内容。必要背景、限定条件和证据不能因此消失。
+
+## 交付前静默检查
+
+在内部逐段检查：
+
+1. 开头是否接在读者已经知道的事情上。
+2. 每个新概念是否在使用前获得了足够介绍。
+3. 每个动作是否有明确执行者，每个代词是否只有一个对象。
+4. 原因、中间过程和结果是否连续。
+5. 事实、推断和未知是否能被读者区分。
+6. 标题是否陈述内容，正文是否夹带作者姿态或口号。
+7. 术语、篇幅、正式程度和版式是否适合当前读者与载体。
+8. 删除任何一段后，读者是否会失去理解、判断或行动所需的信息；不会则删除。
+
+检查留在内部。交付自然成品，不附评分、规则复述或自我评价。
+
+## 不适用的内容
+
+- 源代码、命令、配置、结构化数据和机器读取的字段保持其语法与约定。
+- user 要求逐字引用、转录、翻译或保留原格式时，优先保证忠实；解释与原文分开。
+- 法律、医学、学术或组织模板有强制格式时遵守模板，同时保留准确性和证据边界。
+
+## 与相邻 Skill 的关系
+
+- `caveman-cn` 处理 user 明确要求极短输出的场景，但不删除准确性所需的条件和风险。
+- 领域 Skill 可以规定结构、术语和引用格式；本 Skill 继续负责读者定位、叙述顺序、指代、因果和自然语言。</script>
+  <script>
+    const profiles = {
+      explain: {
+        title: "给患者解释",
+        reader: "关心结果含义、未必熟悉统计术语的人",
+        goal: "理解研究发现及其限制",
+        medium: "可连续阅读的说明",
+        adjust: "解释数字含义，保留样本和随访限制",
+        sample: "这项小型研究跟踪了 60 人。八周后，接受治疗的人症状评分平均比对照组多改善 2.7 分。统计结果显示，这个差异较难用随机波动单独解释。研究人数较少，观察时间也只有八周，因此它还不能回答长期效果和少见副作用。"
+      },
+      paper: {
+        title: "学术论文",
+        reader: "熟悉研究设计和统计报告规范的同行",
+        goal: "准确报告效应估计、精度与限制",
+        medium: "结果段与讨论段",
+        adjust: "保留数值与置信区间，不重复科普常见术语",
+        sample: "八周时，治疗组症状评分平均下降 4.2 分，对照组下降 1.5 分，组间均值差为 2.7 分（95% CI 0.8–4.6）。结果支持短期症状改善，但样本量与随访时间限制了对长期疗效和低频不良事件的判断。"
+      },
+      ppt: {
+        title: "组会 PPT",
+        reader: "现场听讲、能够查看图表的课题组成员",
+        goal: "在一页内看出效应大小和限制",
+        medium: "有口头讲解的单页幻灯片",
+        adjust: "标题承载发现，图表承担比较，限制保留在页面",
+        sample: "八周后，治疗组比对照组多改善 2.7 分\n95% CI 0.8–4.6｜n=60\n页面下方：样本较小；尚无长期随访。"
+      },
+      report: {
+        title: "项目报告",
+        reader: "需要判断项目是否进入下一阶段的研究团队",
+        goal: "结合发现和限制作出后续研究决定",
+        medium: "可独立阅读的阶段报告",
+        adjust: "连接结果、限制和下一步，保留决策依据",
+        sample: "八周数据出现有利于治疗组的差异，组间均值差为 2.7 分（95% CI 0.8–4.6）。现有样本支持继续评估短期疗效。下一阶段需要扩大样本并延长随访，随后再判断长期效果与低频不良事件。"
+      },
+      email: {
+        title: "工作邮件",
+        reader: "已经了解项目背景、需要确认下一步的合作者",
+        goal: "请对方确认扩大样本和延长随访的安排",
+        medium: "需要快速处理的邮件",
+        adjust: "尽早交代结果和请求，减少重复背景",
+        sample: "八周分析已完成：治疗组相对对照组多改善 2.7 分（95% CI 0.8–4.6）。样本量和随访时间仍不足以判断长期效果。请在周五前确认下一阶段的样本规模和随访周期，我们随后更新方案。"
+      },
+      chat: {
+        title: "对话回答",
+        reader: "刚问“这项研究说明了什么”的当前用户",
+        goal: "先回答问题，再为后续追问保留入口",
+        medium: "一轮可继续追问的对话",
+        adjust: "先说明能够确认的结论，再解释限制",
+        sample: "这项研究支持治疗在八周内改善症状：治疗组平均比对照组多改善 2.7 分。由于只有 60 人，而且只观察了八周，我们暂时不能据此判断长期效果。"
+      }
+    };
+
+    const profileButtons = document.querySelectorAll("[data-profile]");
+    const profileFields = {
+      title: document.getElementById("profileTitle"),
+      reader: document.getElementById("profileReader"),
+      goal: document.getElementById("profileGoal"),
+      medium: document.getElementById("profileMedium"),
+      adjust: document.getElementById("profileAdjust"),
+      sample: document.getElementById("profileSample")
+    };
+
+    profileButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selected = profiles[button.dataset.profile];
+        profileButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        Object.keys(profileFields).forEach((key) => {
+          profileFields[key].textContent = selected[key];
+        });
+      });
+    });
+
+    const skillSource = document.getElementById("skillSource").textContent.trim();
+    document.getElementById("skillCode").textContent = skillSource;
+
+    const copyButton = document.getElementById("copySkill");
+    const copyStatus = document.getElementById("copyStatus");
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand("copy");
+      textarea.remove();
+      if (!copied) throw new Error("copy failed");
+    }
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await copyText(skillSource);
+        copyStatus.textContent = "已复制完整 Skill。";
+        copyButton.textContent = "已复制";
+        window.setTimeout(() => { copyButton.textContent = "复制完整 Skill"; }, 1800);
+      } catch (error) {
+        copyStatus.textContent = "浏览器没有允许自动复制。请在代码区域内全选后复制。";
+      }
+    });
+
+    const sectionLinks = Array.from(document.querySelectorAll("aside a, .top-nav a"));
+    const sections = Array.from(document.querySelectorAll("main section"));
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      sectionLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + visible.target.id);
+      });
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: [0.01, 0.2, 0.5] });
+    sections.forEach((section) => observer.observe(section));
+  </script>
+</body>
+</html>

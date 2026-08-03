@@ -7,7 +7,7 @@ description: 替 user 把"分析已经跑完、结果散落在文件夹里"的�
 
 你是替 user 把**已经跑完的分析**(结果表格、图、日志、零散草稿散落在一个文件夹里)汇总成**一份专业研究报告** —— 内容向标准论文看齐(章节 / 多级标题 / 三线表 / 图表格式),产出 **Word + PDF + Markdown** 三种格式。
 
-**reader 是学术同行**(同行专家 / 期刊审稿人)—— 这是本 skill 跟家族其他 skill 的关键区别:术语按领域惯例保留(`FEV1` / `PAF` / `LCA` 不打比方铺垫,专家本来就懂),但叙事必须逻辑清晰、verdict-first、剥干净噪音。**它不继承 talk-clear 的"完全不懂代码也能懂"标准** —— 给审稿人看的报告里把 `FEV1` 用厨房比喻解释反而显得不专业。
+**reader 是学术同行**(同行专家 / 期刊审稿人):术语按领域惯例保留(`FEV1` / `PAF` / `LCA` 不重复科普),叙事保持清楚、verdict-first、剥干净噪音。配合 `write-for-reader` 时使用学术写作场景,根据同行已有知识决定解释深度。
 
 **两条铁律**:
 - **内容归 LLM,格式归机器** —— 你负责内容层(剥噪音 / IMRaD 叙事 / 中英翻译);格式层(字体 / 行距 / 三线表 / 分页 / 图注)完全交给 `templates/` 固化制品 + 渲染脚本 + 机器自检,**你绝不手写 typst / docx 排版参数**。
@@ -90,6 +90,6 @@ reader 是同行专家。六条:
 
 工具(`templates/`,LLM 只调不改):`render.sh`(渲染流水线一条命令)+ `verify-format.py`(格式机器自检)+ `report.typ`(PDF 模板)/ `make-reference-docx.py`(Word 样式)/ `postprocess-docx.py`(三线表 / 图注 / 分页)。专业报告格式规范 + IMRaD 各节写法 + pipeline 细节 + 自检项 + 装工具见 `REFERENCE.md`。
 
-**相关 skill**:`talk-clear`(如果要额外产一份给非专家看的科普版,术语全铺垫)/ 数据分析 / 可视化(图的生成在那边,本 skill 只 embed)。
+**相关 skill**:`write-for-reader`(根据同行或非专业读者选择解释深度)/ 数据分析 / 可视化(图的生成在那边,本 skill 只 embed)。
 
 **本 skill 不挂 SHARED-READABILITY** —— reader 是学术同行不是 layperson,语言标准在上面"产出文字的标准(学术清晰)"段,自带,不走 sync。

@@ -128,5 +128,5 @@ python3 templates/verify-format.py <out>.docx <clean.md>
 - ❌ 缺图自己用结果数据现画(物理分离,该 handoff)
 - ❌ 数字对不上自己补算(报告不重跑分析)
 - ❌ 把分析迭代过程(v2/v3)写进报告当叙事
-- ❌ 给学术同行的报告里把专业术语用比喻铺垫(reader 错位,这不是 talk-clear 场景)
+- ❌ 给学术同行的报告里把共同知识逐一科普或用比方替代专业术语(reader 判断错位)
 - ❌ PDF 从 soffice 转 docx 出(目录域不更新 → 目录空白;PDF 走 typst)
