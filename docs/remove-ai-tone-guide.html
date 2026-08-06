@@ -25,14 +25,14 @@
   --red-soft: #f7ebe8;
   --purple: #6a5888;
   --purple-soft: #f0ecf6;
-  --scene-understand: #477b94;
-  --scene-understand-soft: rgba(71, 123, 148, .25);
-  --scene-guide: #9a6b21;
-  --scene-guide-soft: rgba(154, 107, 33, .24);
-  --scene-expert: #725f91;
-  --scene-expert-soft: rgba(114, 95, 145, .24);
-  --scene-decide: #20705e;
-  --scene-decide-soft: rgba(32, 112, 94, .24);
+  --quadrant-upper-left: #20705e;
+  --quadrant-upper-left-soft: rgba(32, 112, 94, .24);
+  --quadrant-upper-right: #9a6b21;
+  --quadrant-upper-right-soft: rgba(154, 107, 33, .24);
+  --quadrant-lower-left: #725f91;
+  --quadrant-lower-left-soft: rgba(114, 95, 145, .24);
+  --quadrant-lower-right: #477b94;
+  --quadrant-lower-right-soft: rgba(71, 123, 148, .25);
   --max: 1120px;
   --text: 760px;
   --radius: 12px;
@@ -461,7 +461,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .runtime-flow {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 22px;
   margin-top: 23px;
 }
 .flow-step {
@@ -477,7 +477,7 @@ tbody tr:last-child td { border-bottom: 0; }
   position: absolute;
   z-index: 2;
   top: 50%;
-  right: -18px;
+  right: -19px;
   transform: translateY(-50%);
   color: #8da39c;
   font-size: 1.2rem;
@@ -497,39 +497,57 @@ tbody tr:last-child td { border-bottom: 0; }
 .quadrant {
   position: relative;
   min-height: 570px;
-  margin: 34px 42px 54px 68px;
+  margin: 54px 28px 72px 42px;
   border: 1px solid rgba(96, 120, 112, .46);
   border-radius: 16px;
   background:
     linear-gradient(to right, transparent calc(50% - .6px), rgba(96, 120, 112, .58) calc(50% - .6px), rgba(96, 120, 112, .58) calc(50% + .6px), transparent calc(50% + .6px)),
     linear-gradient(to top, transparent calc(50% - .6px), rgba(96, 120, 112, .58) calc(50% - .6px), rgba(96, 120, 112, .58) calc(50% + .6px), transparent calc(50% + .6px)),
-    linear-gradient(to right, rgba(248, 240, 220, .72) 0 50%, rgba(231, 241, 237, .78) 50% 100%) top / 100% 50% no-repeat,
-    linear-gradient(to right, rgba(233, 241, 246, .8) 0 50%, rgba(240, 236, 246, .72) 50% 100%) bottom / 100% 50% no-repeat,
+    linear-gradient(to right, rgba(231, 241, 237, .78) 0 50%, rgba(248, 240, 220, .72) 50% 100%) top / 100% 50% no-repeat,
+    linear-gradient(to right, rgba(240, 236, 246, .72) 0 50%, rgba(233, 241, 246, .8) 50% 100%) bottom / 100% 50% no-repeat,
     #fff;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .72), 0 12px 28px rgba(31, 50, 44, .08);
   overflow: visible;
 }
-.axis-label {
+.axis-direction {
   position: absolute;
   z-index: 3;
   color: var(--muted);
-  font-size: .73rem;
-  font-weight: 740;
+  font-size: .75rem;
+  font-weight: 760;
+  line-height: 1;
+  white-space: nowrap;
   pointer-events: none;
 }
-.axis-y-high { top: 8px; left: 8px; }
-.axis-y-low { bottom: 8px; left: 8px; }
-.axis-y-high, .axis-y-low {
-  padding: 3px 7px;
-  border: 1px solid rgba(96, 120, 112, .2);
-  border-radius: 999px;
-  background: rgba(255, 254, 250, .82);
-  box-shadow: 0 2px 7px rgba(31, 50, 44, .06);
+.axis-line {
+  position: absolute;
+  display: block;
+  background: #82968f;
 }
-.axis-x-low { bottom: -37px; left: 0; }
-.axis-x-high { right: 0; bottom: -37px; }
-.axis-y-title { top: 50%; left: -143px; transform: rotate(-90deg) translateY(-50%); transform-origin: center; color: var(--ink); }
-.axis-x-title { right: 50%; bottom: -62px; transform: translateX(50%); color: var(--ink); }
+.axis-y-direction { top: 0; bottom: 0; left: -24px; width: 18px; }
+.axis-y-direction .axis-line { top: 5px; bottom: 0; left: 8px; width: 1.5px; }
+.axis-y-direction .axis-line::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -3px;
+  border-right: 4px solid transparent;
+  border-bottom: 7px solid #82968f;
+  border-left: 4px solid transparent;
+}
+.axis-y-direction .axis-text { position: absolute; top: -35px; left: 0; }
+.axis-x-direction { right: 0; bottom: -28px; left: 0; height: 18px; }
+.axis-x-direction .axis-line { top: 7px; right: 0; left: 0; height: 1.5px; }
+.axis-x-direction .axis-line::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 7px solid #82968f;
+}
+.axis-x-direction .axis-text { position: absolute; top: 15px; right: 0; }
 .scene-point {
   --point: var(--green);
   --point-soft: rgba(23, 107, 89, .24);
@@ -556,10 +574,10 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 .scene-point:hover, .scene-point:focus-visible { z-index: 9; outline: 3px solid var(--point-soft); outline-offset: 3px; transform: translate(-50%, 50%) scale(1.045); box-shadow: 0 10px 22px rgba(31, 50, 44, .25); }
 .scene-point.active { z-index: 8; outline: 4px solid var(--point-soft); outline-offset: 3px; box-shadow: 0 10px 24px rgba(31, 50, 44, .27); }
-.point-understand { --point: var(--scene-understand); --point-soft: var(--scene-understand-soft); }
-.point-guide { --point: var(--scene-guide); --point-soft: var(--scene-guide-soft); }
-.point-expert { --point: var(--scene-expert); --point-soft: var(--scene-expert-soft); }
-.point-decide { --point: var(--scene-decide); --point-soft: var(--scene-decide-soft); }
+.point-upper-left { --point: var(--quadrant-upper-left); --point-soft: var(--quadrant-upper-left-soft); }
+.point-upper-right { --point: var(--quadrant-upper-right); --point-soft: var(--quadrant-upper-right-soft); }
+.point-lower-left { --point: var(--quadrant-lower-left); --point-soft: var(--quadrant-lower-left-soft); }
+.point-lower-right { --point: var(--quadrant-lower-right); --point-soft: var(--quadrant-lower-right-soft); }
 .scenario-detail {
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
@@ -644,9 +662,9 @@ footer a { color: #c0e5da; }
 @media (max-width: 1000px) {
   .layout { grid-template-columns: 1fr; }
   aside { display: none; }
-  .runtime-flow { grid-template-columns: 1fr; }
+  .runtime-flow { grid-template-columns: 1fr; gap: 32px; }
   .flow-step { min-height: 0; }
-  .flow-step::after { top: auto; right: 50%; bottom: -22px; transform: translateX(50%) rotate(90deg); }
+  .flow-step::after { content: "↓"; top: auto; right: 50%; bottom: -27px; transform: translateX(50%); }
   .quadrant { min-height: 520px; }
 }
 @media (max-width: 760px) {
@@ -663,13 +681,11 @@ footer a { color: #c0e5da; }
   .example-source { padding: 18px 17px 20px; font-size: .9rem; }
   .before-after p { min-height: 0; }
   .quadrant-shell { padding: 12px; border-radius: 15px; }
-  .quadrant { min-height: 610px; margin: 35px 18px 56px 45px; }
+  .quadrant { min-height: 650px; margin: 50px 18px 70px 30px; }
   .scene-point { min-width: 58px; min-height: 44px; max-width: 82px; padding: 7px; font-size: .62rem; }
-  .axis-y-title { display: none; }
-  .axis-x-low, .axis-x-high { font-size: .65rem; }
-  .axis-x-title { bottom: -62px; }
-  .axis-y-high { top: 8px; left: 8px; }
-  .axis-y-low { bottom: 8px; left: 8px; }
+  .axis-direction { font-size: .68rem; }
+  .axis-y-direction .axis-text { top: -34px; }
+  .axis-x-direction { bottom: -27px; }
   .skill-toolbar { align-items: flex-start; flex-direction: column; }
   .skill-actions { justify-content: flex-start; }
   .skill-file-tabs button, .skill-toolbar button, .skill-toolbar .button-link { min-height: 44px; }
@@ -768,7 +784,7 @@ footer a { color: #c0e5da; }
               <span>查看“证据与判断”</span>
             </a>
             <a href="#voice">
-              <strong>作者不停预告、转折、强调和总结，内容被固定句式包住</strong>
+              <strong>作者不停预告和强调，还会自行造词或使用不自然的词语搭配</strong>
               <span>查看“语气与节奏”</span>
             </a>
             <a href="#page">
@@ -934,8 +950,9 @@ footer a { color: #c0e5da; }
         </section>
 
         <section id="voice">
-          <h2>文字显得生硬：作者姿态和固定句式压过内容</h2>
+          <h2>文字显得生硬：作者姿态、造词和反常搭配压过内容</h2>
           <p>一篇文章反复预告分析层次和结论顺序，读者会不断离开内容，转而听作者介绍写法。后文若继续纠正没人提出的观点、宣布分析深度、用排比收尾，写作姿态就会盖过实际信息。</p>
+          <p>句式之外，词语本身也可能让人停下来。AI 会给普通问题另造名称，或者把几个常见词拼成同类文章里很少出现的搭配。读者大致能够猜到意思，仍要先把陌生说法翻译成正常表达。</p>
 
           <div class="table-wrap">
             <table class="phrase-table">
@@ -947,11 +964,50 @@ footer a { color: #c0e5da; }
                 <tr><td>“从表象追到本质”</td><td>作者评价自己的分析深度，读者仍不知道具体对象</td><td>标题写明要解释的现象、关系或判断</td></tr>
                 <tr><td>“第一性原理、共同本质、最可泛化的结论”</td><td>作者先宣布内容的深度和普遍性，目的、约束和原因尚未展开</td><td>直接写目标、限制条件、因果关系和适用范围</td></tr>
                 <tr><td>给内容加上“入口、路径、层级、呈现”等辅助标签</td><td>读者要先理解作者设计的分类，才能回到原本的内容</td><td>使用读者可以直接辨认的问题、动作或阅读困难</td></tr>
+                <tr><td>“信息承接层、概念突现型阅读阻滞”等临时造词</td><td>普通问题突然获得新名称，读者还要猜名称的边界</td><td>直接写缺少什么背景、哪个概念出现太早</td></tr>
+                <tr><td>“这一刀、踩在问题上、把结论落盘”等反常搭配</td><td>每个词都认识，组合起来却不像当前语境中的自然说法</td><td>点名真实动作和对象，改用同类文章中的常见搭配</td></tr>
                 <tr><td>连续三段排比和口号式结尾</td><td>每段都用同一种节奏收紧，条件与限制被挤掉</td><td>让段落长度和结尾跟随信息任务变化</td></tr>
                 <tr><td>长时间维持一个比方</td><td>读者同时维护比方世界和真实对象，两套关系可能分叉</td><td>比方解决局部困难后，立即接回真实名称</td></tr>
               </tbody>
             </table>
           </div>
+
+          <h3>普通问题不需要获得一个新名称</h3>
+          <p>“信息承接层”和“概念突现型阅读阻滞”看起来像已经建立的分类，正文却没有给出定义，也没有在后文反复使用。新名称没有缩短解释，只给读者增加了一项需要猜测的概念。</p>
+          <div class="before-after">
+            <div>
+              <strong>原句｜给普通问题另造名称</strong>
+              <p>先修复信息承接层，再消除概念突现型阅读阻滞。</p>
+            </div>
+            <div>
+              <strong>改写｜直接说明缺少什么</strong>
+              <p>先补上新概念所需的背景，再调整这些概念出现的顺序。</p>
+            </div>
+          </div>
+          <p>领域内已经通用的术语可以直接使用。确实需要新名称时，应先说明它指什么、边界在哪里，以及后文为何需要反复使用。一个自然短语已经能够说明问题时，无需再发明分类。</p>
+
+          <h3>常见词也会组成不自然的句子</h3>
+          <p>这里所说的低概率搭配，指的是同类文章中很少有人会这样连用，并非对词频作出的统计结论。它常把动作隐喻、身体位置和工程行话移到抽象问题上，使读者先注意措辞，再寻找实际动作。</p>
+          <figure class="annotated-example">
+            <span class="example-kicker">常见词被拼成反常搭配</span>
+            <blockquote class="example-source">“<mark class="annotated-fragment tone-blue" data-note="1">这一刀</mark>精准<mark class="annotated-fragment tone-amber" data-note="2">踩在问题根部</mark>，随后把修改方案<mark class="annotated-fragment tone-red" data-note="3">落盘到文档中</mark>。”</blockquote>
+            <figcaption class="annotation-list">
+              <div class="annotation-item tone-blue"><span class="annotation-tag"><span class="annotation-number">1</span>动作场景没有本体</span><p>正文没有切割动作。“这一刀”只增加戏剧感，没有说明修改了什么。</p></div>
+              <div class="annotation-item tone-amber"><span class="annotation-tag"><span class="annotation-number">2</span>词语关系无法还原</span><p>读者不知道“踩在”表示发现、针对还是解决，所谓“根部”也没有实际对象。</p></div>
+              <div class="annotation-item tone-red"><span class="annotation-tag"><span class="annotation-number">3</span>工程词被移到错误语境</span><p>“落盘”通常描述数据写入存储介质。这里的真实动作只是把方案写入文档。</p></div>
+            </figcaption>
+          </figure>
+          <div class="before-after">
+            <div>
+              <strong>原句｜动作隐喻和工程行话混在一起</strong>
+              <p>这一刀精准踩在问题根部，随后把修改方案落盘到文档中。</p>
+            </div>
+            <div>
+              <strong>改写｜点名修改内容和保存位置</strong>
+              <p>这次修改补上了新概念所需的背景。修改方案随后写入文档。</p>
+            </div>
+          </div>
+          <p>这些词并非在所有场景中都不能使用。“这一刀”可以描述真实动作，“踩在”可以说明实际位置，“落盘”也可以准确表示数据写入磁盘。问题出现在词语离开原有语境以后，只剩下含混的生动感。</p>
 
           <h3>标题告诉读者这一节发生了什么</h3>
           <div class="before-after">
@@ -1041,6 +1097,9 @@ footer a { color: #c0e5da; }
             <h3>宽泛要求容易变成可见装饰</h3>
             <p>“专业、全面、有深度”没有说明读者和任务。抽象名词、强烈判断、分层标题和大量卡片都能满足表面印象，却未必帮助阅读。</p>
 
+            <h3>不同语境的词被拼到同一句话里</h3>
+            <p>动作场景可以带来力度，工程词可以显得简洁，抽象名词可以显得正式。几种表达被同时使用时，单个词仍然常见，词语之间的搭配却会偏离当前文章的自然说法。</p>
+
             <h3>压缩经常删掉读者需要的部分</h3>
             <p>背景、条件和中间动作被删除，作者预告、强调词和重复总结仍被保留。文字缩短以后，推理工作转移给读者。</p>
           </div>
@@ -1057,8 +1116,8 @@ footer a { color: #c0e5da; }
             <li><strong>划定证据边界。</strong>分开观察、规则、实验、推断和未知，确定每项结论可以写到哪里。</li>
             <li><strong>恢复信息关系。</strong>调整前提顺序，点名执行者，展开关键动作，补齐时间和因果中的中间步骤。</li>
             <li><strong>让抽象判断落地。</strong>在原则附近放入原句、具体情形或可观察后果；切换场景时写清它与前文的关系。</li>
-            <li><strong>清理作者姿态。</strong>标题写内容，删除虚构对立、没有真实预期的转折、无依据的强调和重复总结。</li>
-            <li><strong>处理比方、句子与页面。</strong>让比方只解释一个局部难点并接回真实名称；调整句长和动词，删除只增加层级的标签，再为明确关系选择视觉形式。</li>
+            <li><strong>清理作者姿态和异常措辞。</strong>标题写内容，用具体内容替换笼统评价，删除虚构对立、无依据的强调、没有必要的新词，以及不符合当前语境的词语搭配。语气保持自然、克制。</li>
+            <li><strong>处理比方、句子与页面。</strong>让比方只解释一个局部难点并接回真实名称；使用常见动词和自然搭配，删除只增加层级的标签，再为明确关系选择视觉形式。</li>
             <li><strong>让目标读者试读。</strong>检查他能否沿原文形成预期理解，并完成原定的判断或行动。</li>
           </ol>
 
@@ -1077,6 +1136,9 @@ footer a { color: #c0e5da; }
             <label class="check"><input type="checkbox">每个转折词都回应了前文已经形成的真实预期。</label>
             <label class="check"><input type="checkbox">辅助标签确实帮助查找；只增加层级的标签已经删除。</label>
             <label class="check"><input type="checkbox">删除强调词后，事实仍能说明事情的分量。</label>
+            <label class="check"><input type="checkbox">笼统评价没有代替具体内容，语气自然、克制。</label>
+            <label class="check"><input type="checkbox">普通问题没有被改名成未经定义的新概念。</label>
+            <label class="check"><input type="checkbox">动词和对象采用当前语境中的常见搭配，没有为了显得生动而挪用动作隐喻或工程行话。</label>
             <label class="check"><input type="checkbox">建议可以沿当前目标、限制条件和原因向前追溯。</label>
             <label class="check"><input type="checkbox">逐句批注能够直接对应原文片段，颜色之外仍有文字标签。</label>
             <label class="check"><input type="checkbox">每个表格和图都表达了一项明确关系。</label>
@@ -1084,57 +1146,54 @@ footer a { color: #c0e5da; }
         </section>
         <section id="runtime" class="appendix-start">
           <p class="section-label">附录一</p>
-          <h2>Skill 怎样选择当前需要的规则</h2>
-          <p class="intro">用户只需提出写作任务。Skill 根据对话判断读者、已有知识、读后任务和成品形式，再加载一份主要场景文件。长文或高风险内容才增加检查文件。</p>
+          <h2>Skill 在什么情况下读取其他文件</h2>
+          <p class="intro">主文件适用于所有非虚构写作任务。解释、论文、演示和 AI 指令各有一份补充文件；一项任务符合多种形式时，可以读取多份。只有全面检查已有文字时才读取检查文件。</p>
 
-          <div class="runtime-flow" aria-label="write-for-reader 的运行流程">
-            <div class="flow-step"><strong>读取请求</strong><span>从用户的话和对话历史中识别已有信息。</span></div>
-            <div class="flow-step"><strong>判断读者</strong><span>确认谁会读、读者知道什么、读后要做什么。</span></div>
-            <div class="flow-step"><strong>选择场景文件</strong><span>从解释、调查、学术、演示、工作或创意中选择一个。</span></div>
-            <div class="flow-step"><strong>增加必要检查</strong><span>混合任务补一个次要场景；长文或高风险任务加载 AUDIT。</span></div>
-            <div class="flow-step"><strong>交付成品</strong><span>路由过程留在内部；缺少关键信息时只问一个实际问题。</span></div>
+          <div class="runtime-flow" aria-label="remove-ai-tone 的运行流程">
+            <div class="flow-step"><strong>读取主文件</strong><span>所有任务使用三组通用要求。</span></div>
+            <div class="flow-step"><strong>查看成品形式</strong><span>解释、论文、演示和 AI 指令读取对应文件。</span></div>
+            <div class="flow-step"><strong>组合所需文件</strong><span>研究答辩等混合任务可以同时读取多份。</span></div>
+            <div class="flow-step"><strong>写作或修改</strong><span>没有对应场景的任务直接使用主文件。</span></div>
+            <div class="flow-step"><strong>全面检查</strong><span>需要完整审阅已有文字时，再读取 AUDIT.md。</span></div>
           </div>
         </section>
 
         <section id="quadrant">
           <p class="section-label">附录二</p>
           <h2>不同写作任务会怎样改变表达</h2>
-          <p class="intro">图中的每个点代表一种常见写作任务。横轴表示读者对主题的熟悉程度，纵轴表示读者是否需要根据内容采取具体行动。点的位置只用于比较常见差别，具体任务会随上下文移动。</p>
+          <p class="intro">图中的每个点代表一种常见写作任务。横向越靠右，越需要介绍对象、术语和必要背景；纵向越靠上，越需要展开正常流程、动作动机、中间步骤和因果。位置按照当前实际读者校准；故障调查默认写给没有参与代码实现的负责人。</p>
 
           <div class="quadrant-shell">
-            <div class="quadrant" role="group" aria-label="写作任务二维示意图。横轴表示读者对主题的熟悉程度，纵轴表示读者是否需要采取具体行动。">
-              <span class="axis-label axis-y-high">需要采取行动</span>
-              <span class="axis-label axis-y-low">无需采取行动</span>
-              <span class="axis-label axis-x-low">不了解主题</span>
-              <span class="axis-label axis-x-high">熟悉主题</span>
-              <span class="axis-label axis-y-title">是否需要采取具体行动</span>
-              <span class="axis-label axis-x-title">读者对主题的熟悉程度</span>
+            <div class="quadrant" role="group" aria-label="写作任务二维示意图。横向越靠右，越需要补充背景；纵向越靠上，越需要展开过程。">
+              <span class="axis-direction axis-y-direction"><span class="axis-line" aria-hidden="true"></span><span class="axis-text">需要展开更多过程</span></span>
+              <span class="axis-direction axis-x-direction"><span class="axis-line" aria-hidden="true"></span><span class="axis-text">需要补充更多背景</span></span>
 
-              <button class="scene-point point-understand active" style="--x: 17%; --y: 18%;" data-scene="plain" aria-pressed="true">给初学者解释概念</button>
-              <button class="scene-point point-understand" style="--x: 24%; --y: 38%;" data-scene="popular" aria-pressed="false">给公众写科普文章</button>
-              <button class="scene-point point-understand" style="--x: 38%; --y: 9%;" data-scene="creative" aria-pressed="false">为陌生读者写故事</button>
-              <button class="scene-point point-guide" style="--x: 17%; --y: 77%;" data-scene="instruction" aria-pressed="false">给首次用户写指引</button>
-              <button class="scene-point point-guide" style="--x: 33%; --y: 63%;" data-scene="patient" aria-pressed="false">给患者解释方案</button>
-              <button class="scene-point point-understand" style="--x: 53%; --y: 26%;" data-scene="teachingPpt" aria-pressed="false">给学生做教学演示</button>
-              <button class="scene-point point-decide" style="--x: 58%; --y: 82%;" data-scene="email" aria-pressed="false">给同事发协作邮件</button>
-              <button class="scene-point point-decide" style="--x: 70%; --y: 91%;" data-scene="decisionPpt" aria-pressed="false">给管理者做决策汇报</button>
-              <button class="scene-point point-decide" style="--x: 72%; --y: 68%;" data-scene="investigation" aria-pressed="false">给团队写故障调查</button>
-              <button class="scene-point point-expert" style="--x: 89%; --y: 23%;" data-scene="paper" aria-pressed="false">给同行写研究论文</button>
-              <button class="scene-point point-expert" style="--x: 89%; --y: 54%;" data-scene="defense" aria-pressed="false">向评审做研究答辩</button>
+              <button class="scene-point point-upper-right active" style="--x: 66%; --y: 66%;" data-scene="plain" aria-pressed="true">给初学者解释概念</button>
+              <button class="scene-point point-upper-right" style="--x: 88%; --y: 60%;" data-scene="popular" aria-pressed="false">给公众写科普文章</button>
+              <button class="scene-point point-upper-right" style="--x: 69%; --y: 56%;" data-scene="instruction" aria-pressed="false">给首次用户写指引</button>
+              <button class="scene-point point-upper-right" style="--x: 65%; --y: 90%;" data-scene="patient" aria-pressed="false">给患者解释方案</button>
+              <button class="scene-point point-upper-right" style="--x: 82%; --y: 76%;" data-scene="teachingPpt" aria-pressed="false">给学生做教学演示</button>
+              <button class="scene-point point-lower-left" style="--x: 22%; --y: 23%;" data-scene="email" aria-pressed="false">给同事发协作邮件</button>
+              <button class="scene-point point-lower-left" style="--x: 40%; --y: 43%;" data-scene="prompt" aria-pressed="false">为 AI 写任务提示词</button>
+              <button class="scene-point point-upper-left" style="--x: 33%; --y: 68%;" data-scene="skill" aria-pressed="false">写可复用的 Skill</button>
+              <button class="scene-point point-upper-left" style="--x: 40%; --y: 82%;" data-scene="decisionPpt" aria-pressed="false">给管理者做决策汇报</button>
+              <button class="scene-point point-upper-right" style="--x: 88%; --y: 92%;" data-scene="investigation" aria-pressed="false">给负责人写故障调查</button>
+              <button class="scene-point point-upper-left" style="--x: 12%; --y: 92%;" data-scene="paper" aria-pressed="false">给同行写研究论文</button>
+              <button class="scene-point point-upper-left" style="--x: 14%; --y: 75%;" data-scene="defense" aria-pressed="false">向评审做研究答辩</button>
             </div>
 
             <div class="scenario-detail" aria-live="polite">
               <div>
                 <h3 id="sceneTitle">给初学者解释概念</h3>
-                <p class="scenario-position" id="scenePosition">不了解主题 · 无需采取行动</p>
+                <p class="scenario-position" id="scenePosition">背景需求较多 · 过程展开较多</p>
               </div>
               <div class="scenario-facts">
                 <div><strong>典型读者</strong><span id="sceneReader">第一次接触主题、只见过表面现象的人</span></div>
                 <div><strong>成品要完成</strong><span id="sceneGoal">补齐必要背景，让读者理解对象、过程和结论</span></div>
                 <div><strong>特定要求</strong><span id="sceneRules">从亲身经历开始；概念先讲作用再给名称；例子用于检验理解；比方及时接回真实对象</span></div>
                 <div><strong>主要风险</strong><span id="sceneRisk">为了浅白删掉条件，或用持续比方替代真实系统</span></div>
-                <div><strong>加载文件</strong><span id="sceneProfile">profiles/explanation.md</span></div>
-                <div><strong>位置说明</strong><span id="sceneWhy">读者不了解主题，内容用于建立基本理解</span></div>
+                <div><strong>加载文件</strong><span id="sceneProfile">SKILL.md</span></div>
+                <div><strong>位置说明</strong><span id="sceneWhy">读者需要认识新对象，也需要看到这些对象怎样形成完整过程</span></div>
               </div>
             </div>
           </div>
@@ -1143,49 +1202,47 @@ footer a { color: #c0e5da; }
         <section id="architecture">
           <p class="section-label">附录三</p>
           <h2>Skill 文件怎样按需加载</h2>
-          <p class="intro">主文件保存各场景共同使用的要求。六份场景文件只在对应任务中进入上下文，从而减少无关规则互相干扰。</p>
+          <p class="intro">主文件保存通用要求。四份场景文件只在成品形式相符时读取。邮件和普通决策材料不需要额外文件。虚构作品不使用这个 Skill。</p>
 
           <div class="architecture">
             <div>
               <h3>文件结构</h3>
-              <pre class="file-tree">write-for-reader/
+              <pre class="file-tree">remove-ai-tone/
 ├── SKILL.md
 ├── AUDIT.md
 └── profiles/
-    ├── explanation.md
-    ├── investigation.md
     ├── academic.md
-    ├── presentation.md
-    ├── workplace.md
-    └── creative.md</pre>
+    ├── explanation.md
+    ├── instructions.md
+    └── presentation.md</pre>
             </div>
             <div>
               <h3>加载方式</h3>
               <ul class="load-rule">
-                <li>普通任务加载主文件和一份场景文件。</li>
-                <li>混合任务可以增加一份次要场景文件，由主要场景决定结构。</li>
-                <li>长文或高风险任务再加载 <code>AUDIT.md</code>。</li>
-                <li>所有场景文件不会同时加载。</li>
+                <li>所有任务使用主文件。</li>
+                <li>成品符合表中的场景时，读取对应文件。</li>
+                <li>一项任务符合多个场景时，读取相应的多个文件。</li>
+                <li>全面检查已有文字时，读取 <code>AUDIT.md</code>。</li>
               </ul>
-              <p>例如，学术会议汇报以 <code>presentation.md</code> 安排页面，再由 <code>academic.md</code> 补充证据和术语要求。普通工作邮件只需 <code>workplace.md</code>。</p>
+              <p>研究答辩同时读取 <code>academic.md</code> 和 <code>presentation.md</code>。普通工作邮件只使用主文件。</p>
             </div>
           </div>
         </section>
 
         <section id="skill">
           <p class="section-label">附录四</p>
-          <h2>write-for-reader Skill 文件</h2>
-          <p class="intro">页面末尾收录当前 0.3.0 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
+          <h2>remove-ai-tone Skill 文件</h2>
+          <p class="intro">页面末尾收录当前 0.8.0 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
 
           <div class="skill-panel">
             <div class="skill-file-tabs" id="skillFileTabs" role="tablist" aria-label="Skill 文件"></div>
             <div class="skill-toolbar">
-              <span id="currentSkillPath">skills/write-for-reader/SKILL.md</span>
+              <span id="currentSkillPath">skills/remove-ai-tone/SKILL.md</span>
               <div class="skill-actions">
                 <button type="button" id="copyCurrent">复制当前文件</button>
                 <button type="button" id="copyPackage">复制整套文件</button>
-                <a class="button-link" id="githubCurrent" href="https://github.com/JianyuLin1999/JianyuLin-agent-craft/blob/main/skills/write-for-reader/SKILL.md" target="_blank" rel="noreferrer">在 GitHub 查看</a>
-                <a class="button-link" href="https://github.com/JianyuLin1999/JianyuLin-agent-craft/tree/main/skills/write-for-reader" target="_blank" rel="noreferrer">打开文件夹</a>
+                <a class="button-link" id="githubCurrent" href="https://github.com/JianyuLin1999/JianyuLin-agent-craft/blob/main/skills/remove-ai-tone/SKILL.md" target="_blank" rel="noreferrer">在 GitHub 查看</a>
+                <a class="button-link" href="https://github.com/JianyuLin1999/JianyuLin-agent-craft/tree/main/skills/remove-ai-tone" target="_blank" rel="noreferrer">打开文件夹</a>
               </div>
             </div>
             <pre><code id="skillCode"></code></pre>
@@ -1202,409 +1259,237 @@ footer a { color: #c0e5da; }
       <p>Skill 与版本记录：<a href="https://github.com/JianyuLin1999/JianyuLin-agent-craft">JianyuLin1999/JianyuLin-agent-craft</a></p>
     </div>
   </footer>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/SKILL.md">---
-name: write-for-reader
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/SKILL.md">---
+name: remove-ai-tone
 description: >
-  根据读者已有的知识、阅读目的和成品载体，组织清楚、自然、可核查的文字。用于面向人类的
-  解释、重写、润色、技术调查、学术材料、PPT、邮件、报告、方案、PR 和 issue；用户要求
-  “写清楚”“用人话讲”“讲透”，或指出文字像 AI、缺少背景、难以理解时也使用。源代码、
-  配置、机器读取的数据和需要逐字保留的原文除外。
-version: 0.3.0
-status: active
+  让面向读者或 AI 的文字清楚、自然，并保留理解、判断或执行所需的信息。用于写作、改写或
+  审阅说明、报告、论文、演示文稿、邮件、提示词和 Skill；用户指出文字难懂、像 AI 写的、
+  缺少背景或关系不清时也使用。源代码、机器读取的数据、需要逐字保留的原文和虚构作品除外。
+metadata:
+  version: 0.8.0
+  status: active
 ---
 
 # 为读者写清楚
 
-读者只会看到交到手里的成品。他们看不到写作者读过的全部对话、文件和调查过程，
-也不该先学习一套写作框架。写作时，从读者已经知道、亲自经历或正在关心的事情起笔，
-再逐步加入事实、概念、理由和结论。选择场景和检查成品的过程留在内部。
+## 让读者看懂
 
-## 写之前先弄清四件事
+- 默认读者不熟悉。新概念和必要背景在第一次需要时当场讲清。
+- 按读者理解所需的顺序组织内容，不让后文依赖尚未说明的信息。每句话只表达一个主要意思。
+- 写清谁做了什么、为什么这样做、产生了什么影响。同一对象始终使用同一个名称，代词必须指向明确。
+- 比方只用于解释局部难点，不能代替真实对象。讲清以后，继续使用真实名称。
+- 删除重复和无关内容，保留理解所需的信息。
 
-从用户的请求、对话历史和已有材料中判断：
+## 使用自然表达
 
-1. 谁会阅读。
-2. 读者亲自经历过什么，已经知道什么，哪些内部名称没有理由知道。
-3. 读完以后，读者需要理解什么、判断什么或完成什么。
-4. 成品会出现在哪种载体，其中有哪些篇幅、引用或视觉限制。
+- 选择普通、直接、自然的说法。读者能够猜懂还不够，整句话应符合常见的语言习惯。
+- 沿用已有名称。不得自行创造概念名、标签、缩写或复合词。确实没有通行名称时，才命名并立即说明。
+- 使用词语的常见含义和常见搭配。不为追求新鲜、力度、简洁或专业感，临时改变词义或拼接少见词组。
+- 不用行话或缩略说法代替具体事实和动作。
+- 不用笼统评价代替具体内容。
+- 自然、克制地陈述内容。不评价自己的表达，也不用空泛的强调、口号或重复总结制造力度。
+- 标题只概括正文内容，不写关于作者或文章本身的元信息。
+- 不强行制造转折；只有内容本身确有转折关系时才使用转折表达。
 
-现有信息足够时直接写。只有两种理解都说得通，而且会产生明显不同的成品时，
-才问一个具体问题。例如：“这份材料是给开发者继续排查，还是给负责人决定是否暂停上线？”
-不要让用户先理解写作术语再作选择。
+## 忠实于事实
 
-同一份成品继续修改时，沿用已经确认的读者和用途，除非用户改变了目标。
+- 忠实于实际讨论，不把无人提出的疑问、争议、误解或评价标准写成当前讨论的一部分。
+- 事实和判断要有依据，不确定的地方如实说明。
 
-## 选择当前场景
+## 读取其他文件
 
-选择最接近当前任务的一行，完整读取对应文件：
+开始写作前，按下表读取与任务相符的场景文件；符合多项时，读取相应的多个文件。
 
-| 主要任务 | 读取文件 |
+| 任务 | 读取 |
 |---|---|
-| 帮助陌生读者理解概念、错误或复杂过程 | `profiles/explanation.md` |
-| 调查系统、事故、数据异常或技术原因 | `profiles/investigation.md` |
-| 写论文、研究报告、摘要或同行材料 | `profiles/academic.md` |
-| 制作 PPT、演讲稿或页面式汇报 | `profiles/presentation.md` |
-| 写邮件、决策材料、项目报告或工作文档 | `profiles/workplace.md` |
-| 写故事、品牌内容或其他创意文字 | `profiles/creative.md` |
+| 解释概念、报错、日志、命令输出或系统状态 | `profiles/explanation.md` |
+| 写论文、学术报告或同行评审意见 | `profiles/academic.md` |
+| 制作幻灯片、演讲稿或答辩材料 | `profiles/presentation.md` |
+| 编写提示词、Skill 或其他供 AI 执行的指令 | `profiles/instructions.md` |
 
-通常只读取一个场景文件。一份成品确实需要完成两种任务时，可以再读取一个：
-主要场景决定整体顺序，次要场景只补充必要要求。例如，学术会议报告用
-`presentation.md` 安排页面，再用 `academic.md` 检查证据和术语。
+场景文件对相应任务的要求优先。
 
-长文、高风险内容、严格重写，或者用户已经指出成品难读时，再读取 `AUDIT.md`。普通短答无需加载。
-
-## 让读者先认识对象
-
-- 从读者做过、看见或问过的事情开始。独立发布的成品没有这类共同经历时，先交代当前对象和写作目的。
-- 开头可以给结论，但结论只能使用读者已经知道或当场解释的名称。
-- 项目独有的名称第一次出现时，先说明它做什么，以及为什么此处需要提到它。只解释后文真正会用到的部分。
-- 背景放在依赖它的内容之前。只有会帮助读者理解、判断或行动的背景才进入正文。
-- 比方只帮助理解一个局部关系。先说真实对象，再使用比方；解释完成后，用真实名称复述，并让比方退出后续的因果和结论。
-
-## 把过程和理由接起来
-
-- 先介绍对象，再说明对象之间的关系。写异常时，先让读者知道正常情况下会发生什么。
-- 点名谁做了什么、作用于什么、结果影响谁。同一对象保持同一个名称，代词要有唯一指向。
-- 叙述过程时，一步推进一个主要变化。多个变化挤在一句话里时，按照发生顺序拆开。
-- 解释原因时，写出触发条件、中间发生的变化和最终后果。时间接近、同时发生、相关条件和直接原因分别陈述。
-- 判断后面紧跟依据。直接观察、材料记载、受控实验、合理推断和仍然未知的内容，要让读者看得出差别。
-
-## 让读者看出每段话为何出现
-
-- 每段回答一个当前问题。背景靠近它解释的对象，证据靠近它支持的判断。正文无需另行介绍作者的安排。
-- 建议要接在目标、限制和原因之后。读者应能看出建议解决什么问题，以及它为什么可能改变结果。
-- 标题直接说明这一节的对象、事件、发现或决定。正文使用常见词和具体动词，不用“最关键”替内容分级，也不先反驳读者没有提出的观点。
-- “但、却、仍然”等词只用于修正前文已经形成的预期。场景改变时，先写清新内容与前文的关系。
-- 简洁只删除重复、绕行和无关内容。理解结论所需的背景、条件、限制和风险继续保留。
-
-## 交付前读一遍
-
-确认下面四件事：
-
-1. 每个新名称出现时，读者都知道它为何进入当前内容。
-2. 读者能够沿着明确的对象、动作和时间顺序复述过程。
-3. 每项判断都能找到附近的依据，语气没有超过材料支持的范围。
-4. 标题和正文都在讲实际内容。场景选择、规则名称、加载过程和自我评价仍留在内部。
-
-用户已经给出的表达偏好继续生效。领域 Skill 可以补充术语、引用和格式要求，但不能覆盖用户的明确要求。
-
-机器读取的内容保持原有语法。逐字引用、转录、正式翻译和强制模板优先保证忠实；需要解释时，把解释与原文分开。
+全面检查已有文字时，读取 [AUDIT.md](AUDIT.md)。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/AUDIT.md"># 长文与高风险内容检查
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/AUDIT.md"># 全面检查已有文字
 
-只在长文、高风险内容、严格重写或 user 已经指出成品难读时使用。检查过程留在内部。
+逐项检查并修改。检查过程不写入成品。
 
-## 第一轮：读者起点与顺序
+## 让读者看懂
 
-- 开头是否连接读者已经知道或亲自经历的事情。
-- 每个章节依赖的对象、前提和事件是否已经出现。
-- 背景是否只服务于当前任务，内部调查过程是否误入正文。
-- 每段是否回答一个清楚的问题；它的作用是否通过前后关系显现，而非由作者另行说明。
-- 切换场景时是否写清它与前文的关系。
+- 补上第一次使用却没有说明的新概念和必要背景。
+- 调整内容顺序，使每一部分只依赖前面已经说明的信息。
+- 补全动作的执行者、目的和影响。统一对象名称，消除指代不明。
+- 找出已经代替真实对象的比方。只保留解释局部难点的部分，并在解释后使用真实名称。
+- 删除重复和无关内容，保留理解所需的信息。
 
-## 第二轮：对象、动作与指代
+## 使用自然表达
 
-- 每个动作是否有明确执行者、对象和影响范围。
-- 代词是否只有一个可能指向，同一对象是否保持同名。
-- 一句话是否承担一个主要动作，一段是否完成一个局部任务。
-- 事件叙述是否一次推进一个主要状态变化，正常状态与异常位置是否可以按时间复述。
+- 将生硬、绕口或需要猜测的句子改成普通说法。
+- 删除没有必要的新名称、标签、缩写和复合词。
+- 改掉临时改变词义的说法、少见搭配、借用具体动作的比方和跨领域行话。
+- 将空泛的强调、口号、自我评价和重复总结改为具体内容。
+- 把介绍作者、写法或文章安排的标题，改成概括正文内容的标题。
+- 删除论述中凭空加入的疑问、争议和误解。删去没有真实关系的转折。
 
-## 第三轮：因果与证据
+## 忠实于事实
 
-- 触发条件、中间变化和后果是否连续。
-- 先后、同时、相关和因果是否分开。
-- 事实、规则、实验、推断和未知是否使用了相符的语气。
-- 证据是否位于被支持的判断附近。
-- 建议是否可以沿当前目标、限制条件和前文原因向前追溯。
-
-## 第四轮：作者姿态与语言节奏
-
-- 标题是否说明内容，是否仍在描述“我们怎样写、怎样证明”。
-- 写作要求是否被直接复述成预告、评价或作者安排说明。
-- 删除自我表扬、口号、预告深度，以及用“第一性原理”等词代替目标、限制和因果的自评分级。
-- 检查“不是 A，而是 B”是否纠正了真实存在的误解；没有则直接陈述实际关系。
-- 检查“但、却、仍然”修正的预期是否已经在前文形成；没有则直接陈述实际关系。
-- 默读长短句。改掉翻译腔、排比腔、连续碎句和只在 AI 成品中常见的套话。
-- 比方是否先点明本体、只解释一个局部关系，并在完成后回到真实名称；后文是否仍要求读者维护整套喻体代号。
-
-## 第五轮：载体与删减
-
-- 表格、图、卡片和颜色是否明显减少了理解困难。
-- “入口、路径、层级”等辅助标签是否提供读者需要的信息；只增加层级的标签直接删除。
-- 逐句分析原文时，批注是否直接对应具体片段；编号或颜色是否同时保留文字标签。
-- 载体是否要求独立阅读，必要上下文是否完整。
-- 删除一段前，读者是否会失去理解、判断或行动所需的信息；不会则删除。
-- 交付正文不附规则复述、内部评分或自我评价。
+- 核对每项事实和判断的依据。
+- 将结论限制在现有依据能够支持的范围内，写明仍不确定的内容。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/explanation.md"># 面向陌生读者的解释
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/explanation.md"># 解释和排错
 
-## 使用目标
-
-让缺少前置知识的读者理解一个概念、错误、系统过程或判断，并能把解释接回真实对象。
-
-## 写法
-
-- 从读者亲自经历的现象、操作或问题开始，随后补齐后文依赖的背景。
-- 新概念先说明实际作用和出现原因，再给出真实名称。一次只引入当前推理需要的概念。
-- 将过程拆成读者可以复述的动作与状态变化。保留会影响判断的技术条件、风险和未知。
-- 使用具体例子帮助读者检验理解。例子服务于当前关系，不扩展成另一篇故事。
-- 只有动作说明仍不足时才使用比方。先点明本体和当前难点；让一个喻体只解释一个局部关系；随后立即用真实名称复述。比方不进入后续标题、因果和结论。
-- 回答当前问题后再扩展背景。不要用大段科普推迟用户正在等待的答案。
-
-## 避免
-
-- 用“简单来说”掩盖被删掉的条件。
-- 把读者暂时不懂术语误判成内容必须变浅。
-- 比方进入标题、结论或多个章节，使每个本体都获得一个喻体代号，迫使读者持续翻译两套对象。
-- 解释每个专业词，却没有说明这些词之间怎样连接。
-
-## 完成条件
-
-读者能说出发生了什么、每个新对象为何出现、对象之间怎样连接，以及哪些部分仍然未知。
+- 根据用户已经知道什么和想解决什么决定解释深度，只补当前理解需要的前置知识。
+- 解释概念时讲清它解决的问题、工作方式和适用边界。术语只在有助于继续理解或查找时引入。
+- 解释报错、日志、命令输出或系统状态时，区分正常信息、警告和失败，只提取影响判断的事实。
+- 需要用户处理时，给出当前最小下一步和完成信号。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/investigation.md"># 技术调查与异常说明
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/academic.md"># 学术写作
 
-## 使用目标
-
-让读者理解系统原本怎样运行、异常从哪一步开始、证据支持哪些原因，以及仍需调查什么。
-
-## 写法
-
-- 先交代正常流程、用户动作和可观察症状，再引入内部模块与技术名称。
-- 事件按时间和信息依赖展开，一次推进一个主要状态变化。参与者、动作、状态变化和后果逐步出现。
-- 直接原因、促成条件、独立问题、后续影响和未证实猜测分别陈述。
-- 日志、代码、受控实验和历史材料各自支持到哪里，就把结论写到哪里。
-- 缺少“系统为什么作出某个决定”的记录时，明确记录缺口，不用后来的代码行为补写历史动机。
-- 建议与调查结果分开。先说明现状和原因，得到解决授权后再进入改法。
-
-## 避免
-
-- 开头同时出现多个未介绍的模块、进程、任务和状态名称。
-- 用退出码、函数名或内部编号代替事件说明。
-- 把时间接近写成因果，把一次复现写成所有条件下必然发生。
-- 用“根因、本质、关键、真正”等词替结论分级。
-
-## 完成条件
-
-首次了解事件的读者能复述正常流程、异常链、证据范围、未知内容和当前系统状态。
+- 按目标期刊、学科或机构的规范写作。没有指定规范时，采用同领域同类学术材料常见的结构、术语和引文格式。
+- 根据预期读者通常具备的知识决定解释深度。领域内普遍掌握的基础知识可以直接使用；读者可能不熟悉、理解当前内容又需要的概念、方法、变量和缩写，应在第一次使用时说明。
+- 区分已有研究、当前研究的结果、作者对结果的解释和尚未验证的推测。文献引用靠近它所支持的陈述。
+- 保留准确的专业术语。不为显得学术而堆叠抽象名词、被动语态或长句。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/academic.md"># 学术写作与研究报告
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/instructions.md"># 提示词和 Skill
 
-## 使用目标
-
-按目标学科的共同体惯例，准确、可核查地呈现研究问题、方法、结果、解释和限制。
-
-## 写法
-
-- 以目标学科同行为默认读者。保留共同体熟悉的术语，不重复科普共同知识。
-- 当前研究独有的变量、定义、样本限制和方法变化仍需在使用前介绍。
-- 方法提供复现所需信息。结果只陈述数据支持的发现。讨论解释意义、替代解释和限制。
-- 效应量、区间、样本和分析范围按领域规范报告。语气与证据强度一致。
-- 引文靠近被支持的主张。区分已有研究、当前数据和作者解释。
-- 摘要、正文、表图和补充材料各自承担合适的信息密度，避免同一结论反复出现。
-
-## 避免
-
-- 为显示通俗而用比方替换专业术语。
-- 为显示学术而堆叠抽象名词、被动语态和长句。
-- 把相关性写成因果，把统计显著写成临床重要。
-- 在结果部分解释意义，或在讨论中引入未报告的新结果。
-
-## 完成条件
-
-同行能够核查研究做了什么、数据支持什么、结论适用于哪里，以及哪些限制会改变解释。
+- 直接写清任务、输入材料、限制、交付物和完成条件。只保留会改变执行的信息。
+- 使用明确、可执行的动词。只有理由会改变选择或避免误解时，才补充理由。
+- 给出判断原则，不穷举可以由原则处理的情况。只有执行方式确实不同，才增加条件分支。
+- 示例只用于说明难以用规则表达的边界，不增加未写明的要求。
+- 指令本身采用希望 AI 延续的表达方式。
+- 编写 Skill 时，文件开头的 `frontmatter` 说明能力和触发条件。主文件保留每次都需要的要求；其他场景和检查文件在主文件中写明读取条件。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/presentation.md"># PPT 与演讲材料
+  <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/presentation.md"># 幻灯片和演讲
 
-## 使用目标
-
-让听众在有限时间内看清每页承担的任务，并沿着页面顺序理解整场讲述。
-
-## 写法
-
-- 先确定现场讲解、独立阅读或两者兼有。独立阅读需要更多上下文，现场讲解可以把展开留给讲者。
-- 每页完成一个明确任务。标题陈述该页对象、发现、问题或关系。
-- 页面只保留听众当下需要看见的信息。讲稿承担解释，附录承担核查细节。
-- 比较用图表，时间变化用时间线，层级和流程用相应图形。图形无法减少解释时使用文字。
-- 页面逐句分析原文时，把原文独立呈现，并用编号和颜色把具体片段与批注配对；颜色之外保留文字标签。
-- 相邻页面之间写出问题如何推进。章节页说明下一段将回答什么。
-- 数据页保留口径、单位、样本和限制，避免醒目数字脱离条件。
-
-## 避免
-
-- 标题只写“背景、分析、结果、核心洞察”。
-- 把完整报告切成若干页，字体缩小后原样放入。
-- 一页同时承担背景、方法、多个发现和下一步。
-- 用卡片、颜色和动画替代信息关系。
-
-## 完成条件
-
-听众只看标题就能复述讲述路线；查看任一数据页时能判断数字表示什么、来自哪里、限制是什么。
+- 根据成品是现场讲解还是独立阅读，决定页面保留多少解释。独立阅读的版本应包含理解所需的信息。
+- 每页围绕一个主要问题、发现或决定组织。需要同时呈现的内容，应让读者看出它们之间的关系。
+- 相邻页面的关系应从标题和内容中看出来。不要用“背景”“分析”“结果”等空泛标题代替实际内容。
+- 只有图形比文字更容易说明关系时才使用图形。卡片、颜色和动画不能代替信息关系。
+- 页面文字应在实际展示环境中清楚可读。不要把完整报告缩小后分放到多页。
+- 数据、图表和引文保留理解所需的来源、口径、单位和限制。
 </script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/workplace.md"># 邮件、项目报告与决策材料
-
-## 使用目标
-
-让读者迅速理解当前情况、需要作出的决定或动作，以及责任、时间和完成条件。
-
-## 写法
-
-- 尽早交代来意、必要背景和希望读者采取的动作。
-- 事实、判断、建议、决定和待办使用清楚的段落或标签分开。
-- 点名责任人、交付物、截止时间、依赖条件和未决事项。
-- 项目报告先回答当前状态和偏差，再说明影响、原因、选择与下一步。
-- 决策材料给出推荐，同时写明依据、代价和推荐失效的条件。
-- 正式程度跟随关系和公开范围。礼貌表达不遮挡请求。
-
-## 避免
-
-- 长时间铺垫后才出现来意。
-- 使用“相关同学、后续跟进、尽快处理”等无法执行的说法。
-- 把讨论过的选项、已经决定的事项和仍待决定的事项混在一起。
-- 把所有内容标成“重要”或“紧急”，让优先级失去意义。
-
-## 完成条件
-
-读者能回答当前发生了什么、自己要做什么、何时完成、依赖谁，以及不行动会造成什么后果。
-</script>
-  <script type="text/plain" class="skill-source" data-path="skills/write-for-reader/profiles/creative.md"># 创意与叙事写作
-
-## 使用目标
-
-在保持对象和意图可控的前提下，使用节奏、声音、意象、留白或多义完成表达任务。
-
-## 写法
-
-- 先确定读者体验、叙述声音和作品用途，再选择结构与语言密度。
-- 允许有意延迟信息、留下空白或制造多义。确保这些效果来自设计，而非对象、时间和视角失控。
-- 比方和意象可以承担更长的作用，但需要保持内部关系一致。
-- 节奏随内容变化。重复只有在承担声音、结构或情绪作用时保留。
-- 品牌和公开内容保持事实准确。虚构、夸张和角色声音不伪装成事实记录。
-- user 给出的声音样本和禁用习惯优先于通用文风偏好。
-
-## 避免
-
-- 把抽象形容词、排比和金句密度当作感染力。
-- 用含混掩盖场景、人物或动作没有建立。
-- 模仿具体在世作者的独特文风。
-- 为制造情绪改变现实事实或引用含义。
-
-## 完成条件
-
-读者获得预定体验；叙述中的含蓄与多义能够追溯到有意安排；事实性内容仍然可靠。
-</script>
-
   <script>
     const scenes = {
       plain: {
         title: "给初学者解释概念",
-        position: "不了解主题 · 无需采取行动",
+        position: "背景需求较多 · 过程展开较多",
         reader: "第一次接触主题、只见过表面现象的人",
         goal: "补齐必要背景，让读者理解对象、过程和结论",
         rules: "从亲身经历开始；概念先讲作用再给名称；例子用于检验理解；比方及时接回真实对象",
         risk: "为了浅白删掉条件，或用持续比方替代真实系统",
         profile: "profiles/explanation.md",
-        why: "读者不了解主题，内容用于建立基本理解"
+        why: "读者需要认识新对象，也需要看到这些对象怎样形成完整过程"
       },
       popular: {
         title: "给公众写科普文章",
-        position: "对主题了解较少 · 无需采取行动",
+        position: "背景需求很多 · 过程展开中等",
         reader: "对主题有兴趣，但没有接受过系统训练的公众",
         goal: "解释问题为何存在、研究如何回答、结论受哪些限制",
         rules: "保留故事线和具体例子；术语首次出现时解释；证据限制靠近结论",
         risk: "追求生动导致夸张，或把尚未确定的研究写成定论",
-        profile: "profiles/explanation.md + profiles/academic.md",
-        why: "读者了解较少，内容主要帮助理解和评价信息"
-      },
-      creative: {
-        title: "为陌生读者写故事",
-        position: "熟悉程度因作品而异 · 无需按内容采取行动",
-        reader: "进入作品情境、接受有意留白和多义的读者",
-        goal: "通过声音、节奏、意象或情节产生预定体验",
-        rules: "控制叙述视角；允许有意延迟信息；意象保持内部一致；事实性内容继续准确",
-        risk: "把对象和时间失控解释成风格，或用金句密度代替感染力",
-        profile: "profiles/creative.md",
-        why: "作品可以自行建立情境，读者无需根据内容完成具体动作"
+        profile: "profiles/explanation.md",
+        why: "读者需要较多学科背景；研究问题和主要过程需要展开到可以复述"
       },
       instruction: {
         title: "给首次用户写指引",
-        position: "不了解系统 · 需要按内容操作",
+        position: "背景需求较多 · 过程展开中等",
         reader: "需要完成任务，但不熟悉系统和术语的人",
         goal: "让读者知道当前状态、下一步动作、完成信号和出错后的处理",
         rules: "一步一个动作；按钮和页面名称与真实界面一致；条件先于动作；给出可观察的完成标准",
         risk: "解释实现机制过多，或省略前置条件导致读者在中途卡住",
-        profile: "profiles/workplace.md + profiles/explanation.md",
-        why: "读者不熟悉系统，需要立即完成具体操作"
+        profile: "profiles/explanation.md",
+        why: "读者需要认识页面和状态；步骤按操作顺序展开，不必解释完整实现机制"
       },
       patient: {
         title: "给患者解释方案",
-        position: "医学知识较少 · 可能据此询问或选择",
+        position: "背景需求较多 · 过程展开很多",
         reader: "关心个人含义、未必熟悉医学和统计术语的人",
         goal: "理解选项、获益、风险、不确定性以及需要向专业人员确认的内容",
         rules: "区分群体研究与个人结论；解释数字的实际含义；保留风险和未知；不替代临床判断",
         risk: "为了安慰而弱化风险，或把统计关联直接写成个人预测",
-        profile: "profiles/explanation.md + profiles/academic.md",
-        why: "读者医学知识有限，内容会影响后续咨询或选择"
+        profile: "profiles/explanation.md",
+        why: "读者需要医学背景，也需要看清选项、获益、风险和判断过程之间的关系"
       },
       teachingPpt: {
         title: "给学生做教学演示",
-        position: "了解部分背景 · 主要用于学习",
+        position: "背景需求很多 · 过程展开较多",
         reader: "在现场跟随讲者逐步建立知识的学习者",
         goal: "让每页完成一个概念步骤，并在整场结束后形成可复述结构",
         rules: "标题陈述每页问题或结论；图承担关系；讲稿承担展开；独立阅读版本补足上下文",
         risk: "把教材段落切成页面，或一页同时承载多个概念跳跃",
         profile: "profiles/presentation.md + profiles/explanation.md",
-        why: "读者了解部分背景，页面主要帮助学习"
+        why: "学生需要逐步补齐前置知识，并沿课程顺序建立完整理解"
       },
       email: {
         title: "给同事发协作邮件",
-        position: "了解部分项目背景 · 需要回复或处理",
+        position: "背景需求较少 · 过程展开较少",
         reader: "了解部分项目背景、需要处理请求或决定的人",
         goal: "确认当前情况、所需动作、责任人和时间",
         rules: "来意尽早出现；事实和请求分开；点名责任人、交付物、截止时间和依赖",
         risk: "礼貌铺垫淹没请求，或用“尽快、相关人员”留下执行空白",
-        profile: "profiles/workplace.md",
-        why: "读者了解部分项目背景，邮件要求明确回复或处理"
+        profile: "SKILL.md",
+        why: "同事通常共享项目背景；短邮件只需交代当前事实、请求和完成条件"
+      },
+      prompt: {
+        title: "为 AI 写任务提示词",
+        position: "背景需求中等 · 过程展开中等",
+        reader: "能够执行自然语言指令，但不知道当前任务隐含目标和本地限制的 AI",
+        goal: "让 AI 明确任务、输入、边界、交付物和完成条件",
+        rules: "直接写可执行要求；目标先于格式；只保留会改变执行的背景；缺少关键信息时再提问",
+        risk: "用大段来龙去脉淹没要求，或堆叠抽象形容词却没有可检查的完成标准",
+        profile: "profiles/instructions.md",
+        why: "AI 熟悉常见指令形式，但仍需要当前任务的目标、限制和必要执行步骤"
+      },
+      skill: {
+        title: "写可复用的 Skill",
+        position: "背景需求较少 · 过程展开较多",
+        reader: "需要判断何时加载，并长期重复执行这些要求的 AI",
+        goal: "稳定触发正确能力，并按场景加载最少且足够的执行规则",
+        rules: "frontmatter 写清触发条件；主文件保持精简；低频规则按需加载；高风险动作写明验证和停止条件",
+        risk: "把设计讨论写进主提示词，或把所有场景要求一次加载造成冲突和噪音",
+        profile: "profiles/instructions.md",
+        why: "AI 熟悉 Skill 结构；可复用流程仍需写清场景路由、执行步骤和停止条件"
       },
       decisionPpt: {
         title: "给管理者做决策汇报",
-        position: "熟悉项目背景 · 需要作出选择",
+        position: "背景需求中等 · 过程展开较多",
         reader: "掌握业务背景、需要在会议中作出取舍的决策者",
         goal: "在有限时间内看清现状、选择、依据、代价和推荐",
         rules: "每页服务一个决定；标题陈述发现或选择；图表承担比较；附录保留核查细节",
         risk: "把报告压成小字，或只给推荐而隐藏失效条件",
-        profile: "profiles/presentation.md + profiles/workplace.md",
-        why: "读者熟悉项目，材料直接服务选择和资源安排"
+        profile: "profiles/presentation.md",
+        why: "管理者了解部分项目背景；形成建议的比较过程、代价和失效条件仍需展开"
       },
       investigation: {
-        title: "给团队写故障调查",
-        position: "熟悉系统背景 · 需要判断后续处理",
-        reader: "了解系统或项目，需要判断原因和后续工作的团队",
-        goal: "还原正常流程、异常链、证据范围、未知内容和当前状态",
-        rules: "事件按时间和依赖展开；原因分级；证据靠近判断；建议与调查结果分开",
-        risk: "内部名称突然出现，把复现当普遍规律，或用根因标签替代因果链",
-        profile: "profiles/investigation.md",
-        why: "读者熟悉系统，调查结果会影响修复和优先级"
+        title: "给负责人写故障调查",
+        position: "背景需求很多 · 过程展开很多",
+        reader: "熟悉产品现象，但没有参与具体代码实现，需要决定后续工作的负责人",
+        goal: "理解系统原本怎样工作、为什么采取这些动作、异常从哪里开始，以及证据支持什么",
+        rules: "内部名称首次出现时解释作用；先讲正常流程；按时间展开异常；写清动作动机、因果和证据边界",
+        risk: "把熟悉产品误当成熟悉实现，直接堆入模块名称、日志结论和压缩后的根因标签",
+        profile: "profiles/explanation.md",
+        why: "负责人没有参与实现，需要同时补齐代码背景、正常流程、动作动机和完整异常链"
       },
       paper: {
         title: "给同行写研究论文",
-        position: "熟悉学科背景 · 主要用于核查和评价",
+        position: "背景需求较少 · 过程展开很多",
         reader: "熟悉学科术语、研究设计和证据规范的同行",
         goal: "准确呈现研究问题、方法、结果、解释和限制",
         rules: "保留领域术语；当前研究独有定义仍需介绍；结果与讨论分工；主张和证据强度一致",
         risk: "为显得学术而堆抽象名词，或把统计显著写成临床重要",
         profile: "profiles/academic.md",
-        why: "读者熟悉学科，主要任务是核查和评价证据"
+        why: "同行共享学科背景；方法、分析、结果和论证过程仍需完整呈现"
       },
       defense: {
         title: "向评审做研究答辩",
-        position: "熟悉学科背景 · 需要现场判断和回应",
+        position: "背景需求较少 · 过程展开较多",
         reader: "熟悉领域、会追问方法和解释边界的评审或同行",
         goal: "在口头交流中清楚陈述主张、依据、限制和对质疑的回应",
         rules: "答案先回应问题；术语按共同体惯例；区分数据结果和解释；承认未覆盖范围",
         risk: "用强硬语气掩盖未知，或重复准备稿而没有回答现场问题",
         profile: "profiles/presentation.md + profiles/academic.md",
-        why: "读者熟悉学科，需要现场判断并回应质疑"
+        why: "评审熟悉学科；现场回答仍要展开主张、依据、限制和回应质疑的过程"
       }
     };
 
@@ -1645,7 +1530,7 @@ status: active
     let currentFile = fileSources[0];
 
     function shortName(path) {
-      return path.replace("skills/write-for-reader/", "");
+      return path.replace("skills/remove-ai-tone/", "");
     }
 
     function showFile(file, button) {
