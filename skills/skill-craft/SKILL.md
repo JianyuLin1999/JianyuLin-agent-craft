@@ -65,7 +65,7 @@ SHARED-READABILITY block (BEGIN/END markers,sync 注入)
 - 每个发现给作者**两条路他自己选** + 严重度 🔴🟡🟢
 - 收尾 **不为凑数硬找** — 挑不出 = ✅ 通过 + 指着具体决策致谢
 
-**例外条款**(像 write-for-reader 那样明确什么场景**不**适用):
+**例外条款**(像 remove-ai-tone 那样明确什么场景**不**适用):
 - 代码 / config / YAML / 机器读注释
 - 跟开发者讨论代码 debug 的内部对话
 - user 明确说"我要术语 / 直接讲 / 少铺垫"
@@ -79,7 +79,7 @@ SHARED-READABILITY block (BEGIN/END markers,sync 注入)
 
 **写**(zero file,head 紧凑):
 
-- SKILL.md head 目标紧凑(family 参考:pr-review / issue-review / issue-create / write-for-reader)
+- SKILL.md head 目标紧凑(family 参考:pr-review / issue-review / issue-create / remove-ai-tone)
 - 元信息 / 检查清单 / 反例正例 / 具体 sample → 下沉到 REFERENCE.md / EXAMPLES.md
 - head 只放 actionable trigger,不堆机制
 - **同质 instruction 合并多 signal** — 一条指令承载多个信号点(不要 3 句话讲同一件事)
@@ -120,7 +120,7 @@ SHARED-READABILITY block (BEGIN/END markers,sync 注入)
 
 入口:`/skill-craft "skill 名字 + 任务描述"` 从零开始 / `/skill-craft` 让 user 描述。零 flag。
 
-工具:`bash ~/.claude/skills/scripts/sync-shared-readability.sh` 同步 SHARED 到新 skill(如果引用)。家族 reference skill:pr-review(meta 视角最全)/ issue-review(心里狠 + 机械扫)/ write-for-reader(通用语言风格 + 场景判断 + 例外条款)。
+工具:`bash ~/.claude/skills/scripts/sync-shared-readability.sh` 同步 SHARED 到新 skill(如果引用)。家族 reference skill:pr-review(meta 视角最全)/ issue-review(心里狠 + 机械扫)/ remove-ai-tone(通用语言风格 + 场景判断 + 例外条款)。
 
 **相关 skill**:全局 `write-a-skill`(Anthropic 通用版,基础结构)/ `clarity-first`(grill 时反推 user 机制不甩术语)/ `grill-me`(深度 grill 任务边界)。
 
