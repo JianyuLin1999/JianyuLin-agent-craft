@@ -5,7 +5,7 @@ description: >
   审阅说明、报告、论文、演示文稿、邮件、提示词和 Skill；用户指出文字难懂、像 AI 写的、
   缺少背景或关系不清时也使用。源代码、机器读取的数据、需要逐字保留的原文和虚构作品除外。
 metadata:
-  version: 0.8.0
+  version: 0.8.1
   status: active
 ---
 

@@ -1232,7 +1232,7 @@ footer a { color: #c0e5da; }
         <section id="skill">
           <p class="section-label">附录四</p>
           <h2>remove-ai-tone Skill 文件</h2>
-          <p class="intro">页面末尾收录当前 0.8.0 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
+          <p class="intro">页面末尾收录当前 0.8.1 版本的完整文件。可以切换、复制单个文件，也可以一次复制整套内容。GitHub 链接提供版本记录。</p>
 
           <div class="skill-panel">
             <div class="skill-file-tabs" id="skillFileTabs" role="tablist" aria-label="Skill 文件"></div>
@@ -1266,7 +1266,7 @@ description: >
   审阅说明、报告、论文、演示文稿、邮件、提示词和 Skill；用户指出文字难懂、像 AI 写的、
   缺少背景或关系不清时也使用。源代码、机器读取的数据、需要逐字保留的原文和虚构作品除外。
 metadata:
-  version: 0.8.0
+  version: 0.8.1
   status: active
 ---
 
@@ -1339,10 +1339,12 @@ metadata:
 </script>
   <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/explanation.md"># 解释和排错
 
-- 根据用户已经知道什么和想解决什么决定解释深度，只补当前理解需要的前置知识。
-- 解释概念时讲清它解决的问题、工作方式和适用边界。术语只在有助于继续理解或查找时引入。
-- 解释报错、日志、命令输出或系统状态时，区分正常信息、警告和失败，只提取影响判断的事实。
-- 需要用户处理时，给出当前最小下一步和完成信号。
+- 根据读者已有的理解和当前问题决定解释深度，只补必要的前置知识。
+- 讲清对象为何存在、怎样工作，以及各部分之间的因果关系。
+- 用具体例子帮助读者理解抽象内容，并说明例子与真实对象怎样对应。
+- 解释应使读者能够复述原理，并据此判断条件变化后的结果。
+- 解释报错或日志时，说清发生了什么、为什么发生、影响什么，并区分正常信息、警告和失败。
+- 需要用户处理时，给出当前下一步和完成信号。
 </script>
   <script type="text/plain" class="skill-source" data-path="skills/remove-ai-tone/profiles/academic.md"># 学术写作
 
