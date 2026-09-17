@@ -1,13 +1,13 @@
 ---
 name: issue-capture
-description: 替 user 在地铁手机场景**极低摩擦**把一句话丢进 GitHub 作为占位 issue,跳过 grill,等后续 `/issue-create #N` 升级 — 3 件事:快速 grep codebase 列文件路径(不深入 Read,深度调研留给 /issue-create)/ 整理填模板(空字段标 🚧 待 grill 补完)/ 发布加 placeholder label。多想法**自动拆,不问 user**,跳重复检测。产出全部 inline 在终端,**假设所有 reader 不懂代码**(包括 issue 作者);不脑补 user 没说 + codebase 里也没的内容。Use when 用户跑 /issue-capture 想快速记一个想法但不想 grill、提到"先记一下" / "占位" / "备忘" / "capture"、地铁场景脑暴想法。
+description: 替 user 在地铁手机场景**极低摩擦**把一句话丢进 GitHub 作为占位 issue,跳过 grill,等之后澄清需求并更新原 issue — 3 件事:快速 grep codebase 列文件路径(不深入 Read,深度调研留给后续完善)/ 整理填模板(空字段标 🚧 待 grill 补完)/ 发布加 placeholder label。多想法**自动拆,不问 user**,跳重复检测。产出全部 inline 在终端,**假设所有 reader 不懂代码**(包括 issue 作者);不脑补 user 没说 + codebase 里也没的内容。Use when 用户跑 /issue-capture 想快速记一个想法但不想 grill、提到"先记一下" / "占位" / "备忘" / "capture"、地铁场景脑暴想法。
 ---
 
 # issue-capture
 
-你是替 user 在**地铁手机 / 脑暴当下**用极低摩擦把一句话丢进 GitHub 作为占位 issue,跳过 grill,等后续 `/issue-create #N` 升级填完。
+你是替 user 在**地铁手机 / 脑暴当下**用极低摩擦把一句话丢进 GitHub 作为占位 issue,跳过 grill,等之后澄清需求并更新原 issue。
 
-**依赖**:共享 `issue-create` 的 REFERENCE.md + scripts/。
+**配套文件**:本目录的 `REFERENCE.md` + `scripts/`。
 
 **每次跑独立判断**:不读旧 draft,**不脑补 user 没说 + codebase 里也没的内容**(capture 没 grill 校准,边界比 create 更严)。
 
@@ -27,13 +27,13 @@ description: 替 user 在地铁手机场景**极低摩擦**把一句话丢进 Gi
 
 **检查标准**:同一件事讲完,reader 不需要回头查任何一个词。
 
-**身份纪律**:issue body 用 user **第一人称**;**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容)。详 `SHARED-COMMENT-VOICE.md`。
+**身份纪律**:issue body 用 user **第一人称**;**Background 字段例外** — 你用**第三人称**写(协作者一眼看出是 LLM 调研内容)。详仓库的 `knowledge-assets/comment-voice.md`。
 
 ---
 
 ## 1. 快速 grep codebase(不 Read,不脑补)
 
-基于 user 关键词,**只 grep 列 2-3 个相关文件路径** 到 Background 字段。**不深入 Read** — 那是 `/issue-create` 升级时的工作。
+基于 user 关键词,**只 grep 列 2-3 个相关文件路径** 到 Background 字段。**不深入 Read** — 那是后续完善 issue 时的工作。
 
 举个例子:user 脑暴 "ipynb 渲染时过滤 cell tag" → 你 grep "cell tag" → Background 填 `notebook-renderer.tsx` / `cell.ts`(两个文件路径,grill 升级时深入)。这样协作者后续 grep 有起点,又保持极低摩擦。
 
@@ -43,17 +43,17 @@ template 路由(bug / gap / prd)。然后按字段归类:
 
 - user 在脑暴里明确说过 → 对应字段(第一人称)
 - codebase grep 得到的文件路径 → **Background 字段**(第三人称)
-- 其他没真实信息的字段 → **`🚧 待 grill 补完(跑 /issue-create #N 升级)`**
+- 其他没真实信息的字段 → **`🚧 待 grill 补完`**
 
-**多想法自动拆,不问 user**(capture 核心约束 = 输入越快越好,user 决策点 = 摩擦)。**跳重复检测**(占位低质量信号,重复成本低,交给 `/issue-inbox` 周期性 catch)。详 capture 特有行为见 `issue-create/REFERENCE.md`。
+**多想法自动拆,不问 user**(capture 核心约束 = 输入越快越好,user 决策点 = 摩擦)。**跳重复检测**(占位阶段优先记下想法，重复项留待后续整理)。详 capture 特有行为见 `REFERENCE.md`。
 
 **反模式提醒**:不要因为"字段空着不好看"就编内容("性能影响 / 兼容性 / 学习曲线" 这种凭空补字段是大坑) — 严格 🚧。
 
 ## 3. 发布
 
-写 draft 到 `~/.issue-drafts/issue-{slug}.md`(frontmatter `placeholder: true`)。终端报告**一段话连着写**:标题 / 模板 / 字段完成度(通常 1-2/7)/ Background 文件数 / slug / publish 命令 + 升级路径提示(`/issue-create #N`)。
+写 draft 到 `~/.issue-drafts/issue-{slug}.md`(frontmatter `placeholder: true`)。终端报告**一段话连着写**:标题 / 模板 / 字段完成度(通常 1-2/7)/ Background 文件数 / slug / publish 命令 + 升级路径提示(后续澄清需求并更新原 issue)。
 
-**user 说"发"→ 直接调**:`bash ~/.claude/skills/issue-create/scripts/publish-issue.sh <slug>` 或 `--all` 批量。**自动加 `placeholder` label**(警示协作者"还没充分 grill"+ `/issue-create #N` 升级后自动移除)。
+**user 说"发"→ 直接调**:`bash "<本 skill 安装目录>/scripts/publish-issue.sh" <slug>` 或 `--all` 批量。**自动加 `placeholder` label**(警示协作者"还没充分 grill"+ 后续信息补齐后移除)。
 
 ---
 
@@ -61,11 +61,11 @@ template 路由(bug / gap / prd)。然后按字段归类:
 
 ---
 
-入口:`/issue-capture "想法"` 单形态(不支持 #N 升级,升级走 `/issue-create #N`)。零 flag。
+入口:`/issue-capture "想法"` 单形态(此入口只创建占位；之后可澄清需求并更新原 issue)。零 flag。
 
-工具:复用 issue-create 的 `fetch-issue-context.sh` + `publish-issue.sh`。详细规则查 `issue-create/REFERENCE.md`。
+工具:本目录 `scripts/` 下的 `fetch-issue-context.sh` + `publish-issue.sh`。详细规则查 `REFERENCE.md`。
 
-**相关 skill**:`/issue-create "想法"` 完整模式 / `/issue-create #N` 升级占位 / `/issue-review #N` 审 issue / `/issue-inbox` 横向盘点(待做)。
+**后续完善**:用 `easy-grill-zh` 澄清缺失信息；若需要完整产品需求文档，可用 `write-a-prd`。更新已发布占位 issue 时直接编辑原 issue，避免重复创建。
 
 ---
 
