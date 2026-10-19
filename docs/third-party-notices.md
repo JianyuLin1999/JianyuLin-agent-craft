@@ -1,5 +1,7 @@
 # Third-Party Notices
 
+以下 `caveman` 和 `grill-with-docs` 条目保留历史来源记录；对应 skill 已从当前目录移除。`easy-grill` 英文版也已移除，当前仅保留 `easy-grill-zh`。
+
 ## Matt Pocock `caveman` Skill
 
 `skills/caveman-cn/SKILL.md` is a Chinese-context redesign inspired by Matt Pocock's `caveman` skill:

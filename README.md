@@ -27,39 +27,20 @@
 
 **Skill 是什么** — 给 AI 助手(像 Claude)装的一份"工作说明书"。你喊一声某个名字(比如 `/pr-review`),她就按那份说明书干活,产出固定风格的结果。下面每条说明书都是干一类具体的活。
 
-#### GitHub 协作家族 — 帮你审 / 建 / 记 GitHub 上的代码改动和待办
+本仓库维护以下 8 个 skill：
 
-GitHub 是程序员存代码、协作改代码的地方,跟"团队的工作板 + 文件柜"一样。下面 4 个 skill 都跟在这个工作板上做事有关 — 审别人的修改、审待办、新建待办、快速记一笔。
-
-| 名称 | 它替你干啥 |
+| 名称 | 用途 |
 |---|---|
-| [`pr-review`](skills/pr-review/SKILL.md) | 有人给你的代码项目提交了一份**修改建议**(GitHub 上叫 PR),你想知道这个修改靠不靠谱、要不要接受。你喊她,她替你看完一遍,告诉你:这修改在做什么、有没有问题、要不要采纳。你点头她就直接帮你回复作者或合并。**好处**:你不用自己钻代码。 |
-| [`issue-review`](skills/issue-review/SKILL.md) | GitHub 上一条"待办想法"(叫 issue,就是别人提的"这个该改一下"的小卡片),你想知道它讲清楚没、能不能开干、要不要让作者再想想。她替你过一遍,写好回复草稿,你点头就发出去 — 关掉 / 加标签这些状态变更也一并做了。 |
-| [`issue-create`](skills/issue-create/SKILL.md) | 你脑子里冒出一个想法(比如"那个搜论文的功能应该改一下"),想正经把它记成一条**完整的待办事项**让团队后续来做。她先去翻一遍代码看你这想法跟现有的东西什么关系,再追问你几个关键问题把细节问清楚,最后帮你写好一份规范的待办。 |
-| [`issue-capture`](skills/issue-capture/SKILL.md) | 你在**地铁上**(或任何匆忙场景)突然想到"哦这个我之前想改",只有 30 秒,没时间细想。喊她,扔给她一句话,她飞快帮你记成一条**占位草稿**丢到工作板上,贴个"还没想清楚"的标签提醒大家。等你之后有空,跑 `/issue-create #N` 把它填完整。 |
+| [`easy-grill-zh`](skills/easy-grill-zh/SKILL.md) | 用中文白话逐步追问计划，把需要技术背景的问题转成能凭直觉回答的问题。 |
+| [`remove-ai-tone`](skills/remove-ai-tone/SKILL.md) | 让文字清楚、自然，保留理解和执行所需的信息。另有[详细说明](docs/remove-ai-tone-guide.html)。 |
+| [`pr-review`](skills/pr-review/SKILL.md) | 审查 GitHub PR，解释改动、问题和处理建议。 |
+| [`issue-capture`](skills/issue-capture/SKILL.md) | 快速把想法记成占位 issue；所需规则和脚本随 skill 一起提供。 |
+| [`write-a-prd`](skills/write-a-prd/SKILL.md) | 通过访谈、代码调研和模块设计形成产品需求文档，并提交为 GitHub issue。 |
+| [`prd-to-plan`](skills/prd-to-plan/SKILL.md) | 将 PRD 拆成可独立验证的端到端实施阶段，保存到本地 `plans/`。 |
+| [`tdd`](skills/tdd/SKILL.md) | 按红—绿—重构循环开发，每次围绕一个可观察行为编写测试并实现。 |
+| [`improve-codebase-architecture`](skills/improve-codebase-architecture/SKILL.md) | 查找架构改进机会，对比模块接口设计，形成重构提案。 |
 
-#### 写作 / 通用工具
-
-| 名称 | 它替你干啥 |
-|---|---|
-| [`remove-ai-tone`](skills/remove-ai-tone/SKILL.md) | 让面向读者或 AI 的文字清楚、自然，并保留理解、判断或执行所需的信息。主文件保存通用要求；解释、论文、演示和 AI 指令按需读取对应文件。虚构作品不使用这个 Skill。只有全面检查已有文字时才读取 `AUDIT.md`。它已经取代原来的 `talk-clear`、`deep-explainer` 和 `bestie-explainer`。配套的[详细 HTML 说明](docs/remove-ai-tone-guide.html)分析 AI 文字中的常见问题，并在末尾提供完整文件包。 |
-| [`notebooklm-professor-clarity`](skills/notebooklm-professor-clarity/SKILL.md) | 让 **NotebookLM**(Google 出的研究笔记 AI 工具)输出的讲解更通俗易懂,但深度不丢 — 像一个会讲课的教授,而不是干瘪的学术摘要。 |
-| [`caveman-cn`](skills/caveman-cn/SKILL.md) | 你跟 AI 聊天觉得她**废话太多**,喊一句"少废话",她立刻切到极简模式 — 只留结论、原因、风险、下一步,不绕弯。 |
-| [`grill-with-docs`](skills/grill-with-docs/SKILL.md) | 跟 AI 讨论一个方案的时候,**强制她先翻你项目的术语表和决策档案**,用你项目的语言跟你讨论,不会自己发明词。像新来的咨询师必须先把"内部黑话本子"翻熟了再开会。 |
-| [`easy-grill`](skills/easy-grill/SKILL.md) | 你有一个计划,想让 AI **往死里盘问你**,把每个没想清楚的决定都问出来(这套玩法叫 grill-me)。老玩法的毛病:问题本身就一嘴术语,你读三遍都不知道她在问什么,更别说做决定。这个版本加两条规矩:① 盘问全程按"十二岁孩子能读懂"的标准说话;② 需要技术背景才能答的问题,她先**换成一个你凭直觉就能答的"探针问题"** — 比如不问你"状态要不要持久化",改问"系统重启之后,你昨天看到的那条结论还要不要在" — 再从你的回答反推技术决定,把决定和代价复述给你确认。英文版。 |
-| [`easy-grill-zh`](skills/easy-grill-zh/SKILL.md) | 上面 `easy-grill` 的**全中文孪生版**,盘问全程说中文白话。两份内容一一对应,改一边必须同步另一边。 |
-
-#### 科研工作流
-
-| 名称 | 它替你干啥 |
-|---|---|
-| [`research-report`](skills/research-report/SKILL.md) | 你的数据分析跑完了,结果(表格、图、日志、零散草稿)散在一个文件夹里,你想把它们汇总成一份**能投稿的科研报告**。她帮你盘点素材、读懂研究在问什么、组织成学术叙事(摘要/背景/方法/结果/讨论,图嵌在对应结论旁),剥掉报告里不该有的噪音(代码、命令、日志行号、脚本名、"我后来改成"这类工作痕迹),最后一键排版成 **PDF + Word + Markdown** 三种格式。读者是同行专家,所以术语按惯例保留、不科普 —— 这是家族里唯一一个"不说人话给外行听"的 skill(审稿人看到把专业词用比喻解释反而觉得不专业)。它不做分析、不画图(那些是分析阶段的事),只做"结果 → 发表级文档"。 |
-
-#### Meta — 用来做 skill 的 skill
-
-| 名称 | 它替你干啥 |
-|---|---|
-| [`skill-craft`](skills/skill-craft/SKILL.md) | 你想新建一份"工作说明书"(skill)给 AI 用,或者把现有的 skill 升级到家族同等级。她帮你 grill 清任务边界(真需求吗 / 跟现有 skill 重不重)、设计信息架构(3 件事骨架 + 挑毛病维度 + 例外条款)、写完跑 sync 跟实战 calibration。把上面所有 skill 多轮打磨积累的 60+ 条经验(教授口吻 / 比喻贯穿 / 6 meta 挑毛病视角 / zero file / 心里狠不嘴上狠 / 不为凑数硬找 / 元信息下沉 / 9 条硬禁忌)凝结成一份"做 skill 的 skill"。跟全局 `write-a-skill`(Anthropic 通用版)区分,专门产出 Sedna 家族风格。 |
+复制 skill 时请复制整个目录，包含配套参考文档和脚本。
 
 ### Knowledge Assets — 几个 skill 共用的"规则手册"
 
